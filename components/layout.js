@@ -1,16 +1,104 @@
-import Nav from './nav'
+import { Button, Layout, Menu, Modal } from 'antd';
+import {withRouter} from 'next/router'
+import LoginModalle from './forms/login'
+import 'antd/dist/antd.css'
 
-const layoutStyle = {
-  margin: 20,
-  padding: 20,
-  border: '1px solid #DDD'
+const { Header, Content, Footer } = Layout;
+
+const headerLink = ({ children, router, href }) => {
+  const style = {
+    marginRight: 10,
+    color: router.pathname === href? 'red' : 'white'
+  }
+
+  const handleClick = (e) => {
+    e.preventDefault()
+    router.push(href)
+  }
+
+  return (
+    <a href={href} onClick={handleClick} style={style}>
+      {children}
+    </a>
+  )
 }
 
-const Layout = (props) => (
-  <div style={layoutStyle}>
-    <Nav/>
-    {props.children}
-  </div>
-)
+const HeaderLink = withRouter(headerLink)
 
-export default Layout
+export default class JuiceLayout extends React.Component{
+  state = { 
+    loading: false,
+    visible: false 
+  }
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  }
+
+  handleLogin = (e) => {
+    this.setState({ loading: true });
+    setTimeout(() => {
+      // close the modal in 3000 ms
+      this.setState({ loading: false, visible: false });
+    }, 3000);
+  }
+
+  handleCancel = (e) => {
+    this.setState({
+      visible: false,
+    });
+  }
+
+  render = () => {
+    const { loading, visible } = this.state;
+    const rightMenuStyle = {
+      float: 'right',
+      background: '#001529'
+    }
+    const leftMenuStyle = {
+      float: 'left',
+      background: '#001529'
+    }
+    const menuStyle = { lineHeight: '64px' }
+    const contentStyle = { padding: '50px' }
+    const footerStyle = { textAlign: 'center' } 
+
+    return (
+      <span>
+        <LoginModalle 
+          visible={ visible } 
+          loading={ loading }
+          onCancel={this.handleCancel}
+          onLogin={this.handleLogin}
+        />
+        <Layout className="layout">
+          <Header>
+            <Menu
+              theme="dark"
+              mode="horizontal"
+              defaultSelectedKeys={['1']}
+              style={menuStyle}
+            >
+              <Menu.Item key="index" style={leftMenuStyle}><HeaderLink href="/" passHref>gammex</HeaderLink></Menu.Item>
+              <Menu.Item key="sketch" style={leftMenuStyle}><HeaderLink href="/sketch" passHref>sketch</HeaderLink></Menu.Item>
+              <Menu.Item key="signup" style={rightMenuStyle}><HeaderLink href="/signup" passHref>signup</HeaderLink></Menu.Item>
+              <Menu.Item key="login" style={rightMenuStyle}>
+                <Button type="primary" onClick={this.showModal}>
+                  login
+                </Button>
+              </Menu.Item>
+            </Menu>
+          </Header>
+          <Content style={contentStyle}>
+            {this.props.children}
+          </Content>
+          <Footer style={footerStyle}>
+            gammex ©2019 Created by The Habibi Foundation  
+          </Footer>
+        </Layout>
+      </span>
+    )
+  }
+}
