@@ -95,7 +95,7 @@ export default class JuiceLayout extends React.Component{
             {this.props.children}
           </Content>
           <Footer style={footerStyle}>
-            gammex ©2019 Created by The Habibi Foundation  
+            gammex ©2019 Created by The Habibi Foundation 😘 
           </Footer>
         </Layout>
       </span>
