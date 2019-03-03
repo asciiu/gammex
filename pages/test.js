@@ -4,16 +4,16 @@ import gql from 'graphql-tag';
 import withData from "../lib/apollo";
 
 const query = gql`
-  query findTodos {
-    	todos {
-        text
-        done
-        user {
-          name
-        }
+  query FindTodos {
+  	todos {
+      text
+      done
+      user {
+        name
       }
+    }
   }
-`;
+`
 
 let Index = ({data: {loading, error, todos}}) => {
 

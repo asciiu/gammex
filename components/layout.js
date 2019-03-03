@@ -1,6 +1,6 @@
 import { Button, Layout, Menu, Modal } from 'antd';
 import {withRouter} from 'next/router'
-import LoginModalle from './forms/login'
+import LoginModal from './forms/login'
 import 'antd/dist/antd.css'
 
 const { Header, Content, Footer } = Layout;
@@ -26,17 +26,11 @@ const headerLink = ({ children, router, href }) => {
 const HeaderLink = withRouter(headerLink)
 
 export default class JuiceLayout extends React.Component{
-  state = { 
-    loading: false,
-    visible: false 
-  }
-
   showModal = () => {
     this.loginModal.show()
   }
 
   render = () => {
-    const { loading, visible } = this.state;
     const rightMenuStyle = {
       float: 'right',
       background: '#001529'
@@ -51,7 +45,7 @@ export default class JuiceLayout extends React.Component{
 
     return (
       <span>
-        <LoginModalle 
+        <LoginModal 
           onRef={ref => (this.loginModal = ref)}
         />
         <Layout className="layout">

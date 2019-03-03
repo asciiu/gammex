@@ -34,7 +34,7 @@ const link = ({ children, router, href, onClick }) => {
 const Link = withRouter(link)
 
 
-class LoginForm extends React.Component {
+class LoginModal extends React.Component {
   state = {
     incorrect: false,
     visible: false,
@@ -159,5 +159,5 @@ class LoginForm extends React.Component {
   }
 }
   
-const WrappedLoginForm = Form.create({ name: 'normal_login' })(LoginForm)
+const WrappedLoginForm = Form.create({ name: 'normal_login' })(LoginModal)
 export default WrappedLoginForm
