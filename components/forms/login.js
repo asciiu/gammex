@@ -36,7 +36,6 @@ const Link = withRouter(link)
 
 class LoginModal extends React.Component {
   state = {
-    incorrect: false,
     visible: false,
     loading: false
   }
@@ -49,7 +48,7 @@ class LoginModal extends React.Component {
   }
 
   handleComplete = (data) => {
-    this.setState({ loading: true, incorrect: false });
+    this.setState({ loading: true });
     setTimeout(() => {
       this.close()
     }, 3000);
@@ -58,13 +57,21 @@ class LoginModal extends React.Component {
   }
 
   handleError = (error) => {
-    this.setState({incorrect: true})
+    this.props.form.setFields({
+      email: {
+        value: this.props.form.getFieldValue("email"),
+        errors: [new Error('your email may be invalid')],
+      },
+      password: {
+        value: this.props.form.getFieldValue("password"),
+        errors: [new Error('or your password may be incorrect')],
+      }
+    });
   }
 
   close = () => {
     this.props.form.resetFields()
     this.setState({
-      incorrect: false, 
       visible: false, 
       loading: false
     })
@@ -87,7 +94,6 @@ class LoginModal extends React.Component {
         visible={visible}
         onCancel={this.close}
         footer={[
-          <span key="error">{this.state.incorrect? "incorrect":""}</span>,
           <Button key="cancel" onClick={this.close}>Cancel</Button>,
           <Mutation 
             key="login"
