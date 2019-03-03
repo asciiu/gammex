@@ -48,21 +48,8 @@ class LoginModal extends React.Component {
     this.props.onRef(undefined)
   }
 
-  handleSubmit = (event, submitLogin) => {
-    this.props.form.validateFields((err, values) => {
-      event.preventDefault();
-      if (!err) {
-        submitLogin({ variables: { 
-          email: values.email, 
-          password: values.password, 
-          remember: values.remember 
-        }})
-      } 
-    });
-  }
-
   handleComplete = (data) => {
-    this.setState({ loading: true });
+    this.setState({ loading: true, incorrect: false });
     setTimeout(() => {
       this.close()
     }, 3000);
