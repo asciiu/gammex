@@ -60,11 +60,11 @@ class LoginModal extends React.Component {
     this.props.form.setFields({
       email: {
         value: this.props.form.getFieldValue("email"),
-        errors: [new Error('your email may be invalid')],
+        errors: [new Error('This email may be invalid.')],
       },
       password: {
         value: this.props.form.getFieldValue("password"),
-        errors: [new Error('or your password may be incorrect')],
+        errors: [new Error('Or your password may be incorrect!')],
       }
     });
   }
@@ -125,7 +125,7 @@ class LoginModal extends React.Component {
         <Form className="login-form">
           <Form.Item>
             {getFieldDecorator('email', {
-              rules: [{ required: true, message: 'Please input your username!' }],
+              rules: [{ required: true, message: 'Please input your email!' }],
             })(
               <Input prefix={<Icon type="mail" style={hintStyle} />} placeholder="Email" />
             )}

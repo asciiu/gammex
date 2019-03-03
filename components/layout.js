@@ -27,6 +27,7 @@ const HeaderLink = withRouter(headerLink)
 
 export default class JuiceLayout extends React.Component{
   showModal = () => {
+    // this.loginModal is assigned in the onRef callback of <LoginModal>
     this.loginModal.show()
   }
 
