@@ -32,23 +32,7 @@ export default class JuiceLayout extends React.Component{
   }
 
   showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  }
-
-  handleLogin = (e) => {
-    this.setState({ loading: true });
-    setTimeout(() => {
-      // close the modal in 3000 ms
-      this.setState({ loading: false, visible: false });
-    }, 3000);
-  }
-
-  handleCancel = (e) => {
-    this.setState({
-      visible: false,
-    });
+    this.loginModal.show()
   }
 
   render = () => {
@@ -68,10 +52,7 @@ export default class JuiceLayout extends React.Component{
     return (
       <span>
         <LoginModalle 
-          visible={ visible } 
-          loading={ loading }
-          onCancel={this.handleCancel}
-          onLogin={this.handleLogin}
+          onRef={ref => (this.loginModal = ref)}
         />
         <Layout className="layout">
           <Header>
@@ -95,7 +76,7 @@ export default class JuiceLayout extends React.Component{
             {this.props.children}
           </Content>
           <Footer style={footerStyle}>
-            gammex ©2019 Created by The Habibi Foundation 😘 
+            gammex ©2019 Created by The Hajji Foundation 😘 
           </Footer>
         </Layout>
       </span>

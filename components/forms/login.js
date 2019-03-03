@@ -1,13 +1,25 @@
 import { Button, Form, Icon, Input, Checkbox, Modal } from 'antd';
 import {withRouter} from 'next/router'
+import gql from 'graphql-tag';
+import { Mutation } from "react-apollo";
 
-const link = ({ children, router, href, onCancel }) => {
+const LOGIN_MUTATION = gql`
+  mutation Login ($email: String!, $password: String!, $remember: Boolean!) {
+    login(email: $email, password: $password, remember: $remember) {
+      jwt
+      refresh
+    }
+  }
+`
+
+
+const link = ({ children, router, href, onClick }) => {
   const handleClick = (e) => {
     e.preventDefault()
     // perhaps this should be done in the LoginForm somehow?
     // close the login modal if forgot was pressed and path is already /forgot
     if (href === "/forgot" && router.pathname === "/forgot") {
-      onCancel()
+      onClick()
     } else {
       router.push(href)
     }
@@ -19,10 +31,16 @@ const link = ({ children, router, href, onCancel }) => {
     </a>
   )
 }
-  
 const Link = withRouter(link)
 
+
 class LoginForm extends React.Component {
+  state = {
+    incorrect: false,
+    visible: false,
+    loading: false
+  }
+
   componentDidMount() {
     this.props.onRef(this)
   }
@@ -30,88 +48,116 @@ class LoginForm extends React.Component {
     this.props.onRef(undefined)
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
+  handleSubmit = (event, submitLogin) => {
     this.props.form.validateFields((err, values) => {
+      event.preventDefault();
       if (!err) {
-        console.log('Received values of form: ', values);
-        this.reset()
-        this.props.onLogin(e)
+        submitLogin({ variables: { 
+          email: values.email, 
+          password: values.password, 
+          remember: values.remember 
+        }})
       } 
     });
   }
 
-  reset = () => {
+  handleComplete = (data) => {
+    this.setState({ loading: true });
+    setTimeout(() => {
+      this.close()
+    }, 3000);
+
+    console.log(data.login)
+  }
+
+  handleError = (error) => {
+    this.setState({incorrect: true})
+  }
+
+  close = () => {
     this.props.form.resetFields()
+    this.setState({
+      incorrect: false, 
+      visible: false, 
+      loading: false
+    })
+  }
+
+  show = () => {
+    this.setState({
+      visible: true,
+    })
   }
 
   render() {
     const hintStyle = { color: 'rgba(0,0,0,.25)' }
     const { getFieldDecorator } = this.props.form;
+    const { loading, visible } = this.state
+
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-        <Form.Item>
-          {getFieldDecorator('email', {
-            rules: [{ required: true, message: 'Please input your username!' }],
-          })(
-            <Input prefix={<Icon type="mail" style={hintStyle} />} placeholder="Email" />
-          )}
-        </Form.Item>
-        <Form.Item>
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your password!' }],
-          })(
-            <Input prefix={<Icon type="lock" style={hintStyle} />} type="password" placeholder="Password" />
-          )}
-        </Form.Item>
-        <Form.Item>
-          {getFieldDecorator('remember', {
-            valuePropName: 'checked',
-            initialValue: false,
-          })(
-            <div><Checkbox>Remember me</Checkbox></div>
-          )}
-          <Link href="/forgot" passHref onCancel={this.props.onCancel}>Forgot password</Link>
-        </Form.Item>
-      </Form>
+      <Modal
+        title="Login"
+        visible={visible}
+        onCancel={this.close}
+        footer={[
+          <span key="error">{this.state.incorrect? "incorrect":""}</span>,
+          <Button key="cancel" onClick={this.close}>Cancel</Button>,
+          <Mutation 
+            key="login"
+            mutation={LOGIN_MUTATION}
+            onCompleted={this.handleComplete}
+            onError={this.handleError}
+          >
+            {(submitLogin, { data, error }) => (
+              <Button key="login" type="primary" loading={loading} 
+                onClick={e => {
+                  e.preventDefault();
+                  this.props.form.validateFields((err, values) => {
+                    if (!err) {
+                      submitLogin({ variables: { 
+                        email: values.email, 
+                        password: values.password, 
+                        remember: values.remember 
+                      }})
+                    } 
+                  });
+                }}
+              >
+                Login 
+              </Button>
+            )}
+          </Mutation>
+        ]}
+      >
+        <Form className="login-form">
+          <Form.Item>
+            {getFieldDecorator('email', {
+              rules: [{ required: true, message: 'Please input your username!' }],
+            })(
+              <Input prefix={<Icon type="mail" style={hintStyle} />} placeholder="Email" />
+            )}
+          </Form.Item>
+          <Form.Item>
+            {getFieldDecorator('password', {
+              rules: [{ required: true, message: 'Please input your password!' }],
+            })(
+              <Input prefix={<Icon type="lock" style={hintStyle} />} type="password" placeholder="Password" />
+            )}
+          </Form.Item>
+          <Form.Item>
+            {getFieldDecorator('remember', {
+              valuePropName: 'checked',
+              initialValue: false,
+            })(
+              <div><Checkbox>Remember me</Checkbox></div>
+            )}
+            <Link href="/forgot" passHref onClick={this.close}>Forgot password</Link>
+          </Form.Item>
+        </Form>
+      </Modal>
     );
   }
 }
   
-const WrappedLoginForm = Form.create({ name: 'normal_login' })(LoginForm);
-
-export default class LoginModalle extends React.Component {
-  handleLogin = (e) => {
-    this.loginForm.handleSubmit(e)
-  }
-
-  handleCancel = (e) => {
-    this.loginForm.reset()
-    this.props.onCancel(e)
-  }
-  
-  render() {
-    const { loading, onLogin, visible } = this.props
-
-    return (
-        <Modal
-          title="Login"
-          visible={visible}
-          onCancel={this.handleCancel}
-          footer={[
-            <Button key="cancel" onClick={this.handleCancel}>Cancel</Button>,
-            <Button key="login" type="primary" loading={loading} onClick={this.handleLogin}>
-              Login 
-            </Button>
-          ]}
-        >
-          <WrappedLoginForm 
-            onRef={ref => (this.loginForm = ref)} 
-            onLogin={onLogin} 
-            onCancel={this.handleCancel}
-          />
-        </Modal>
-    )
-  }
-}
-  
+const WrappedLoginForm = Form.create({ name: 'normal_login' })(LoginForm)
+export default WrappedLoginForm
