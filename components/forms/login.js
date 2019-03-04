@@ -54,7 +54,9 @@ class LoginModal extends React.Component {
     this.setState({ loading: true });
     setTimeout(() => {
       this.close()
-      redirect({}, '/')
+      //this.props.apolloClient.cache.reset().then(() => {
+        redirect({}, '/')
+      //})
     }, 3000);
 
     document.cookie = cookie.serialize('token', data.login.jwt, {
@@ -69,11 +71,6 @@ class LoginModal extends React.Component {
         maxAge: -1
       })
     }
-
-    // Force a reload of all the current queries now that the user is
-    // logged in
-    //this.props.client.cache.reset().then(() => {
-    //})
   }
 
   handleError = (error) => {
