@@ -54,9 +54,9 @@ class LoginModal extends React.Component {
     this.setState({ loading: true });
     setTimeout(() => {
       this.close()
-      //this.props.apolloClient.cache.reset().then(() => {
+      this.props.apolloClient.cache.reset().then(() => {
         redirect({}, '/')
-      //})
+      })
     }, 3000);
 
     document.cookie = cookie.serialize('token', data.login.jwt, {

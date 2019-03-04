@@ -48,6 +48,7 @@ export default class JuiceLayout extends React.Component{
       <span>
         <LoginModal 
           onRef={ref => (this.loginModal = ref)}
+          apolloClient={this.props.apolloClient}
         />
         <Layout className="layout">
           <Header>
