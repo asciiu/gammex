@@ -2,6 +2,8 @@ import { Button, Form, Icon, Input, Checkbox, Modal } from 'antd';
 import {withRouter} from 'next/router'
 import gql from 'graphql-tag';
 import { Mutation } from "react-apollo";
+import cookie from 'cookie'
+
 
 const LOGIN_MUTATION = gql`
   mutation Login ($email: String!, $password: String!, $remember: Boolean!) {
@@ -53,7 +55,18 @@ class LoginModal extends React.Component {
       this.close()
     }, 3000);
 
-    console.log(data.login)
+    document.cookie = cookie.serialize('token', data.login.jwt, {
+      maxAge: 24 * 60 * 60 // 1 day
+    })
+
+    if (data.login.refresh) {
+      document.cookie = cookie.serialize('refresh', data.login.refresh)
+    } else {
+      // delete preexisting refresh 
+      document.cookie = cookie.serialize('refresh', data.login.refresh, {
+        maxAge: -1
+      })
+    }
   }
 
   handleError = (error) => {
