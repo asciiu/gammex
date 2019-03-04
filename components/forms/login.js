@@ -3,6 +3,7 @@ import {withRouter} from 'next/router'
 import gql from 'graphql-tag';
 import { Mutation } from "react-apollo";
 import cookie from 'cookie'
+import redirect from '../../lib/redirect'
 
 
 const LOGIN_MUTATION = gql`
@@ -53,6 +54,7 @@ class LoginModal extends React.Component {
     this.setState({ loading: true });
     setTimeout(() => {
       this.close()
+      redirect({}, '/')
     }, 3000);
 
     document.cookie = cookie.serialize('token', data.login.jwt, {
@@ -67,6 +69,11 @@ class LoginModal extends React.Component {
         maxAge: -1
       })
     }
+
+    // Force a reload of all the current queries now that the user is
+    // logged in
+    //this.props.client.cache.reset().then(() => {
+    //})
   }
 
   handleError = (error) => {
