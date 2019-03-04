@@ -5,7 +5,7 @@ import Forgot from '../components/forms/forgot'
 export default class ForgotPass extends React.Component {
   render = () => {
     return (
-      <Layout apolloClient={this.props.apolloClient}>
+      <Layout {...this.props}>
         <Row>
           <Col span={8} offset={8}>
             <Forgot/>

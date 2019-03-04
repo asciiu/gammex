@@ -5,7 +5,7 @@ import Signup from '../components/forms/signup'
 export default class SignUp extends React.Component {
   render = () => {
     return (
-      <Layout apolloClient={this.props.apolloClient}>    
+      <Layout {...this.props}>
         <Row>
           <Col span={12} offset={4}>
             <Signup/>

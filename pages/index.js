@@ -20,7 +20,7 @@ export default class Index extends React.Component {
 
   render () {
     return (
-      <Layout apolloClient={this.props.apolloClient}>
+      <Layout {...this.props}>
         <Row>
           <Col span={12}>
             <ul>
