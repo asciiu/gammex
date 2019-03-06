@@ -5,7 +5,7 @@ import {Coin} from './coin.js'
 import {GameSocket} from '../../components/socket'
 import 'p5/lib/addons/p5.sound'
 import 'p5/lib/addons/p5.dom'
-import { SSL_OP_NO_TICKET } from 'constants';
+import { SSL_OP_NO_TICKET } from 'constants'
 import uuid from 'uuid'
 
 export default function sketch (p5) {
@@ -22,6 +22,7 @@ export default function sketch (p5) {
   let player = undefined;
   let clientID = undefined; 
   let close = false;
+  let canvas;
   const socket = new GameSocket('ws://192.168.99.100:32000/ws');
   const TopicAsteroid = "new-asteroid";
   const TopicPlayerRegister = "player-register";
@@ -166,12 +167,12 @@ export default function sketch (p5) {
     laserSound.setVolume(0.1);
     coinSound.setVolume(0.5);
 
-    //const width = Math.floor(2*p5.windowWidth/3);
-    //const height = Math.floor(3*p5.windowHeight/4); 
-    const cnv = p5.createCanvas(p5.windowWidth, p5.windowHeight);
+    const width = Math.floor(2*p5.windowWidth/3);
+    const height = Math.floor(2*p5.windowHeight/3); 
+    canvas = p5.createCanvas(width, height);
     const x = (p5.windowWidth - p5.width) / 2;
     const y = (p5.windowHeight - p5.height) / 2;
-    cnv.position(x, y);
+    canvas.position(x, y);
 
     socket.connect({
       onMessage: onSocketMessage, 
@@ -181,7 +182,13 @@ export default function sketch (p5) {
   }
 
   p5.windowResized = () => {
-    p5.resizeCanvas(p5.windowWidth, p5.windowHeight);
+    const width = Math.floor(2*p5.windowWidth/3);
+    const height = Math.floor(2*p5.windowHeight/3); 
+    p5.resizeCanvas(width, height);
+
+    const x = (p5.windowWidth - p5.width) / 2;
+    const y = (p5.windowHeight - p5.height) / 2;
+    canvas.position(x, y);
   }
 
   p5.draw = () => {
