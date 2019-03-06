@@ -10,12 +10,7 @@ import 'antd/dist/antd.css'
 export default class Index extends React.Component {
   static async getInitialProps (context) {
     const { loggedInUser } = await checkLoggedIn(context.apolloClient)
-    //if (!loggedInUser.user) {
-    //  // If not signed in, send them somewhere more useful
-    //  //redirect(context, '/signin')
-    //}
-
-    return { loggedInUser }
+    return { user: loggedInUser.getUser }
   }
 
   render () {
