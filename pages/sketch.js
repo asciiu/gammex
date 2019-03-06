@@ -3,7 +3,7 @@ import Asteroids from '../sketches/asteroids/sketch'
 import P5Wrapper from '../components/p5Wrapper'
 import checkLoggedIn from '../lib/checkLoggedIn'
 
-class Sketch extends React.Component {
+export default class Sketch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,7 +24,3 @@ class Sketch extends React.Component {
     );
   }
 }
-
-export default () => (
-    <Sketch />
-)
