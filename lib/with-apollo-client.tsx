@@ -5,19 +5,21 @@ import { getDataFromTree } from 'react-apollo'
 import Head from 'next/head'
 
 import initApollo from './init-apollo'
+import { isBrowser } from './isBrowser';
+import { ApolloClient, NormalizedCacheObject } from 'apollo-boost';
 
-function parseCookies (req, options = {}) {
+function parseCookies (req?: any, options = {}) {
   return cookie.parse(req ? req.headers.cookie || '' : document.cookie, options)
 }
 
-export default App => {
+export default (App: any) => {
   return class WithData extends React.Component {
     static displayName = `WithData(${App.displayName})`
     static propTypes = {
       apolloState: PropTypes.object.isRequired
     }
 
-    static async getInitialProps (ctx) {
+    static async getInitialProps (ctx: any) {
       const {
         Component,
         router,
@@ -42,7 +44,7 @@ export default App => {
         return {}
       }
 
-      if (!process.browser) {
+      if (!isBrowser) {
         // Run all graphql queries in the component tree
         // and extract the resulting data
         try {
@@ -76,7 +78,9 @@ export default App => {
       }
     }
 
-    constructor (props) {
+    apolloClient: ApolloClient<NormalizedCacheObject>
+    
+    constructor (props: any) {
       super(props)
       // `getDataFromTree` renders the component first, the client is passed off as a property.
       // After that rendering is done using Next's normal rendering pipeline

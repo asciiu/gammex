@@ -1,14 +1,14 @@
 import Layout from '../components/layout'
-import currencies from '../data/currencies'
 import Link from 'next/link'
 import { HorizontalGridLines, LineSeries, XAxis, XYPlot, YAxis } from 'react-vis'
 import { Row, Col } from 'antd'
 import checkLoggedIn from '../lib/checkLoggedIn'
 import 'react-vis/dist/style.css'
 import 'antd/dist/antd.css'
+import * as React from "react";
 
 export default class Index extends React.Component {
-  static async getInitialProps (context) {
+  static async getInitialProps (context: any) {
     const { loggedInUser } = await checkLoggedIn(context.apolloClient)
     return { user: loggedInUser.getUser }
   }
@@ -18,15 +18,6 @@ export default class Index extends React.Component {
       <Layout {...this.props}>
         <Row>
           <Col span={12}>
-            <ul>
-              {currencies.map((currency, index) => (
-                <li key={index}>
-                  <Link as={`/currency/${index}`} href={{pathname: '/base', query: {id: index}}}>
-                    <a>{currency.title}</a>
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </Col>
           <Col span={12}>
             <XYPlot width={300} height={300}>

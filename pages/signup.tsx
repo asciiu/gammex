@@ -1,10 +1,11 @@
 import { Row, Col } from 'antd';
 import Layout from '../components/layout'
-import Forgot from '../components/forms/forgot'
+import Signup from '../components/forms/signup'
 import checkLoggedIn from '../lib/checkLoggedIn'
 import redirect from '../lib/redirect'
+import * as React from "react";
 
-export default class ForgotPass extends React.Component {
+export default class SignUp extends React.Component {
   static async getInitialProps (context) {
     const { loggedInUser } = await checkLoggedIn(context.apolloClient)
     if (loggedInUser.getUser) {
@@ -20,11 +21,11 @@ export default class ForgotPass extends React.Component {
     return (
       <Layout {...this.props}>
         <Row>
-          <Col span={8} offset={8}>
-            <Forgot/>
+          <Col span={12} offset={4}>
+            <Signup/>
           </Col>
         </Row>
       </Layout>
     )
-  }
+  } 
 }

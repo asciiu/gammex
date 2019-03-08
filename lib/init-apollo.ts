@@ -1,19 +1,25 @@
-import { ApolloClient, InMemoryCache } from 'apollo-boost'
+import { ApolloClient, InMemoryCache, NormalizedCacheObject } from 'apollo-boost'
 import { ApolloLink } from "apollo-link";
 import { onError } from "apollo-link-error";
 import { createHttpLink } from 'apollo-link-http'
 import { setContext } from 'apollo-link-context'
 import cookie from 'cookie'
 import fetch from 'isomorphic-unfetch'
+import { isBrowser } from './isBrowser';
 
-let apolloClient = null
+let apolloClient: ApolloClient<NormalizedCacheObject> | null = null
 
-// Polyfill fetch() on the server (used by apollo-client)
-if (!process.browser) {
-  global.fetch = fetch
+interface Options {
+  getToken: () => string
+  getRefresh: () => string
 }
 
-function create (initialState, { getToken, getRefresh }) {
+// Polyfill fetch() on the server (used by apollo-client)
+if (!isBrowser) {
+  (global as any).fetch = fetch
+}
+
+function create (initialState: any, { getToken, getRefresh }: Options) {
   const httpLink = createHttpLink({
     uri: 'http://localhost:8080/query',
     credentials: 'same-origin'
@@ -59,8 +65,8 @@ function create (initialState, { getToken, getRefresh }) {
 
   // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
   return new ApolloClient({
-    connectToDevTools: process.browser,
-    ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
+    connectToDevTools: isBrowser,
+    ssrMode: !isBrowser, // Disables forceFetch on the server (so queries are only run once)
     link: ApolloLink.from([
       errorLink,
       authLink,
@@ -70,10 +76,10 @@ function create (initialState, { getToken, getRefresh }) {
   })
 }
 
-export default function initApollo (initialState, options) {
+export default function initApollo (initialState: any, options: Options) {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
-  if (!process.browser) {
+  if (!isBrowser) {
     return create(initialState, options)
   }
 

@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@zeit/next-typescript": "^1.1.1",
     "antd": "^3.12.1",
     "apollo-boost": "^0.3.1",
     "apollo-link-context": "^1.0.14",
@@ -32,6 +33,12 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "@zeit/next-css": "^1.0.1"
+    "@types/cookie": "^0.3.2",
+    "@types/graphql": "^14.0.7",
+    "@types/next": "^8.0.1",
+    "@types/react": "^16.8.7",
+    "@types/react-dom": "^16.8.2",
+    "@zeit/next-css": "^1.0.1",
+    "typescript": "^3.3.3333"
   }
 }

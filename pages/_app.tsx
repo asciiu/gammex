@@ -3,7 +3,7 @@ import React from 'react'
 import withApolloClient from '../lib/with-apollo-client'
 import { ApolloProvider } from 'react-apollo'
 
-class MyApp extends App {
+class MyApp extends App<any> {
   render () {
     const { Component, pageProps, apolloClient } = this.props
     return (

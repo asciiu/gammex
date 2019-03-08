@@ -1,5 +1,6 @@
 import Layout from '../components/layout'
 import checkLoggedIn from '../lib/checkLoggedIn'
+import * as React from "react";
 
 export default class About extends React.Component {
   static async getInitialProps (context) {
