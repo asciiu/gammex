@@ -5,8 +5,14 @@ import 'antd/dist/antd.css'
 import cookie from 'cookie'
 import redirect from '../lib/redirect'
 import * as React from "react";
+import MenuItem from 'antd/lib/menu/MenuItem';
+
 
 const { Header, Content, Footer } = Layout;
+
+// this gets rid of the style property not found errors.
+const MyMenuItem = MenuItem as any;
+const MyFooter = Footer as any;
 
 const headerLink = ({ children, router, href }) => {
   const style = {
@@ -36,7 +42,7 @@ interface LayoutProps {
 export default class JuiceLayout extends React.Component<LayoutProps, any>{
   loginModal:any 
 
-  constructor(props) {
+  constructor(props: any) {
     super(props)
 
     if (this.props.pageProps) {
@@ -79,25 +85,16 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
       float: 'right',
       background: '#001529'
     }
-    const styles = {
-      leftMenuStyle: {
-        float: 'left',
-        background: '#001529'
-      },
-      buttonRow: {
-        display: 'flex',
-        justifyContent: 'center'
-      }
-    };
 
-    const leftMenuStyle: React.CSSProperties = {
+    const leftMenuStyle = {
       float: 'left',
       background: '#001529'
     }
     const menuStyle = { lineHeight: '64px' }
     const contentStyle = { padding: '50px' }
     const footerStyle = { textAlign: 'center' } 
-    let topBar
+
+    let topBar: any
 
     // logged in users will see this
     if (this.state.user) {
@@ -108,13 +105,13 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
           defaultSelectedKeys={['1']}
           style={menuStyle}
         >
-          <Menu.Item key="index" style={styles.leftMenuStyle}><HeaderLink href="/">gammex</HeaderLink></Menu.Item>
-          <Menu.Item key="sketch" style={leftMenuStyle}><HeaderLink href="/sketch">sketch</HeaderLink></Menu.Item>
-          <Menu.Item key="logout" style={rightMenuStyle}>
+          <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">gammex</HeaderLink></MyMenuItem>
+          <MyMenuItem key="sketch" style={leftMenuStyle}><HeaderLink href="/sketch">sketch</HeaderLink></MyMenuItem>
+          <MyMenuItem key="logout" style={rightMenuStyle}>
             <Button type="primary" onClick={this.logout}>
               {this.state.user.username} 
             </Button>
-          </Menu.Item>
+          </MyMenuItem>
         </Menu>
     } else {
       topBar = 
@@ -124,13 +121,13 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
           defaultSelectedKeys={['1']}
           style={menuStyle}
         >
-          <Menu.Item key="index" style={leftMenuStyle}><HeaderLink href="/">gammex</HeaderLink></Menu.Item>
-          <Menu.Item key="signup" style={rightMenuStyle}><HeaderLink href="/signup">signup</HeaderLink></Menu.Item>
-          <Menu.Item key="login" style={rightMenuStyle}>
+          <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">gammex</HeaderLink></MyMenuItem>
+          <MyMenuItem key="signup" style={rightMenuStyle}><HeaderLink href="/signup">signup</HeaderLink></MyMenuItem>
+          <MyMenuItem key="login" style={rightMenuStyle}>
             <Button type="primary" onClick={this.showModal}>
               login
             </Button>
-          </Menu.Item>
+          </MyMenuItem>
         </Menu>
     }
 
@@ -148,9 +145,9 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
           <Content style={contentStyle}>
             {this.props.children}
           </Content>
-          <Footer style={footerStyle}>
+          <MyFooter style={footerStyle}>
             gammex ©2019 Created by The Hajji Foundation 😘 
-          </Footer>
+          </MyFooter>
         </Layout>
       </span>
     )
