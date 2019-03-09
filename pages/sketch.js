@@ -1,6 +1,6 @@
 import Layout from '../components/layout'
 import Asteroids from '../sketches/asteroids/sketch'
-import P5Wrapper from '../components/P5Wrapper'
+import P5Wrapper from '../components/p5Wrapper'
 import checkLoggedIn from '../lib/checkLoggedIn'
 import redirect from '../lib/redirect'
 import * as React from "react";

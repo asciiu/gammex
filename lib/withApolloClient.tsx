@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { getDataFromTree } from 'react-apollo'
 import Head from 'next/head'
 
-import initApollo from './init-apollo'
+import initApollo from './initApollo'
 import { isBrowser } from './isBrowser';
 import { ApolloClient, NormalizedCacheObject } from 'apollo-boost';
 
