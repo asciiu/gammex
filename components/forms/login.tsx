@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { Mutation } from "react-apollo";
 import cookie from 'cookie'
 import redirect from '../../lib/redirect'
+import * as React from "react";
 
 
 const LOGIN_MUTATION = gql`
@@ -36,8 +37,14 @@ const link = ({ children, router, href, onClick }) => {
 }
 const Link = withRouter(link)
 
+interface LoginModalProps {
+  form: any;
+  onRef(ref: any): void;
+  apolloClient: any;
+}
 
-class LoginModal extends React.Component {
+
+class LoginModal extends React.Component<LoginModalProps, any> {
   state = {
     visible: false,
     loading: false
@@ -73,7 +80,7 @@ class LoginModal extends React.Component {
     }
   }
 
-  handleError = (error) => {
+  handleError = (error: any) => {
     this.props.form.setFields({
       email: {
         value: this.props.form.getFieldValue("email"),
@@ -161,7 +168,7 @@ class LoginModal extends React.Component {
             })(
               <div><Checkbox>Remember me</Checkbox></div>
             )}
-            <Link href="/forgot" passHref onClick={this.close}>Forgot password</Link>
+            <Link href="/forgot" onClick={this.close}>Forgot password</Link>
           </Form.Item>
         </Form>
       </Modal>
@@ -169,5 +176,5 @@ class LoginModal extends React.Component {
   }
 }
   
-const WrappedLoginForm = Form.create({ name: 'normal_login' })(LoginModal)
+const WrappedLoginForm = Form.create()(LoginModal)
 export default WrappedLoginForm

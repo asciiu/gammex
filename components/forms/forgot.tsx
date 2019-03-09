@@ -1,7 +1,18 @@
 import { Button, Form, Icon, Input } from 'antd';
+import * as React from "react";
 
-class ForgotForm extends React.Component {
-  handleSubmit = (e) => {
+
+interface ForgotFormProps {
+  form: any;
+  onLogin(event: any): void;
+}
+
+class ForgotForm extends React.Component<ForgotFormProps, any> {
+  constructor(props: ForgotFormProps) {
+    super(props);
+  }
+
+  handleSubmit = (e: any) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -41,5 +52,5 @@ class ForgotForm extends React.Component {
   }
 }
   
-const WrappedForgotForm = Form.create({ name: 'forget_email' })(ForgotForm);
+const WrappedForgotForm = Form.create()(ForgotForm);
 export default WrappedForgotForm

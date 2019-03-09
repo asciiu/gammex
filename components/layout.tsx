@@ -1,9 +1,10 @@
-import { Button, Layout, Menu, Modal } from 'antd';
+import { Button, Layout, Menu } from 'antd';
 import {withRouter} from 'next/router'
 import LoginModal from './forms/login'
 import 'antd/dist/antd.css'
 import cookie from 'cookie'
 import redirect from '../lib/redirect'
+import * as React from "react";
 
 const { Header, Content, Footer } = Layout;
 
@@ -27,7 +28,14 @@ const headerLink = ({ children, router, href }) => {
 
 const HeaderLink = withRouter(headerLink)
 
-export default class JuiceLayout extends React.Component{
+interface LayoutProps {
+  pageProps: any,
+  apolloClient: any;
+}
+
+export default class JuiceLayout extends React.Component<LayoutProps, any>{
+  loginModal:any 
+
   constructor(props) {
     super(props)
 
@@ -71,7 +79,18 @@ export default class JuiceLayout extends React.Component{
       float: 'right',
       background: '#001529'
     }
-    const leftMenuStyle = {
+    const styles = {
+      leftMenuStyle: {
+        float: 'left',
+        background: '#001529'
+      },
+      buttonRow: {
+        display: 'flex',
+        justifyContent: 'center'
+      }
+    };
+
+    const leftMenuStyle: React.CSSProperties = {
       float: 'left',
       background: '#001529'
     }
@@ -89,8 +108,8 @@ export default class JuiceLayout extends React.Component{
           defaultSelectedKeys={['1']}
           style={menuStyle}
         >
-          <Menu.Item key="index" style={leftMenuStyle}><HeaderLink href="/" passHref>gammex</HeaderLink></Menu.Item>
-          <Menu.Item key="sketch" style={leftMenuStyle}><HeaderLink href="/sketch" passHref>sketch</HeaderLink></Menu.Item>
+          <Menu.Item key="index" style={styles.leftMenuStyle}><HeaderLink href="/">gammex</HeaderLink></Menu.Item>
+          <Menu.Item key="sketch" style={leftMenuStyle}><HeaderLink href="/sketch">sketch</HeaderLink></Menu.Item>
           <Menu.Item key="logout" style={rightMenuStyle}>
             <Button type="primary" onClick={this.logout}>
               {this.state.user.username} 
@@ -105,8 +124,8 @@ export default class JuiceLayout extends React.Component{
           defaultSelectedKeys={['1']}
           style={menuStyle}
         >
-          <Menu.Item key="index" style={leftMenuStyle}><HeaderLink href="/" passHref>gammex</HeaderLink></Menu.Item>
-          <Menu.Item key="signup" style={rightMenuStyle}><HeaderLink href="/signup" passHref>signup</HeaderLink></Menu.Item>
+          <Menu.Item key="index" style={leftMenuStyle}><HeaderLink href="/">gammex</HeaderLink></Menu.Item>
+          <Menu.Item key="signup" style={rightMenuStyle}><HeaderLink href="/signup">signup</HeaderLink></Menu.Item>
           <Menu.Item key="login" style={rightMenuStyle}>
             <Button type="primary" onClick={this.showModal}>
               login

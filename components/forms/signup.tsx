@@ -1,19 +1,25 @@
 import {
-  Form, Input, Tooltip, Icon, Select, Row, Col, Checkbox, Button, AutoComplete
+  Form, Input, Tooltip, Icon, Select, Checkbox, Button, AutoComplete
 } from 'antd';
 import Recaptcha from 'react-recaptcha'
+import * as React from "react";
   
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
+
+interface RegistrationFormProps {
+  form: any;
+  apolloClient: any;
+}
   
-class RegistrationForm extends React.Component {
+class RegistrationForm extends React.Component<RegistrationFormProps, any> {
   state = {
     confirmDirty: false,
     autoCompleteResult: [],
     isHuman: false
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = (e: any) => {
     const { isHuman } = this.state
     e.preventDefault();
 
@@ -30,7 +36,7 @@ class RegistrationForm extends React.Component {
     }
   }
 
-  handleConfirmBlur = (e) => {
+  handleConfirmBlur = (e: any) => {
     const value = e.target.value;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   }
@@ -175,5 +181,5 @@ class RegistrationForm extends React.Component {
   }
 }
 
-const WrappedRegistrationForm = Form.create({ name: 'register' })(RegistrationForm);
+const WrappedRegistrationForm = Form.create()(RegistrationForm);
 export default WrappedRegistrationForm

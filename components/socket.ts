@@ -1,7 +1,10 @@
 export class GameSocket {
-  constructor(url) {
+  connection: WebSocket;
+  url: string;
+
+  constructor(url: string) {
     this.url = url;
-    this.connection = null;
+    //this.connection = null;
   }
 
   // callback is function(evt)
