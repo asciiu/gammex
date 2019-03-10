@@ -29,7 +29,7 @@ export default class P5Wrapper extends React.Component<P5Props, any> {
   }
 
   componentWillUnmount() {
-    this.canvas.cleanUp();
+    if (this.canvas && this.canvas.cleanUp) this.canvas.cleanUp();
   }
 
   render() {
