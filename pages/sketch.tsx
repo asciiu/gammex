@@ -6,7 +6,7 @@ import redirect from '../lib/redirect'
 import * as React from "react";
 
 export default class Sketch extends React.Component<any, any> {
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.state = {
 		  sketch: Asteroids
