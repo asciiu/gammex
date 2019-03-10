@@ -1,11 +1,11 @@
-import Layout from '../components/layout'
+import Layout, { LayoutProps } from '../components/layout'
 import Asteroids from '../sketches/asteroids/sketch'
 import P5Wrapper from '../components/p5Wrapper'
 import checkLoggedIn from '../lib/checkLoggedIn'
 import redirect from '../lib/redirect'
 import * as React from "react";
 
-export default class Sketch extends React.Component {
+export default class Sketch extends React.Component<any, any> {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,7 +13,7 @@ export default class Sketch extends React.Component {
 		};
   }
 
-  static async getInitialProps (context) {
+  static async getInitialProps (context: any) {
     const { loggedInUser } = await checkLoggedIn(context.apolloClient)
     if (!loggedInUser.getUser) {
       // Not signed in.
@@ -25,8 +25,13 @@ export default class Sketch extends React.Component {
   }
 
   render() {
+    const props: LayoutProps = {
+      apolloClient: this.props.apolloClient, 
+      pageProps: this.props.pageProps
+    };
+
     return (
-      <Layout {...this.props}>
+      <Layout {...props}>
         <P5Wrapper sketch={this.state.sketch} /> 
       </Layout>
     );

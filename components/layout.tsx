@@ -34,7 +34,7 @@ const headerLink = ({ children, router, href }) => {
 
 const HeaderLink = withRouter(headerLink)
 
-interface LayoutProps {
+export interface LayoutProps {
   pageProps: any,
   apolloClient: any;
 }
