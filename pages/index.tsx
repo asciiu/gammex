@@ -6,7 +6,7 @@ import 'react-vis/dist/style.css'
 import 'antd/dist/antd.css'
 import * as React from "react";
 
-export default class Index extends React.Component {
+export default class Index extends React.Component<any, any> {
   layoutProps: LayoutProps;
 
   constructor(props: any) {

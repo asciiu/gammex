@@ -4,7 +4,6 @@ import * as React from "react";
 
 interface ForgotFormProps {
   form: any;
-  onLogin(event: any): void;
 }
 
 class ForgotForm extends React.Component<ForgotFormProps, any> {
@@ -18,7 +17,6 @@ class ForgotForm extends React.Component<ForgotFormProps, any> {
       if (!err) {
         console.log('Received values of form: ', values);
         this.reset()
-        this.props.onLogin(e)
       } 
     });
   }
