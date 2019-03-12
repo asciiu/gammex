@@ -1,5 +1,4 @@
-import Layout from '../components/layout'
-import Link from 'next/link'
+import Layout, { LayoutProps } from '../components/layout'
 import { HorizontalGridLines, LineSeries, XAxis, XYPlot, YAxis } from 'react-vis'
 import { Row, Col } from 'antd'
 import checkLoggedIn from '../lib/checkLoggedIn'
@@ -8,14 +7,25 @@ import 'antd/dist/antd.css'
 import * as React from "react";
 
 export default class Index extends React.Component {
+  layoutProps: LayoutProps;
+
+  constructor(props: any) {
+    super(props);
+    this.layoutProps = {
+      pageProps: props.pageProps,
+      apolloClient: props.apolloClient
+    };
+  }
+
   static async getInitialProps (context: any) {
     const { loggedInUser } = await checkLoggedIn(context.apolloClient)
     return { user: loggedInUser.getUser }
   }
 
   render () {
+
     return (
-      <Layout {...this.props}>
+      <Layout {...this.layoutProps}>
         <Row>
           <Col span={12}>
           </Col>
