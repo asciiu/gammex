@@ -3,9 +3,10 @@ import checkLoggedIn from '../lib/checkLoggedIn'
 import redirect from '../lib/redirect'
 import React from "react";
 import ReactDOM from "react-dom";
+import { Row, Col } from 'antd'
 
 
-export default class Sketch extends React.Component {
+export default class CreateJesuis extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -23,6 +24,8 @@ export default class Sketch extends React.Component {
 
   componentDidMount(){
     var canvas = ReactDOM.findDOMNode(this.refs.canvas);
+    canvas.style.backgroundColor = "#ff0000";
+
     this.stage = new createjs.Stage(canvas);
     var circle = new createjs.Shape();
     circle.graphics.beginFill("Crimson").drawCircle(0, 0, 50);
@@ -48,7 +51,13 @@ export default class Sketch extends React.Component {
 
     return (
       <Layout {...this.props}>
-        <canvas ref="canvas" width="500" height="200"></canvas>
+        <Row>
+          <Col span={6}></Col>
+          <Col span={12}>
+            <canvas ref="canvas" width="600" height="200"></canvas>
+          </Col>
+          <Col span={6}></Col>
+        </Row>
       </Layout>
     );
   }
