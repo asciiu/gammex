@@ -19,24 +19,16 @@ export default class CreateJesuis extends React.Component {
     return { user: loggedInUser.getUser }
   }
 
-  clouds = [];
+  btc;
   canvas;
+  clouds = [];
 
   constructor(props) {
     super(props);
-
-    const queue = new createjs.LoadQueue();
-    queue.on("complete", this.handleComplete, this);
-    queue.loadFile("/static/clouds/cloud1.png");
-    queue.loadFile("/static/clouds/cloud2.png");
-    queue.loadFile("/static/clouds/cloud3.png");
-    queue.loadFile("/static/clouds/cloud4.png");
-    queue.loadFile("/static/clouds/btc.png");
-    queue.load();
   }
 
   handleComplete = () => {
-    const btc = new createjs.Bitmap("/static/clouds/btc.png");
+    this.btc = new createjs.Bitmap("/static/clouds/btc.png");
     const cloud1 = new createjs.Bitmap("/static/clouds/cloud1.png");
     const cloud2 = new createjs.Bitmap("/static/clouds/cloud1.png");
     const cloud3 = new createjs.Bitmap("/static/clouds/cloud2.png");
@@ -53,9 +45,9 @@ export default class CreateJesuis extends React.Component {
       this.stage.addChild(cloud);
     }
 
-    btc.x = 300;
-    btc.y = 300;
-    this.stage.addChild(btc);
+    this.btc.x = 300;
+    this.btc.y = 300;
+    this.stage.addChild(this.btc);
   }
 
   componentDidMount = () => {
@@ -70,6 +62,25 @@ export default class CreateJesuis extends React.Component {
 
     createjs.Ticker.setFPS(60);
     createjs.Ticker.addEventListener("tick", this.handleTick);
+    document.onkeydown = this.handleKey;
+
+    const queue = new createjs.LoadQueue();
+    queue.on("complete", this.handleComplete, this);
+    queue.loadFile("/static/clouds/cloud1.png");
+    queue.loadFile("/static/clouds/cloud2.png");
+    queue.loadFile("/static/clouds/cloud3.png");
+    queue.loadFile("/static/clouds/cloud4.png");
+    queue.loadFile("/static/clouds/btc.png");
+    queue.load();
+  }
+  
+  handleKey = (event) => {
+    if (event.keyCode == 32) {
+      createjs.Tween.get(this.btc)
+        .to({y: this.btc.y-100}, 300, createjs.Ease.getPowOut(2))
+        .to({y: this.height}, 700, createjs.Ease.getPowIn(2));
+    }
+    event.preventDefault();
   }
 
   handleTick = (event) => {
