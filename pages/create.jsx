@@ -7,54 +7,69 @@ import { Row, Col } from 'antd'
 
 
 export default class CreateJesuis extends React.Component {
-  constructor(props) {
-    super(props);
-    const queue = new createjs.LoadQueue();
-    queue.on("complete", this.handleComplete, this);
-    queue.loadFile("/static/clouds/cloud1.png");
-    queue.loadFile("/static/clouds/btc.png");
-    queue.load();
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
-  }
-
-  handleComplete = () => {
-    this.cloud1 = new createjs.Bitmap("/static/clouds/cloud1.png");
-    const width = this.width;
-    const height = this.height;
-    const canvas = ReactDOM.findDOMNode(this.refs.canvas);
-    canvas.style.backgroundColor = "#001529";
-    canvas.width = width;
-    canvas.height = height;
-
-    this.stage = new createjs.Stage(canvas);
-    this.cloud1.x = width;
-    this.cloud1.y = Math.floor(Math.random() * height) + 1  
-    this.stage.addChild(this.cloud1);
-
-    const btc = new createjs.Bitmap("/static/clouds/btc.png");
-    btc.x = 300;
-    btc.y = 300;
-    this.stage.addChild(btc);
-    createjs.Ticker.setFPS(60);
-    createjs.Ticker.addEventListener("tick", this.handleTick);
-
-    createjs.Tween.get(this.cloud1)
-      .to({x: -500}, 10000)
-  }
 
   static async getInitialProps (context) {
-    const { loggedInUser } = await checkLoggedIn(context.apolloClient)
+    const { loggedInUser } = await checkLoggedIn(context.apolloClient);
     if (!loggedInUser.getUser) {
       // Not signed in.
       // Throw them back to the main page
-      redirect(context, '/')
+      redirect(context, '/');
     }
 
     return { user: loggedInUser.getUser }
   }
 
-  componentDidMount(){
+  clouds = [];
+  canvas;
+
+  constructor(props) {
+    super(props);
+
+    const queue = new createjs.LoadQueue();
+    queue.on("complete", this.handleComplete, this);
+    queue.loadFile("/static/clouds/cloud1.png");
+    queue.loadFile("/static/clouds/cloud2.png");
+    queue.loadFile("/static/clouds/cloud3.png");
+    queue.loadFile("/static/clouds/cloud4.png");
+    queue.loadFile("/static/clouds/btc.png");
+    queue.load();
+  }
+
+  handleComplete = () => {
+    const btc = new createjs.Bitmap("/static/clouds/btc.png");
+    const cloud1 = new createjs.Bitmap("/static/clouds/cloud1.png");
+    const cloud2 = new createjs.Bitmap("/static/clouds/cloud1.png");
+    const cloud3 = new createjs.Bitmap("/static/clouds/cloud2.png");
+    const cloud4 = new createjs.Bitmap("/static/clouds/cloud3.png");
+    const cloud5 = new createjs.Bitmap("/static/clouds/cloud1.png");
+    const cloud6 = new createjs.Bitmap("/static/clouds/cloud4.png");
+    const cloud7 = new createjs.Bitmap("/static/clouds/cloud1.png");
+    this.clouds = [cloud1, cloud2, cloud3, cloud4, cloud5, cloud6, cloud7]
+
+    for (const cloud of this.clouds) {
+      // init off screen
+      cloud.x = -this.width;
+      //cloud.y = Math.floor(Math.random() * this.height) + 1;
+      this.stage.addChild(cloud);
+    }
+
+    btc.x = 300;
+    btc.y = 300;
+    this.stage.addChild(btc);
+  }
+
+  componentDidMount = () => {
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+
+    this.canvas = ReactDOM.findDOMNode(this.refs.canvas);
+    this.canvas.style.backgroundColor = "#001529";
+    this.canvas.width = this.width;
+    this.canvas.height = this.height;
+    this.stage = new createjs.Stage(this.canvas);
+
+    createjs.Ticker.setFPS(60);
+    createjs.Ticker.addEventListener("tick", this.handleTick);
   }
 
   handleTick = (event) => {
@@ -64,11 +79,15 @@ export default class CreateJesuis extends React.Component {
     //}
     this.stage.update();
     
-    if (this.cloud1 && this.cloud1.x <= -this.cloud1.getBounds().width) {
-      this.cloud1.x = this.width;
-      this.cloud1.y = Math.floor(Math.random() * this.height) + 1  
-      createjs.Tween.get(this.cloud1)
-        .to({x: -this.cloud1.getBounds().width}, 10000)
+    for (const cloud of this.clouds) {
+      if (cloud.getBounds() && cloud.x <= -cloud.getBounds().width) {
+        cloud.x = this.width;
+        cloud.y = Math.floor(Math.random() * this.height) + 1;  
+
+        const time = Math.floor(Math.random() * 15000) + 7000;
+        createjs.Tween.get(cloud)
+          .to({x: -cloud.getBounds().width}, time);
+      }
     }
   }
 
