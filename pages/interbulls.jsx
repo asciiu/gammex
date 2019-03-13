@@ -24,13 +24,15 @@ export default class CreateJesuis extends React.Component {
 
   componentDidMount(){
     var canvas = ReactDOM.findDOMNode(this.refs.canvas);
-    canvas.style.backgroundColor = "#ff0000";
+    canvas.style.backgroundColor = "#001529";
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
     this.stage = new createjs.Stage(canvas);
     var circle = new createjs.Shape();
     circle.graphics.beginFill("Crimson").drawCircle(0, 0, 50);
-    circle.x = 100;
-    circle.y = 100;
+    circle.x = 300;
+    circle.y = 300;
     this.stage.addChild(circle);
     createjs.Tween.get(circle, {loop: true})
       .to({x: 400}, 1000, createjs.Ease.getPowInOut(4))
@@ -48,15 +50,19 @@ export default class CreateJesuis extends React.Component {
     //  apolloClient: this.props.apolloClient, 
     //  pageProps: this.props.pageProps
     //};
+    const canvasStyle = {
+      width: '100%',
+      height: '100%'
+    }
 
     return (
       <Layout {...this.props}>
         <Row>
-          <Col span={6}></Col>
-          <Col span={12}>
-            <canvas ref="canvas" width="600" height="200"></canvas>
+          <Col span={3}></Col>
+          <Col span={18}>
+            <canvas ref="canvas" style={canvasStyle}></canvas>
           </Col>
-          <Col span={6}></Col>
+          <Col span={3}></Col>
         </Row>
       </Layout>
     );
