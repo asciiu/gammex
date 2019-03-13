@@ -107,7 +107,7 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
         >
           <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">gammex</HeaderLink></MyMenuItem>
           <MyMenuItem key="sketch" style={leftMenuStyle}><HeaderLink href="/sketch">sketch</HeaderLink></MyMenuItem>
-          <MyMenuItem key="interbulls" style={leftMenuStyle}><HeaderLink href="/interbulls">interbulls</HeaderLink></MyMenuItem>
+          <MyMenuItem key="create" style={leftMenuStyle}><HeaderLink href="/create">create</HeaderLink></MyMenuItem>
           <MyMenuItem key="logout" style={rightMenuStyle}>
             <Button type="primary" onClick={this.logout}>
               {this.state.user.username} 
