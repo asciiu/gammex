@@ -93,7 +93,7 @@ export default class CreateJesuis extends React.Component {
 
       createjs.Tween.get(this.btc)
         .to({y: this.btc.y-100}, 300, createjs.Ease.getPowOut(2))
-        .to({y: this.height}, 700, createjs.Ease.getPowIn(2));
+        .to({y: this.btc.y+1000}, 700, createjs.Ease.getPowIn(2));
     }
     event.preventDefault();
   }
