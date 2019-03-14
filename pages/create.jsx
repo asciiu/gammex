@@ -24,6 +24,8 @@ export default class CreateJesuis extends React.Component {
   clouds = [];
   squeakID = "squeak";
   bubbleID = "bubble";
+  popID = "pop";
+  isDead = false;
 
   constructor(props) {
     super(props);
@@ -54,8 +56,8 @@ export default class CreateJesuis extends React.Component {
     this.btc.y = 300;
     this.stage.addChild(this.btc);
 
-    createjs.Sound.registerSound("static/squeakyToy.mp3", this.squeakID);
     createjs.Sound.registerSound("static/clouds/bubble.mp3", this.bubbleID);
+    createjs.Sound.registerSound("static/clouds/pop.mp3", this.popID);
   }
 
   componentDidMount = () => {
@@ -80,7 +82,8 @@ export default class CreateJesuis extends React.Component {
     queue.loadFile("/static/clouds/cloud4.png");
     queue.loadFile("/static/clouds/btc.png");
     queue.loadFile("/static/clouds/bubble.png");
-    queue.loadFile("/static/squeakyToy.mp3");
+    queue.loadFile("/static/clouds/pop.mp3");
+    queue.loadFile("/static/clouds/bubble.mp3");
     queue.load();
   }
   
@@ -93,6 +96,11 @@ export default class CreateJesuis extends React.Component {
         .to({y: this.height}, 700, createjs.Ease.getPowIn(2));
     }
     event.preventDefault();
+  }
+
+  handleDeath = () => {
+    createjs.Sound.play(this.popID);
+    this.isDead = true;
   }
 
   handleTick = (event) => {
@@ -110,6 +118,16 @@ export default class CreateJesuis extends React.Component {
         const time = Math.floor(Math.random() * 15000) + 7000;
         createjs.Tween.get(cloud)
           .to({x: -cloud.getBounds().width}, time);
+      }
+    }
+
+    if (this.btc) {
+      if (this.btc.y >= this.height && !this.isDead) {
+        this.handleDeath();
+      }
+
+      if (this.btc.y < this.height && this.isDead) {
+        this.isDead = false;
       }
     }
   }
