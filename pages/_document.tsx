@@ -15,6 +15,7 @@ export default class MyDocument extends Document {
           <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
           <script src="https://code.createjs.com/1.0.0/tweenjs.min.js"></script>
           <script src="https://code.createjs.com/1.0.0/preloadjs.min.js"></script>
+          <script src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
         </Head>
         <body className="custom_class">
           <Main />

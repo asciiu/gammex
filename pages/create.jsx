@@ -22,13 +22,18 @@ export default class CreateJesuis extends React.Component {
   btc;
   canvas;
   clouds = [];
+  squeakID = "squeak";
+  bubbleID = "bubble";
 
   constructor(props) {
     super(props);
   }
 
   handleComplete = () => {
-    this.btc = new createjs.Bitmap("/static/clouds/btc.png");
+    //this.btc = new createjs.Bitmap("/static/clouds/btc.png");
+    this.btc = new createjs.Bitmap("/static/clouds/bubble.png");
+    this.btc.scaleX = 0.1;
+    this.btc.scaleY = 0.1;
     const cloud1 = new createjs.Bitmap("/static/clouds/cloud1.png");
     const cloud2 = new createjs.Bitmap("/static/clouds/cloud1.png");
     const cloud3 = new createjs.Bitmap("/static/clouds/cloud2.png");
@@ -48,6 +53,9 @@ export default class CreateJesuis extends React.Component {
     this.btc.x = 300;
     this.btc.y = 300;
     this.stage.addChild(this.btc);
+
+    createjs.Sound.registerSound("static/squeakyToy.mp3", this.squeakID);
+    createjs.Sound.registerSound("static/clouds/bubble.mp3", this.bubbleID);
   }
 
   componentDidMount = () => {
@@ -71,11 +79,15 @@ export default class CreateJesuis extends React.Component {
     queue.loadFile("/static/clouds/cloud3.png");
     queue.loadFile("/static/clouds/cloud4.png");
     queue.loadFile("/static/clouds/btc.png");
+    queue.loadFile("/static/clouds/bubble.png");
+    queue.loadFile("/static/squeakyToy.mp3");
     queue.load();
   }
   
   handleKey = (event) => {
     if (event.keyCode == 32) {
+      createjs.Sound.play(this.bubbleID);
+
       createjs.Tween.get(this.btc)
         .to({y: this.btc.y-100}, 300, createjs.Ease.getPowOut(2))
         .to({y: this.height}, 700, createjs.Ease.getPowIn(2));
