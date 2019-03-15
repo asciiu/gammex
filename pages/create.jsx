@@ -1,10 +1,10 @@
-import Layout from '../components/layout'
-import checkLoggedIn from '../lib/checkLoggedIn'
-import redirect from '../lib/redirect'
+import Layout from '../components/layout';
+import checkLoggedIn from '../lib/checkLoggedIn';
+import redirect from '../lib/redirect';
 import React from "react";
 import ReactDOM from "react-dom";
-import { Row, Col } from 'antd'
-
+import { Row, Col } from 'antd';
+import 'script-loader!../scripts/ndgmr.Collision.js';
 
 export default class CreateJesuis extends React.Component {
 
@@ -19,7 +19,7 @@ export default class CreateJesuis extends React.Component {
     return { user: loggedInUser.getUser }
   }
 
-  btc;
+  btc = null;
   bubble;
   canvas;
   clouds = [];
@@ -54,6 +54,7 @@ export default class CreateJesuis extends React.Component {
       this.stage.addChild(btc);
     }
 
+    this.isBubble = false;
     this.bubble = new createjs.Bitmap("/static/clouds/bubble.png");
     this.bubble.name = "bubble"
     this.bubble.scaleX = 0.1;
@@ -83,6 +84,7 @@ export default class CreateJesuis extends React.Component {
 
     createjs.Sound.registerSound("static/clouds/bubble.mp3", this.bubbleID);
     createjs.Sound.registerSound("static/clouds/pop.mp3", this.popID);
+    createjs.Sound.registerSound("static/money.mp3", "money_sound");
   }
 
   componentDidMount = () => {
@@ -109,24 +111,19 @@ export default class CreateJesuis extends React.Component {
     queue.loadFile("/static/clouds/bubble.png");
     queue.loadFile("/static/clouds/pop.mp3");
     queue.loadFile("/static/clouds/bubble.mp3");
+    queue.loadFile("/static/money.mp3");
     queue.load();
   }
   
   handleKey = (event) => {
     if (event.keyCode == 32) {
-
+      // to be removed, need to implement game over and restart
       if (this.bubble.y < this.height && this.isDead) {
         this.isDead = false;
       }
-
       createjs.Sound.play(this.bubbleID);
-
-      //const y = this.bubble.y;
-      //let x = 20;
-      //if (x < 20) x = 20;
-
       createjs.Tween.get(this.bubble)
-        .to({x: this.bubble.x + 10, y: this.bubble.y-100}, 300, createjs.Ease.getPowOut(2))
+        .to({x: this.bubble.x, y: this.bubble.y-100}, 300, createjs.Ease.getPowOut(2))
         .to({y: this.bubble.y+1000}, 700, createjs.Ease.getPowIn(2));
     }
     event.preventDefault();
@@ -135,6 +132,13 @@ export default class CreateJesuis extends React.Component {
   handleDeath = () => {
     createjs.Sound.play(this.popID);
     this.isDead = true;
+  }
+
+  handleBtc = (btc) => {
+    if (this.btc != btc) {
+      this.btc = btc;
+      createjs.Sound.play("money_sound");
+    }
   }
 
   handleTick = (event) => {
@@ -171,6 +175,11 @@ export default class CreateJesuis extends React.Component {
             const time = Math.floor(Math.random() * 15000) + 7000;
             createjs.Tween.get(btc)
               .to({x: -btc.getBounds().width}, time);
+          } else if (ndgmr) {
+            const intersection = ndgmr.checkRectCollision(bubble,btc);
+            if (intersection && this.btc != btc) {
+              this.handleBtc(btc);
+            } 
           }
         case "spike":
           let spike = child;
@@ -181,11 +190,11 @@ export default class CreateJesuis extends React.Component {
             const time = Math.floor(Math.random() * 15000) + 7000;
             createjs.Tween.get(spike)
               .to({x: -spike.getBounds().width}, time);
-          } else if (!this.isDead) {
-            //const intersection = ndgmr.checkRectCollision(bubble,spike);
-            //if (intersection) {
-            //  this.handleDeath();
-            //}
+          } else if (!this.isDead && ndgmr) {
+            const intersection = ndgmr.checkRectCollision(bubble,spike);
+            if (intersection) {
+              this.handleDeath();
+            }
           }
         default:
       }
