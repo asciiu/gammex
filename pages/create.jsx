@@ -6,6 +6,10 @@ import ReactDOM from "react-dom";
 import { Row, Col } from 'antd';
 import 'script-loader!../scripts/ndgmr.Collision.js';
 
+const POP_SOUND = "pop";
+const BUBBLE_SOUND = "bubble";
+const MONEY_SOUND = "money";
+
 export default class CreateJesuis extends React.Component {
 
   static async getInitialProps (context) {
@@ -19,33 +23,29 @@ export default class CreateJesuis extends React.Component {
     return { user: loggedInUser.getUser }
   }
 
-  btc = null;
-  bubble;
-  canvas;
-  clouds = [];
-  spikes = [];
-  squeakID = "squeak";
-  bubbleID = "bubble";
-  popID = "pop";
-  isDead = false;
-
   constructor(props) {
     super(props);
+    this.btc = null;
+    this.bubble = null;
+    this.canvas = null;
+    this.isDead = false;
   }
 
   handleComplete = () => {
-    //this.btc = new createjs.Bitmap("/static/clouds/btc.png");
-    for (let i = 1; i < 10; i++) {
+    createjs.Sound.registerSound("static/clouds/bubble.mp3", BUBBLE_SOUND);
+    createjs.Sound.registerSound("static/clouds/pop.mp3", POP_SOUND);
+    createjs.Sound.registerSound("static/money.mp3", MONEY_SOUND);
+
+    for (let i = 0; i < 10; i++) {
       const spike = new createjs.Bitmap("/static/clouds/spike.png");
       spike.scaleX = 0.1;
       spike.scaleY = 0.1;
       spike.x = -this.width;
       spike.name = "spike";
       this.stage.addChild(spike);
-      this.spikes.push(spike);
     }
 
-    for (let i = 1; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
       const btc = new createjs.Bitmap("/static/clouds/btc.png");
       btc.scaleX = 0.7;
       btc.scaleY = 0.7;
@@ -63,28 +63,20 @@ export default class CreateJesuis extends React.Component {
     this.bubble.y = 300;
     this.stage.addChild(this.bubble);
 
+    let clouds = [];
     for (let i = 1; i < 3; i++) {
-      const cloud1 = new createjs.Bitmap("/static/clouds/cloud1.png");
-      this.clouds.push(cloud1)
-      const cloud2 = new createjs.Bitmap("/static/clouds/cloud2.png");
-      this.clouds.push(cloud2)
-      const cloud3 = new createjs.Bitmap("/static/clouds/cloud3.png");
-      this.clouds.push(cloud3)
-      const cloud4 = new createjs.Bitmap("/static/clouds/cloud4.png");
-      this.clouds.push(cloud4)
+      clouds.push(new createjs.Bitmap("/static/clouds/cloud1.png"));
+      clouds.push(new createjs.Bitmap("/static/clouds/cloud2.png"));
+      clouds.push(new createjs.Bitmap("/static/clouds/cloud3.png"));
+      clouds.push(new createjs.Bitmap("/static/clouds/cloud4.png"));
     }
 
-    for (const cloud of this.clouds) {
+    for (const cloud of clouds) {
       cloud.name = "cloud";
       // init off screen
       cloud.x = -this.width;
-      //cloud.y = Math.floor(Math.random() * this.height) + 1;
       this.stage.addChild(cloud);
     }
-
-    createjs.Sound.registerSound("static/clouds/bubble.mp3", this.bubbleID);
-    createjs.Sound.registerSound("static/clouds/pop.mp3", this.popID);
-    createjs.Sound.registerSound("static/money.mp3", "money_sound");
   }
 
   componentDidMount = () => {
@@ -121,23 +113,23 @@ export default class CreateJesuis extends React.Component {
       if (this.bubble.y < this.height && this.isDead) {
         this.isDead = false;
       }
-      createjs.Sound.play(this.bubbleID);
+      createjs.Sound.play(BUBBLE_SOUND);
       createjs.Tween.get(this.bubble)
-        .to({x: this.bubble.x, y: this.bubble.y-100}, 300, createjs.Ease.getPowOut(2))
-        .to({y: this.bubble.y+1000}, 700, createjs.Ease.getPowIn(2));
+        .to({x: this.bubble.x, y: this.bubble.y-100}, 1000, createjs.Ease.getPowOut(2))
+        .to({y: this.bubble.y+1000}, 7000, createjs.Ease.getPowIn(2));
     }
     event.preventDefault();
   }
 
   handleDeath = () => {
-    createjs.Sound.play(this.popID);
+    createjs.Sound.play(POP_SOUND);
     this.isDead = true;
   }
 
   handleBtc = (btc) => {
     if (this.btc != btc) {
       this.btc = btc;
-      createjs.Sound.play("money_sound");
+      createjs.Sound.play(MONEY_SOUND);
     }
   }
 
@@ -148,8 +140,7 @@ export default class CreateJesuis extends React.Component {
     //}
     this.stage.update();
     
-    const bubble = this.stage.getChildByName("bubble");
-    if (bubble && bubble.y >= this.height && !this.isDead) {
+    if (this.bubble && this.bubble.y >= this.height && !this.isDead) {
       this.handleDeath();
     }
 
@@ -172,11 +163,11 @@ export default class CreateJesuis extends React.Component {
             btc.x = Math.floor(Math.random() * this.width * 3) + this.width;
             btc.y = Math.floor(Math.random() * this.height) + 1;  
 
-            const time = Math.floor(Math.random() * 15000) + 7000;
+            const time = Math.floor(Math.random() * 15000) + 10000;
             createjs.Tween.get(btc)
               .to({x: -btc.getBounds().width}, time);
           } else if (ndgmr) {
-            const intersection = ndgmr.checkRectCollision(bubble,btc);
+            const intersection = ndgmr.checkRectCollision(this.bubble, btc);
             if (intersection && this.btc != btc) {
               this.handleBtc(btc);
             } 
@@ -187,12 +178,13 @@ export default class CreateJesuis extends React.Component {
             spike.x = Math.floor(Math.random() * this.width * 2) + this.width;  
             spike.y = Math.floor(Math.random() * this.height);  
   
-            const time = Math.floor(Math.random() * 15000) + 7000;
+            const time = Math.floor(Math.random() * 10000) + 15000;
             createjs.Tween.get(spike)
               .to({x: -spike.getBounds().width}, time);
           } else if (!this.isDead && ndgmr) {
-            const intersection = ndgmr.checkRectCollision(bubble,spike);
-            if (intersection) {
+            const collision = ndgmr.checkRectCollision(this.bubble, spike);
+            //const collision = ndgmr.checkPixelCollision(this.bubble, spike, 10, true);
+            if (collision) {
               this.handleDeath();
             }
           }
@@ -202,10 +194,6 @@ export default class CreateJesuis extends React.Component {
   }
 
   render() {
-    //const props: LayoutProps = {
-    //  apolloClient: this.props.apolloClient, 
-    //  pageProps: this.props.pageProps
-    //};
     const canvasStyle = {
       width: '100%',
       height: '100%'
