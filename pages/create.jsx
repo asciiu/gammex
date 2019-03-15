@@ -172,6 +172,7 @@ export default class CreateJesuis extends React.Component {
               this.handleBtc(btc);
             } 
           }
+          break;
         case "spike":
           let spike = child;
           if (spike.getBounds() && spike.x <= -spike.getBounds().width) {
@@ -188,6 +189,7 @@ export default class CreateJesuis extends React.Component {
               this.handleDeath();
             }
           }
+          break;
         default:
       }
     }
