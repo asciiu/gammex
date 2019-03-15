@@ -54,7 +54,6 @@ export default class CreateJesuis extends React.Component {
       this.stage.addChild(btc);
     }
 
-    this.isBubble = false;
     this.bubble = new createjs.Bitmap("/static/clouds/bubble.png");
     this.bubble.name = "bubble"
     this.bubble.scaleX = 0.1;
@@ -115,7 +114,7 @@ export default class CreateJesuis extends React.Component {
       }
       createjs.Sound.play(BUBBLE_SOUND);
       createjs.Tween.get(this.bubble)
-        .to({x: this.bubble.x, y: this.bubble.y-100}, 1000, createjs.Ease.getPowOut(2))
+        .to({y: this.bubble.y-50}, 300, createjs.Ease.getPowOut(2))
         .to({y: this.bubble.y+1000}, 7000, createjs.Ease.getPowIn(2));
     }
     event.preventDefault();
@@ -184,7 +183,6 @@ export default class CreateJesuis extends React.Component {
               .to({x: -spike.getBounds().width}, time);
           } else if (!this.isDead && ndgmr) {
             const collision = ndgmr.checkRectCollision(this.bubble, spike);
-            //const collision = ndgmr.checkPixelCollision(this.bubble, spike, 10, true);
             if (collision) {
               this.handleDeath();
             }
