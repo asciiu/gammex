@@ -107,7 +107,7 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
           <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">reaper</HeaderLink></MyMenuItem>
           <MyMenuItem key="sketch" style={leftMenuStyle}><HeaderLink href="/sketch">sketch</HeaderLink></MyMenuItem>
           <MyMenuItem key="create" style={leftMenuStyle}><HeaderLink href="/create">create</HeaderLink></MyMenuItem>
-          <MyMenuItem key="about" style={leftMenuStyle}><HeaderLink href="/about">about</HeaderLink></MyMenuItem>
+          <MyMenuItem key="story" style={leftMenuStyle}><HeaderLink href="/story">story</HeaderLink></MyMenuItem>
           <MyMenuItem key="logout" style={rightMenuStyle}>
             <Button type="primary" onClick={this.logout}>
               {this.state.user.username} 
@@ -123,7 +123,7 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
           style={menuStyle}
         >
           <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">reaper</HeaderLink></MyMenuItem>
-          <MyMenuItem key="about" style={leftMenuStyle}><HeaderLink href="/about">about</HeaderLink></MyMenuItem>
+          <MyMenuItem key="story" style={leftMenuStyle}><HeaderLink href="/story">story</HeaderLink></MyMenuItem>
           <MyMenuItem key="signup" style={rightMenuStyle}><HeaderLink href="/signup">signup</HeaderLink></MyMenuItem>
           <MyMenuItem key="login" style={rightMenuStyle}>
             <Button type="primary" onClick={this.showModal}>
