@@ -78,6 +78,12 @@ export default class CreateJesuis extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    // TODO need to release mem gracefully
+    this.canvas.remove();
+    this.stage.clear();
+  }
+
   componentDidMount = () => {
     this.width = window.innerWidth;
     this.height = window.innerHeight;

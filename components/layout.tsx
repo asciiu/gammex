@@ -1,12 +1,11 @@
 import { Button, Layout, Menu } from 'antd';
 import {withRouter} from 'next/router'
 import LoginModal from './forms/login'
-import 'antd/dist/antd.css'
 import cookie from 'cookie'
 import redirect from '../lib/redirect'
 import * as React from "react";
 import MenuItem from 'antd/lib/menu/MenuItem';
-
+import 'antd/dist/antd.css'
 
 const { Header, Content, Footer } = Layout;
 
@@ -105,9 +104,10 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
           defaultSelectedKeys={['1']}
           style={menuStyle}
         >
-          <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">gammex</HeaderLink></MyMenuItem>
+          <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">reaper</HeaderLink></MyMenuItem>
           <MyMenuItem key="sketch" style={leftMenuStyle}><HeaderLink href="/sketch">sketch</HeaderLink></MyMenuItem>
           <MyMenuItem key="create" style={leftMenuStyle}><HeaderLink href="/create">create</HeaderLink></MyMenuItem>
+          <MyMenuItem key="about" style={leftMenuStyle}><HeaderLink href="/about">about</HeaderLink></MyMenuItem>
           <MyMenuItem key="logout" style={rightMenuStyle}>
             <Button type="primary" onClick={this.logout}>
               {this.state.user.username} 
@@ -122,7 +122,8 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
           defaultSelectedKeys={['1']}
           style={menuStyle}
         >
-          <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">gammex</HeaderLink></MyMenuItem>
+          <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">reaper</HeaderLink></MyMenuItem>
+          <MyMenuItem key="about" style={leftMenuStyle}><HeaderLink href="/about">about</HeaderLink></MyMenuItem>
           <MyMenuItem key="signup" style={rightMenuStyle}><HeaderLink href="/signup">signup</HeaderLink></MyMenuItem>
           <MyMenuItem key="login" style={rightMenuStyle}>
             <Button type="primary" onClick={this.showModal}>
@@ -147,7 +148,7 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
             {this.props.children}
           </Content>
           <MyFooter style={footerStyle}>
-            gammex ©2019 Created by The Hajji Foundation 😘 
+            gammex ©2019 Created by Bodhi 😘 
           </MyFooter>
         </Layout>
       </span>
