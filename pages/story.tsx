@@ -1,11 +1,20 @@
 import { Row, Col, Carousel } from 'antd';
 import Layout, { LayoutProps } from '../components/layout'
+import Link from 'next/link'
 import checkLoggedIn from '../lib/checkLoggedIn'
 import * as React from "react";
 import * as CSS from 'csstype';
 
 
-export default class About extends React.Component<any, any> {
+const PostLink = props => (
+  <li>
+    <Link href={`/post?title=${props.title}`}>
+      <a>{props.title}</a>
+    </Link>
+  </li>
+)
+
+export default class Story extends React.Component<any, any> {
   static async getInitialProps (context: any) {
     const { loggedInUser } = await checkLoggedIn(context.apolloClient)
     return { user: loggedInUser.getUser }
@@ -24,6 +33,10 @@ export default class About extends React.Component<any, any> {
       color: "#001529",
       textAlign: "center" as CSS.TextAlignProperty
     };
+    const tocStyle = { 
+      color: "#001529",
+      textAlign: "left" as CSS.TextAlignProperty
+    };
 
     return (
       <Layout {...props}>
@@ -36,9 +49,14 @@ export default class About extends React.Component<any, any> {
           <Col span={10} offset={4} style={aboutStyle}>
               <div>
                 <h1>Welcome to Reaper!</h1>
-                <p>My story is mostly true. I had to obfiscate names and certain circumstances to hide
-                  identities. I suppose it's just a matter of time until someone discovers who I am.</p>
-                <p>Let's begin with how this site came to be. Part 1</p>  
+                <p>My story is true. I had to obfiscate names and certain circumstances to hide
+                  identities, but otherwise everything that I write is from yours truly. - Axl</p>
+                <ul style={tocStyle}>
+                  <PostLink title="Introduction" />
+                  <PostLink title="Why?" />
+                  <PostLink title="Your fired!" />
+                  <PostLink title="You reap what you sow." />
+                </ul>
               </div>
           </Col>
         </Row>
