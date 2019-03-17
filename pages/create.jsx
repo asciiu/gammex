@@ -82,6 +82,8 @@ export default class CreateJesuis extends React.Component {
     // TODO need to release mem gracefully
     this.canvas.remove();
     this.stage.clear();
+    this.stage.removeEventListener("tick", this.handleTick);
+    this.stage.enableDOMEvents(false);
   }
 
   componentDidMount = () => {

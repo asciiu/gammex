@@ -16,14 +16,25 @@ const PostLink = props => (
 
 export default class Story extends React.Component<any, any> {
   static async getInitialProps (context: any) {
-    const { loggedInUser } = await checkLoggedIn(context.apolloClient)
-    return { user: loggedInUser.getUser }
+    //const { loggedInUser } = await checkLoggedIn(context.apolloClient)
+    const stories = [
+      {
+        title: "Introduction",
+      },
+      {
+        title: "Solitude",
+      },
+      {
+        title: "Working for someone else sucks!",
+      },
+    ]; 
+    return { stories: stories };
   }
 
   render = () => {
     const props: LayoutProps = {
       apolloClient: this.props.apolloClient, 
-      pageProps: this.props.pageProps
+      pageProps: this.props.pageProps,
     };
     const quoteStyle = { 
       color: 'rgba(0,0,0,.3)',
@@ -52,10 +63,9 @@ export default class Story extends React.Component<any, any> {
                 <p>My story is true. I had to obfiscate names and certain circumstances to hide
                   identities, but otherwise everything that I write is from yours truly. - Axl</p>
                 <ul style={tocStyle}>
-                  <PostLink title="Introduction" />
-                  <PostLink title="Why?" />
-                  <PostLink title="Your fired!" />
-                  <PostLink title="You reap what you sow." />
+                  {this.props.pageProps.stories.map( (story:any)  => (
+                    <PostLink key={story.title} title={story.title} />
+                  ))}
                 </ul>
               </div>
           </Col>
