@@ -16,19 +16,14 @@ const PostLink = props => (
 
 export default class Story extends React.Component<any, any> {
   static async getInitialProps (context: any) {
-    //const { loggedInUser } = await checkLoggedIn(context.apolloClient)
-    const stories = [
-      {
-        title: "Introduction",
-      },
-      {
-        title: "Solitude",
-      },
-      {
-        title: "Working for someone else sucks!",
-      },
-    ]; 
-    return { stories: stories };
+    const res = await fetch('https://api.tvmaze.com/search/shows?q=batman')
+    const data = await res.json()
+
+    console.log(`Show data fetched. Count: ${data.length}`)
+
+    return {
+      shows: data
+    }
   }
 
   render = () => {
@@ -63,8 +58,12 @@ export default class Story extends React.Component<any, any> {
                 <p>My story is true. I had to obfiscate names and certain circumstances to hide
                   identities, but otherwise everything that I write is from yours truly. - Axl</p>
                 <ul style={tocStyle}>
-                  {this.props.pageProps.stories.map( (story:any)  => (
-                    <PostLink key={story.title} title={story.title} />
+                  {props.pageProps.shows.map(({show}) => (
+                    <li key={show.id}>
+                      <Link as={`/story/${show.id}`} href={`/post?id=${show.id}`}>
+                        <a>{show.name}</a>
+                      </Link>
+                    </li>
                   ))}
                 </ul>
               </div>
