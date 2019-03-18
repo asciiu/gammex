@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 import { ApolloClient, NormalizedCacheObject } from 'apollo-boost';
 
-export default (apolloClient: ApolloClient<NormalizedCacheObject>) =>
+const checkLoggedIn = (apolloClient: ApolloClient<NormalizedCacheObject>) => 
   apolloClient
     .query({
       query: gql`
@@ -21,3 +21,7 @@ export default (apolloClient: ApolloClient<NormalizedCacheObject>) =>
       // Fail gracefully
       return { loggedInUser: {} }
     })
+
+export default {
+  checkLoggedIn
+}

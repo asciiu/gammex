@@ -1,14 +1,14 @@
 import { Row, Col } from 'antd';
 import Layout, { LayoutProps } from '../components/layout'
 import Forgot from '../components/forms/forgot'
-import checkLoggedIn from '../lib/checkLoggedIn'
+import gql from '../lib/gql'
 import redirect from '../lib/redirect'
 import * as React from "react";
 import { any } from 'prop-types';
 
 export default class ForgotPass extends React.Component<any, any> {
   static async getInitialProps (context) {
-    const { loggedInUser } = await checkLoggedIn(context.apolloClient)
+    const { loggedInUser } = await gql.checkLoggedIn(context.apolloClient)
     if (loggedInUser.getUser) {
       // Already signed in? No need to continue.
       // Throw them back to the main page

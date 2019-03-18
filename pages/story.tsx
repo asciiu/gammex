@@ -1,7 +1,7 @@
 import { Row, Col, Carousel } from 'antd';
 import Layout, { LayoutProps } from '../components/layout'
 import Link from 'next/link'
-import checkLoggedIn from '../lib/checkLoggedIn'
+import gql from '../lib/gql'
 import * as React from "react";
 import * as CSS from 'csstype';
 

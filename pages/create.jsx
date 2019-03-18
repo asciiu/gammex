@@ -1,5 +1,5 @@
 import Layout from '../components/layout';
-import checkLoggedIn from '../lib/checkLoggedIn';
+import gql from '../lib/gql';
 import redirect from '../lib/redirect';
 import React from "react";
 import ReactDOM from "react-dom";
@@ -13,7 +13,7 @@ const MONEY_SOUND = "money";
 export default class CreateJesuis extends React.Component {
 
   static async getInitialProps (context) {
-    const { loggedInUser } = await checkLoggedIn(context.apolloClient);
+    const { loggedInUser } = await gql.checkLoggedIn(context.apolloClient);
     if (!loggedInUser.getUser) {
       // Not signed in.
       // Throw them back to the main page
