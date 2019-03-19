@@ -1,6 +1,13 @@
 import Layout from '../components/layout'
 import fetch from 'isomorphic-unfetch'
 import { Row, Col } from 'antd'
+import * as CSS from 'csstype';
+
+const contentStyle = { 
+  color: "#001529",
+  fontSize: '20px',
+  fontFamily: 'Lyon Text,Georgia,serif'
+}
 
 const Post = (props: any) => (
   <Layout {...props}>
@@ -8,7 +15,7 @@ const Post = (props: any) => (
       <Col span={12} offset={3}>
         <h1>{props.pageProps.show.name}</h1>
         <img src={props.pageProps.show.image.medium} />
-        <p dangerouslySetInnerHTML={{__html: sanitize(props.pageProps.show.summary)}}/>
+        <p style={contentStyle} dangerouslySetInnerHTML={{__html: sanitize(props.pageProps.show.summary)}}/>
       </Col>
     </Row>
   </Layout>

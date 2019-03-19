@@ -33,15 +33,19 @@ export default class Story extends React.Component<any, any> {
     };
     const quoteStyle = { 
       color: 'rgba(0,0,0,.3)',
+      fontFamily: 'Lyon Text,Georgia,serif',
       textAlign: "center" as CSS.TextAlignProperty
     };
     const aboutStyle = { 
       color: "#001529",
-      textAlign: "center" as CSS.TextAlignProperty
+      fontFamily: 'Lyon Text,Georgia,serif',
+      fontSize: '20px'
     };
     const tocStyle = { 
       color: "#001529",
-      textAlign: "left" as CSS.TextAlignProperty
+      fontFamily: 'Lyon Text,Georgia,serif',
+      textAlign: "left" as CSS.TextAlignProperty,
+      fontSize: '16px'
     };
 
     return (
@@ -54,9 +58,8 @@ export default class Story extends React.Component<any, any> {
           </Col>
           <Col span={10} offset={4} style={aboutStyle}>
               <div>
-                <h1>Welcome to Reaper!</h1>
-                <p>My story is true. I had to obfiscate names and certain circumstances to hide
-                  identities, but otherwise everything that I write is from yours truly. - Axl</p>
+                <h1>The Saloon</h1>
+                <p>This story is a ficticious tale of our current times - or is it non-fiction?</p>
                 <ul style={tocStyle}>
                   {props.pageProps.shows.map(({show}) => (
                     <li key={show.id}>
