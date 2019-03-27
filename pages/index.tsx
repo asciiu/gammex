@@ -34,15 +34,14 @@ export default class Index extends React.Component<any, any> {
       <Layout {...this.layoutProps}>
         <Row>
           <Col span={12} offset={2} style={contentStyle}>
-            Play some games, make some money, and when you are ready to take your earnings to a new level, 
-            enter the Thunder Dome! Each game is designed to pay you money in crypto!  
+            Cleaning up the internet one troll at a time.
           </Col>
         </Row>
         <Row>
           <Col span={12}>
           </Col>
           <Col span={12} style={contentStyle}>
-            Each game offers an exciting challenge that pays!
+            Unleash your inner troll here. 
             <XYPlot width={300} height={300}>
               <HorizontalGridLines/>
               <LineSeries
