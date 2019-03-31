@@ -6,6 +6,7 @@ import * as React from "react";
 import gql from 'graphql-tag';
 import { Mutation} from "react-apollo";
 import { ApolloError } from 'apollo-client';
+import redirect from '../../lib/redirect'
   
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
@@ -33,28 +34,16 @@ class RegistrationForm extends React.Component<RegistrationFormProps, any> {
   state = {
     confirmDirty: false,
     autoCompleteResult: [],
-    isHuman: false
+    isHuman: false,
+    loading: false
   };
 
-  handleSubmit = (e: any) => {
-    const { isHuman } = this.state
-    e.preventDefault();
-
-    if (!isHuman) {
-      alert("Please verify that you are human!")
-    } else {
-      alert("Thank you hooman!")
-    
-      this.props.form.validateFieldsAndScroll((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values);
-        }
-      });
-    }
-  }
-
   handleSignupComplete = (data) => {
-    alert("Implement Verifiy email");
+    this.setState({ loading: true });
+    setTimeout(() => {
+      let email = data.signup.email;
+      redirect({}, `/verify?email=${email}`);
+    }, 3000);
   }
 
   handleConfirmBlur = (e: any) => {
@@ -136,9 +125,10 @@ class RegistrationForm extends React.Component<RegistrationFormProps, any> {
         },
       },
     };
+    const { loading } = this.state
 
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form>
         <Form.Item
           {...formItemLayout}
           label="E-mail"
@@ -222,6 +212,7 @@ class RegistrationForm extends React.Component<RegistrationFormProps, any> {
             >
               {(signup, { data, error }) => (
                 <Button key="primary" type="primary" 
+                  loading={loading}
                   onClick={e => {
                     const { isHuman } = this.state
                     e.preventDefault();
