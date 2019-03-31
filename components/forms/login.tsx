@@ -5,6 +5,7 @@ import { Mutation } from "react-apollo";
 import cookie from 'cookie'
 import redirect from '../../lib/redirect'
 import * as React from "react";
+import { ApolloError } from 'apollo-client';
 
 
 const LOGIN_MUTATION = gql`
@@ -80,17 +81,28 @@ class LoginModal extends React.Component<LoginModalProps, any> {
     }
   }
 
-  handleError = (error: any) => {
-    this.props.form.setFields({
-      email: {
-        value: this.props.form.getFieldValue("email"),
-        errors: [new Error('This email may be invalid.')],
-      },
-      password: {
-        value: this.props.form.getFieldValue("password"),
-        errors: [new Error('Or your password may be incorrect!')],
-      }
-    });
+  handleError = (error: ApolloError) => {
+    if (error.message.includes("incorrect password/email")) {
+      this.props.form.setFields({
+        email: {
+          value: this.props.form.getFieldValue("email"),
+          errors: [new Error('This email may be invalid.')],
+        },
+        password: {
+          value: this.props.form.getFieldValue("password"),
+          errors: [new Error('Or your password may be incorrect!')],
+        }
+      });
+    }
+
+    if (error.message.includes("account not verified")) {
+      this.props.form.setFields({
+        email: {
+          value: this.props.form.getFieldValue("email"),
+          errors: [new Error('Email account not verified.')],
+        },
+      });
+    }
   }
 
   close = () => {

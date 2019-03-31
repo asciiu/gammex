@@ -104,7 +104,7 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
           defaultSelectedKeys={['1']}
           style={menuStyle}
         >
-          <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">trolln</HeaderLink></MyMenuItem>
+          <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">20MIL</HeaderLink></MyMenuItem>
           <MyMenuItem key="sketch" style={leftMenuStyle}><HeaderLink href="/sketch">sketch</HeaderLink></MyMenuItem>
           <MyMenuItem key="create" style={leftMenuStyle}><HeaderLink href="/create">create</HeaderLink></MyMenuItem>
           <MyMenuItem key="story" style={leftMenuStyle}><HeaderLink href="/story">story</HeaderLink></MyMenuItem>
@@ -122,7 +122,7 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
           defaultSelectedKeys={['1']}
           style={menuStyle}
         >
-          <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">trolln</HeaderLink></MyMenuItem>
+          <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">20MIL</HeaderLink></MyMenuItem>
           <MyMenuItem key="story" style={leftMenuStyle}><HeaderLink href="/story">story</HeaderLink></MyMenuItem>
           <MyMenuItem key="signup" style={rightMenuStyle}><HeaderLink href="/signup">signup</HeaderLink></MyMenuItem>
           <MyMenuItem key="login" style={rightMenuStyle}>
