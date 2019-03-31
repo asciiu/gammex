@@ -13,11 +13,11 @@ export default class VerifyEmail extends React.Component<any, any> {
 
   static async getInitialProps (context) {
     const { loggedInUser } = await gql.checkLoggedIn(context.apolloClient)
-    if (loggedInUser.getUser) {
+    if (loggedInUser.getUser || context.query.email == undefined) {
       // Already signed in? No need to continue.
       // Throw them back to the main page
       redirect(context, '/')
-    }
+    } 
 
     return {email: context.query.email}
   }
