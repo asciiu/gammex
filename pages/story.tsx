@@ -18,11 +18,13 @@ export default class Story extends React.Component<any, any> {
   static async getInitialProps (context: any) {
     const res = await fetch('https://api.tvmaze.com/search/shows?q=batman')
     const data = await res.json()
+    const { loggedInUser } = await gql.checkLoggedIn(context.apolloClient)
 
     console.log(`Show data fetched. Count: ${data.length}`)
 
     return {
-      shows: data
+      shows: data,
+      user: loggedInUser.getUser
     }
   }
 
