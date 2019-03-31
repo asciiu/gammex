@@ -59,7 +59,8 @@ export default class Story extends React.Component<any, any> {
           <Col span={10} offset={4} style={aboutStyle}>
               <div>
                 <h1>The Saloon</h1>
-                <p>This story is a ficticious tale of our current times - or is it non-fiction?</p>
+                <p>This story is a ficticious tale. Truth is masked in myth.
+                </p>
                 <ul style={tocStyle}>
                   {props.pageProps.shows.map(({show}) => (
                     <li key={show.id}>

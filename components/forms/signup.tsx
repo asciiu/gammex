@@ -3,15 +3,32 @@ import {
 } from 'antd';
 import Recaptcha from 'react-recaptcha'
 import * as React from "react";
+import gql from 'graphql-tag';
+import { Mutation} from "react-apollo";
+import { ApolloError } from 'apollo-client';
   
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
+
+const SIGNUP_MUTATION = gql`
+  mutation Signup ($email: String!, $username: String!, $password: String!) {
+    signup(username: $username, email: $email, password: $password) {
+      id 
+      email
+      emailVerified
+      username
+      passwordHash
+    }
+  }
+`
+
 
 interface RegistrationFormProps {
   form: any;
   apolloClient: any;
 }
   
+
 class RegistrationForm extends React.Component<RegistrationFormProps, any> {
   state = {
     confirmDirty: false,
@@ -36,15 +53,38 @@ class RegistrationForm extends React.Component<RegistrationFormProps, any> {
     }
   }
 
+  handleSignupComplete = (data) => {
+    alert("Implement Verifiy email");
+  }
+
   handleConfirmBlur = (e: any) => {
     const value = e.target.value;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   }
 
+  handleError = (error: ApolloError) => {
+    if (error.message.includes("users_username_key")) {
+      this.props.form.setFields({
+        username: {
+          value: this.props.form.getFieldValue("username"),
+          errors: [new Error('Try is different username.')],
+        }
+      });
+    }
+    if (error.message.includes("users_email_key")) {
+      this.props.form.setFields({
+        email: {
+          value: this.props.form.getFieldValue("email"),
+          errors: [new Error('This email is already registered.')],
+        },
+      });
+    }
+  }
+
   compareToFirstPassword = (rule, value, callback) => {
     const form = this.props.form;
     if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
+      callback('Both passwords do not match!');
     } else {
       callback();
     }
@@ -152,7 +192,7 @@ class RegistrationForm extends React.Component<RegistrationFormProps, any> {
             </span>
           )}
         >
-          {getFieldDecorator('nickname', {
+          {getFieldDecorator('username', {
             rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
           })(
             <Input />
@@ -174,7 +214,39 @@ class RegistrationForm extends React.Component<RegistrationFormProps, any> {
           />
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">Register</Button>
+          <Mutation 
+              key="signup"
+              mutation={SIGNUP_MUTATION}
+              onCompleted={this.handleSignupComplete}
+              onError={this.handleError}
+            >
+              {(signup, { data, error }) => (
+                <Button key="primary" type="primary" 
+                  onClick={e => {
+                    const { isHuman } = this.state
+                    e.preventDefault();
+                
+                    if (!isHuman) {
+                      alert("Are you a robot?")
+                    } else {
+                      this.props.form.validateFieldsAndScroll((err, values) => {
+                        if (!values.agreement) {
+                          alert("Please agree to terms of service.");
+                        } else if (!err) {
+                          signup({ variables: { 
+                            email: values.email, 
+                            username: values.username, 
+                            password: values.password, 
+                          }})
+                        }
+                      });
+                    }
+                  }}
+                >
+                  Register 
+                </Button>
+              )} 
+            </Mutation>
         </Form.Item>
       </Form>
     );
