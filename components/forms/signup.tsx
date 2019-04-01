@@ -56,7 +56,7 @@ class RegistrationForm extends React.Component<RegistrationFormProps, any> {
       this.props.form.setFields({
         username: {
           value: this.props.form.getFieldValue("username"),
-          errors: [new Error('Try is different username.')],
+          errors: [new Error('Try a different username.')],
         }
       });
     }

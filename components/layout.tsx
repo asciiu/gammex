@@ -1,4 +1,4 @@
-import { Button, Layout, Menu } from 'antd';
+import { Avatar, Button, Layout, Menu } from 'antd';
 import {withRouter} from 'next/router'
 import LoginModal from './forms/login'
 import cookie from 'cookie'
@@ -6,6 +6,7 @@ import redirect from '../lib/redirect'
 import * as React from "react";
 import MenuItem from 'antd/lib/menu/MenuItem';
 import 'antd/dist/antd.css'
+import './layout.css'
 
 const { Header, Content, Footer } = Layout;
 
@@ -82,14 +83,16 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
   render = () => {
     const rightMenuStyle = {
       float: 'right',
-      background: '#001529'
+      background: '#001529',
     }
 
     const leftMenuStyle = {
       float: 'left',
       background: '#001529'
     }
-    const menuStyle = { lineHeight: '64px' }
+    const buttonSyle = {
+      backgroundColor: '#87d068',
+    }
     const contentStyle = { padding: '50px' }
     const footerStyle = { textAlign: 'center' } 
 
@@ -102,16 +105,13 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
           theme="dark"
           mode="horizontal"
           defaultSelectedKeys={['1']}
-          style={menuStyle}
         >
           <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">noodle</HeaderLink></MyMenuItem>
           <MyMenuItem key="sketch" style={leftMenuStyle}><HeaderLink href="/sketch">sketch</HeaderLink></MyMenuItem>
           <MyMenuItem key="create" style={leftMenuStyle}><HeaderLink href="/create">create</HeaderLink></MyMenuItem>
           <MyMenuItem key="story" style={leftMenuStyle}><HeaderLink href="/story">story</HeaderLink></MyMenuItem>
-          <MyMenuItem key="logout" style={rightMenuStyle}>
-            <Button type="primary" onClick={this.logout}>
-              {this.state.user.username} 
-            </Button>
+          <MyMenuItem key="logout" style={rightMenuStyle} onClick={this.logout}>
+            <Avatar shape="square" icon="user" style={buttonSyle}/>
           </MyMenuItem>
         </Menu>
     } else {
@@ -120,7 +120,6 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
           theme="dark"
           mode="horizontal"
           defaultSelectedKeys={['1']}
-          style={menuStyle}
         >
           <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">noodle</HeaderLink></MyMenuItem>
           <MyMenuItem key="story" style={leftMenuStyle}><HeaderLink href="/story">story</HeaderLink></MyMenuItem>
@@ -141,7 +140,7 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
           //onLogin={this.login}
         />
         <Layout className="layout">
-          <Header>
+          <Header style={{height: '46px'}}>
             {topBar}
           </Header>
           <Content style={contentStyle}>

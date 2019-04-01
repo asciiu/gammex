@@ -1,0 +1,5 @@
+/* override antd styles here for layout */
+.ant-menu-item .anticon {
+  margin-right: 0px;
+  font-size: 18px;
+}

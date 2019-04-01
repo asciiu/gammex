@@ -34,14 +34,25 @@ export default class Index extends React.Component<any, any> {
       <Layout {...this.layoutProps}>
         <Row>
           <Col span={12} offset={2} style={contentStyle}>
-            Cleaning up the internet one troll at a time.
+            Play games and earn crypto! 
+            <XYPlot width={300} height={300}>
+              <HorizontalGridLines/>
+              <LineSeries
+                  data={[
+                      {x: 1, y: 10},
+                      {x: 2, y: 5},
+                      {x: 3, y: 15}
+                  ]}/>
+              <XAxis/>
+              <YAxis/>
+            </XYPlot>
           </Col>
         </Row>
         <Row>
           <Col span={12}>
           </Col>
           <Col span={12} style={contentStyle}>
-            Unleash your inner troll here. 
+            Multiple games to chose from! 
             <XYPlot width={300} height={300}>
               <HorizontalGridLines/>
               <LineSeries
@@ -57,7 +68,18 @@ export default class Index extends React.Component<any, any> {
         </Row>
         <Row>
           <Col span={12} offset={2} style={contentStyle}>
-            The Thunder Dome - arena!
+            Win big in Vs!
+            <XYPlot width={300} height={300}>
+              <HorizontalGridLines/>
+              <LineSeries
+                  data={[
+                      {x: 1, y: 10},
+                      {x: 2, y: 5},
+                      {x: 3, y: 15}
+                  ]}/>
+              <XAxis/>
+              <YAxis/>
+            </XYPlot>
           </Col>
         </Row>
       </Layout>
