@@ -54,14 +54,13 @@ export default class Story extends React.Component<any, any> {
       <Layout {...props}>
         <Row>
           <Col span={4} offset={2} style={quoteStyle}>
-            <p>“There is no fire like passion, there is no shark like hatred, 
-              there is no snare like folly, there is no torrent like greed.”</p> 
-            <p>- Siddharta Gautama</p>
+            <p>“Everything you can imagine is real.”</p> 
+            <p>- Pablo Picasso</p>
           </Col>
           <Col span={10} offset={4} style={aboutStyle}>
               <div>
-                <h1>The Saloon</h1>
-                <p>This story is a ficticious tale. Truth is masked in myth.
+                <h1>Freemoon</h1>
+                <p>A programmer's tale.
                 </p>
                 <ul style={tocStyle}>
                   {props.pageProps.shows.map(({show}) => (

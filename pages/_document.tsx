@@ -10,7 +10,7 @@ export default class MyDocument extends Document {
     return (
       <html>
         <Head>
-          <title>noodle</title>
+          <title>freemoon</title>
           <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
           <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
           <script src="https://code.createjs.com/1.0.0/tweenjs.min.js"></script>

@@ -1,12 +1,12 @@
-import { Avatar, Button, Layout, Menu } from 'antd';
-import {withRouter} from 'next/router'
-import LoginModal from './forms/login'
-import cookie from 'cookie'
-import redirect from '../lib/redirect'
+import { Avatar, Button, Layout, Menu, Tag } from 'antd';
+import {withRouter} from 'next/router';
+import LoginModal from './forms/login';
+import cookie from 'cookie';
+import redirect from '../lib/redirect';
 import * as React from "react";
 import MenuItem from 'antd/lib/menu/MenuItem';
-import 'antd/dist/antd.css'
-import './layout.css'
+import 'antd/dist/antd.css';
+import './layout.css';
 
 const { Header, Content, Footer } = Layout;
 
@@ -21,8 +21,8 @@ const headerLink = ({ children, router, href }) => {
   }
 
   const handleClick = (e) => {
-    e.preventDefault()
-    router.push(href)
+    e.preventDefault();
+    router.push(href);
   }
 
   return (
@@ -32,14 +32,14 @@ const headerLink = ({ children, router, href }) => {
   )
 }
 
-const HeaderLink = withRouter(headerLink)
+const HeaderLink = withRouter(headerLink);
 
 export interface LayoutProps {
   pageProps: any,
   apolloClient: any;
 }
 
-export default class JuiceLayout extends React.Component<LayoutProps, any>{
+export default class JuiceLayout extends React.Component<LayoutProps, any> {
   loginModal:any 
 
   constructor(props: any) {
@@ -106,12 +106,12 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
           mode="horizontal"
           defaultSelectedKeys={['1']}
         >
-          <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">noodle</HeaderLink></MyMenuItem>
+          <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">freemoon</HeaderLink></MyMenuItem>
           <MyMenuItem key="sketch" style={leftMenuStyle}><HeaderLink href="/sketch">sketch</HeaderLink></MyMenuItem>
           <MyMenuItem key="create" style={leftMenuStyle}><HeaderLink href="/create">create</HeaderLink></MyMenuItem>
           <MyMenuItem key="story" style={leftMenuStyle}><HeaderLink href="/story">story</HeaderLink></MyMenuItem>
           <MyMenuItem key="logout" style={rightMenuStyle} onClick={this.logout}>
-            <Avatar shape="square" icon="user" style={buttonSyle}/>
+            <Tag color="orange">2000.000000000890 BTC</Tag>
           </MyMenuItem>
         </Menu>
     } else {
@@ -121,7 +121,7 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
           mode="horizontal"
           defaultSelectedKeys={['1']}
         >
-          <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">noodle</HeaderLink></MyMenuItem>
+          <MyMenuItem key="index" style={leftMenuStyle}><HeaderLink href="/">freemoon</HeaderLink></MyMenuItem>
           <MyMenuItem key="story" style={leftMenuStyle}><HeaderLink href="/story">story</HeaderLink></MyMenuItem>
           <MyMenuItem key="signup" style={rightMenuStyle}><HeaderLink href="/signup">signup</HeaderLink></MyMenuItem>
           <MyMenuItem key="login" style={rightMenuStyle}>
@@ -147,7 +147,7 @@ export default class JuiceLayout extends React.Component<LayoutProps, any>{
             {this.props.children}
           </Content>
           <MyFooter style={footerStyle}>
-           noodle ©2019 Created by ST6 😘 
+            freemoon ©2019 Created by ST6 😘 
           </MyFooter>
         </Layout>
       </span>
