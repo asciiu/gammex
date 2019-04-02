@@ -98,7 +98,7 @@ export default class JuiceLayout extends React.Component<LayoutProps, any> {
       background: '#001529',
     }
     const logoStyle = {
-      height: '24px',
+      height: '25px',
       margin: '9px'
     }
     const leftMenuStyle = {
