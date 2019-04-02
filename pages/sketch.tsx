@@ -27,7 +27,8 @@ export default class Sketch extends React.Component<any, any> {
   render() {
     const props: LayoutProps = {
       apolloClient: this.props.apolloClient, 
-      pageProps: this.props.pageProps
+      pageProps: this.props.pageProps,
+      title: "sketch"
     };
 
     return (

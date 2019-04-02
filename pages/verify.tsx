@@ -27,7 +27,8 @@ export default class VerifyEmail extends React.Component<any, any> {
 
     const props: LayoutProps = {
       apolloClient: this.props.apolloClient, 
-      pageProps: this.props.pageProps
+      pageProps: this.props.pageProps,
+      title: "verify"
     }
 
     return (

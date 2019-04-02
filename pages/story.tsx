@@ -32,6 +32,7 @@ export default class Story extends React.Component<any, any> {
     const props: LayoutProps = {
       apolloClient: this.props.apolloClient, 
       pageProps: this.props.pageProps,
+      title: "story",
     };
     const quoteStyle = { 
       color: 'rgba(0,0,0,.3)',

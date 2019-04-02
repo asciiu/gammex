@@ -19,7 +19,8 @@ export default class Index extends React.Component<any, any> {
     super(props);
     this.layoutProps = {
       pageProps: props.pageProps,
-      apolloClient: props.apolloClient
+      apolloClient: props.apolloClient,
+      title: "",
     };
   }
 

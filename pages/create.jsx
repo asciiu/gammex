@@ -1,4 +1,4 @@
-import Layout from '../components/layout';
+import Layout  from '../components/layout';
 import gql from '../lib/gql';
 import redirect from '../lib/redirect';
 import React from "react";
@@ -208,7 +208,7 @@ export default class CreateJesuis extends React.Component {
     }
 
     return (
-      <Layout {...this.props}>
+      <Layout {...this.props} title="create">
         <Row>
           <Col span={3}></Col>
           <Col span={18}>
