@@ -59,7 +59,7 @@ export default class Story extends React.Component<any, any> {
           </Col>
           <Col span={10} offset={4} style={aboutStyle}>
               <div>
-                <h1>Freemoon</h1>
+                <h1>freemoon</h1>
                 <p>A programmer's tale.
                 </p>
                 <ul style={tocStyle}>
