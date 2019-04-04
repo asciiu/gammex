@@ -10,17 +10,17 @@ const POP_SOUND = "pop";
 const BUBBLE_SOUND = "bubble";
 const MONEY_SOUND = "money";
 
-export default class CreateJesuis extends React.Component {
+export default class Dohjo extends React.Component {
 
   static async getInitialProps (context) {
-    const { loggedInUser } = await gql.CheckLoggedIn(context.apolloClient);
-    if (!loggedInUser.getUser) {
+    const { summary } = await gql.CheckLoggedIn(context.apolloClient);
+    if (!summary.userSummary) {
       // Not signed in.
       // Throw them back to the main page
       redirect(context, '/');
     }
 
-    return { user: loggedInUser.getUser }
+    return { summary: summary }
   }
 
   constructor(props) {
@@ -80,9 +80,10 @@ export default class CreateJesuis extends React.Component {
 
   componentWillUnmount() {
     // TODO need to release mem gracefully
-    this.canvas.remove();
     this.stage.clear();
+    this.stage.removeEventListener("tick", this.handleTick);
     this.stage.enableDOMEvents(false);
+    this.canvas.remove();
     createjs.Ticker.removeAllEventListeners();
     document.onkeydown = null;
   }
@@ -209,7 +210,7 @@ export default class CreateJesuis extends React.Component {
     }
 
     return (
-      <Layout {...this.props} title="create">
+      <Layout {...this.props} title="dohjo">
         <Row>
           <Col span={3}></Col>
           <Col span={18}>
