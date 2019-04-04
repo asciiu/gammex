@@ -7,7 +7,7 @@ export default class Fund extends React.Component<any, any> {
   static async getInitialProps (context) {
     const { summary } = await gql.CheckLoggedIn(context.apolloClient)
     return {
-      summary: summary.userSummary
+      summary: summary
     }
   }
 

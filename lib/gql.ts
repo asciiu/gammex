@@ -22,7 +22,7 @@ const CheckLoggedIn = (apolloClient: ApolloClient<NormalizedCacheObject>) =>
       `
     })
     .then(({ data }) => {
-      return { summary: data.userSummary }
+      return { summary: data }
     })
     .catch(() => {
       // Fail gracefully
