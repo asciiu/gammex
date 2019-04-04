@@ -123,13 +123,14 @@ export default class JuiceLayout extends React.Component<LayoutProps, any> {
           mode="horizontal"
           defaultSelectedKeys={['1']}
         >
-          <Icon
-            className="trigger"
-            type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-            onClick={this.toggle}
-            style={{padding: '0 24px'}}
-          />
-          <span style={{ color: 'red', fontSize: 12 }}>{this.props.title}</span>
+          <MyMenuItem key="toggle" onClick={this.toggle} style={{background: '#001529'}}>
+            <Icon
+              className="trigger"
+              type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+              style={{paddingRight: '24px', fontSize: '14px'}}
+            />
+            <span style={{ color: 'red', fontSize: 12 }}>{this.props.title}</span>
+          </MyMenuItem>
           <MyMenuItem key="logout" style={rightMenuStyle} onClick={this.logout}>
             <Tag color="orange">2000.000000000890 BTC</Tag>
           </MyMenuItem>

@@ -17,7 +17,6 @@ export default class Index extends React.Component<any, any> {
 
   constructor(props: any) {
     super(props);
-    console.log(props);
     this.layoutProps = {
       pageProps: props.pageProps,
       apolloClient: props.apolloClient,
