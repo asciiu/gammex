@@ -8,21 +8,25 @@ const CheckLoggedIn = (apolloClient: ApolloClient<NormalizedCacheObject>) =>
   apolloClient
     .query({
       query: gql`
-        query GetUser {
-          getUser {
-            id
-            username 
-            email
+        query UserSummary {
+          userSummary {
+            balance {
+              id
+            }
+            user {
+              id
+              username
+            }
           }
         }
       `
     })
     .then(({ data }) => {
-      return { loggedInUser: data }
+      return { summary: data.userSummary }
     })
     .catch(() => {
       // Fail gracefully
-      return { loggedInUser: {} }
+      return { summary: {} }
     })
 
 /********************************************************** 

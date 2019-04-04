@@ -17,6 +17,7 @@ export default class Index extends React.Component<any, any> {
 
   constructor(props: any) {
     super(props);
+    console.log(props);
     this.layoutProps = {
       pageProps: props.pageProps,
       apolloClient: props.apolloClient,
@@ -25,8 +26,8 @@ export default class Index extends React.Component<any, any> {
   }
 
   static async getInitialProps (context: any) {
-    const { loggedInUser } = await gql.CheckLoggedIn(context.apolloClient)
-    return { user: loggedInUser.getUser }
+    const { summary } = await gql.CheckLoggedIn(context.apolloClient)
+    return { summary: summary }
   }
 
   render () {

@@ -43,7 +43,7 @@ export interface LayoutProps {
 
 export default class JuiceLayout extends React.Component<LayoutProps, any> {
   loginModal: any 
-  user: any
+  userSummary: any
   collapsed: boolean
 
   constructor(props: any) {
@@ -51,21 +51,21 @@ export default class JuiceLayout extends React.Component<LayoutProps, any> {
 
     if (this.props.pageProps) {
       this.state = {
-        user: this.props.pageProps.user,
+        userSummary: this.props.pageProps.summary,
         collapsed: false,
       }
     } else {
       this.state = {
-        user: null,
+        userSummary: {},
         collapsed: true,
       }
     }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const user = this.props.pageProps.user 
-    if (this.state.user != user) {
-      this.setState({user: this.props.pageProps.user})
+    const summary = this.props.pageProps.summary
+    if (this.state.userSummary != summary) {
+      this.setState({userSummary: summary})
     }
   }
 
@@ -116,7 +116,7 @@ export default class JuiceLayout extends React.Component<LayoutProps, any> {
     let sider: any = null
 
     // logged in users will see this
-    if (this.state.user) {
+    if (this.state.userSummary) {
       topBar = 
         <Menu
           theme="dark"
