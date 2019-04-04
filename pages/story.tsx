@@ -19,7 +19,6 @@ export default class Story extends React.Component<any, any> {
     const res = await fetch('https://api.tvmaze.com/search/shows?q=batman')
     const data = await res.json()
     const { summary } = await gql.CheckLoggedIn(context.apolloClient)
-    //console.log(`Show data fetched. Count: ${data.length}`)
     return {
       shows: data,
       summary: summary

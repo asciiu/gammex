@@ -110,13 +110,14 @@ export default class JuiceLayout extends React.Component<LayoutProps, any> {
       background: '#fff', 
       minHeight: 280 
     }
-    const footerStyle = { textAlign: 'center' } 
+    const footerStyle = { textAlign: 'center' }; 
+    const { summary } = this.state;
 
-    let topBar: any
-    let sider: any = null
+    let topBar: any;
+    let sider: any = null;
 
     // logged in users will see this
-    if (this.state.summary.userSummary) {
+    if (summary.userSummary) {
       topBar = 
         <Menu
           theme="dark"
@@ -132,7 +133,9 @@ export default class JuiceLayout extends React.Component<LayoutProps, any> {
             <span style={{ color: 'red', fontSize: 12 }}>{this.props.title}</span>
           </MyMenuItem>
           <MyMenuItem key="logout" style={rightMenuStyle} onClick={this.logout}>
-            <Tag color="orange">2000.000000000890 BTC</Tag>
+            <Tag color="orange">
+              {summary.userSummary.balance.amount * summary.userSummary.balance.precision} BTC
+            </Tag>
           </MyMenuItem>
         </Menu>
       

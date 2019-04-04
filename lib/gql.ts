@@ -12,10 +12,17 @@ const CheckLoggedIn = (apolloClient: ApolloClient<NormalizedCacheObject>) =>
           userSummary {
             balance {
               id
+              symbol
+              name
+              amount
+              locked
+              precision
+              address
             }
             user {
               id
               username
+              email
             }
           }
         }

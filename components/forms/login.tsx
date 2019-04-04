@@ -52,7 +52,7 @@ class LoginModal extends React.Component<LoginModalProps, any> {
     setTimeout(() => {
       this.close()
       this.props.apolloClient.cache.reset().then(() => {
-        redirect({}, '/sketch')
+        redirect({}, '/story')
       })
     }, 3000);
 
