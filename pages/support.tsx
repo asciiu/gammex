@@ -5,7 +5,7 @@ import * as React from "react";
 
 export default class Fund extends React.Component<any, any> {
   static async getInitialProps (context) {
-    const { loggedInUser } = await gql.checkLoggedIn(context.apolloClient)
+    const { loggedInUser } = await gql.CheckLoggedIn(context.apolloClient)
     return {
       user: loggedInUser.getUser
     }

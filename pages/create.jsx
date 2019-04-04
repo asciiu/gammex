@@ -13,7 +13,7 @@ const MONEY_SOUND = "money";
 export default class CreateJesuis extends React.Component {
 
   static async getInitialProps (context) {
-    const { loggedInUser } = await gql.checkLoggedIn(context.apolloClient);
+    const { loggedInUser } = await gql.CheckLoggedIn(context.apolloClient);
     if (!loggedInUser.getUser) {
       // Not signed in.
       // Throw them back to the main page

@@ -1,7 +1,10 @@
 import gql from 'graphql-tag'
 import { ApolloClient, NormalizedCacheObject } from 'apollo-boost';
 
-const checkLoggedIn = (apolloClient: ApolloClient<NormalizedCacheObject>) => 
+/********************************************************** 
+ * queries 
+ **********************************************************/
+const CheckLoggedIn = (apolloClient: ApolloClient<NormalizedCacheObject>) => 
   apolloClient
     .query({
       query: gql`
@@ -22,6 +25,33 @@ const checkLoggedIn = (apolloClient: ApolloClient<NormalizedCacheObject>) =>
       return { loggedInUser: {} }
     })
 
+/********************************************************** 
+ * mutations 
+ **********************************************************/
+const LoginMutation = gql`
+  mutation Login ($email: String!, $password: String!, $remember: Boolean!) {
+    login(email: $email, password: $password, remember: $remember) {
+      jwt
+      refresh
+    }
+  }
+`
+
+const SignupMutation = gql`
+  mutation Signup ($email: String!, $username: String!, $password: String!) {
+    signup(username: $username, email: $email, password: $password) {
+      id 
+      email
+      emailVerified
+      username
+      passwordHash
+    }
+  }
+`
+
+
 export default {
-  checkLoggedIn
+  CheckLoggedIn,
+  LoginMutation,
+  SignupMutation,
 }

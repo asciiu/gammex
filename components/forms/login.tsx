@@ -1,22 +1,11 @@
 import { Button, Form, Icon, Input, Checkbox, Modal } from 'antd';
 import {withRouter} from 'next/router'
-import gql from 'graphql-tag';
 import { Mutation } from "react-apollo";
 import cookie from 'cookie'
 import redirect from '../../lib/redirect'
 import * as React from "react";
 import { ApolloError } from 'apollo-client';
-
-
-const LOGIN_MUTATION = gql`
-  mutation Login ($email: String!, $password: String!, $remember: Boolean!) {
-    login(email: $email, password: $password, remember: $remember) {
-      jwt
-      refresh
-    }
-  }
-`
-
+import mygql from '../../lib/gql'
 
 const link = ({ children, router, href, onClick }) => {
   const handleClick = (e) => {
@@ -133,7 +122,7 @@ class LoginModal extends React.Component<LoginModalProps, any> {
           <Button key="cancel" onClick={this.close}>Cancel</Button>,
           <Mutation 
             key="login"
-            mutation={LOGIN_MUTATION}
+            mutation={mygql.LoginMutation}
             onCompleted={this.handleComplete}
             onError={this.handleError}
           >

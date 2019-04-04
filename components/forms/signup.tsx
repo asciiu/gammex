@@ -3,26 +3,13 @@ import {
 } from 'antd';
 import Recaptcha from 'react-recaptcha'
 import * as React from "react";
-import gql from 'graphql-tag';
 import { Mutation} from "react-apollo";
 import { ApolloError } from 'apollo-client';
 import redirect from '../../lib/redirect'
+import mygql from '../../lib/gql'
   
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
-
-const SIGNUP_MUTATION = gql`
-  mutation Signup ($email: String!, $username: String!, $password: String!) {
-    signup(username: $username, email: $email, password: $password) {
-      id 
-      email
-      emailVerified
-      username
-      passwordHash
-    }
-  }
-`
-
 
 interface RegistrationFormProps {
   form: any;
@@ -206,7 +193,7 @@ class RegistrationForm extends React.Component<RegistrationFormProps, any> {
         <Form.Item {...tailFormItemLayout}>
           <Mutation 
               key="signup"
-              mutation={SIGNUP_MUTATION}
+              mutation={mygql.SignupMutation}
               onCompleted={this.handleSignupComplete}
               onError={this.handleError}
             >
