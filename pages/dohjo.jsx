@@ -80,11 +80,11 @@ export default class Dohjo extends React.Component {
 
   componentWillUnmount() {
     // TODO need to release mem gracefully
+    document.onkeydown = null;
     this.stage.clear();
-    this.stage.removeEventListener("tick", this.handleTick);
     this.stage.enableDOMEvents(false);
     this.canvas.remove();
-    createjs.Ticker.removeAllEventListeners();
+    createjs.Ticker.removeEventListener("tick", this.handleTick);
     document.onkeydown = null;
   }
 
@@ -98,12 +98,11 @@ export default class Dohjo extends React.Component {
     this.canvas.height = this.height;
     this.stage = new createjs.Stage(this.canvas);
 
-    createjs.Ticker.setFPS(60);
+    //createjs.Ticker.setFPS(60);
     createjs.Ticker.addEventListener("tick", this.handleTick);
     document.onkeydown = this.handleKey;
 
     const queue = new createjs.LoadQueue();
-    queue.on("complete", this.handleComplete, this);
     queue.loadFile("/static/clouds/cloud1.png");
     queue.loadFile("/static/clouds/cloud2.png");
     queue.loadFile("/static/clouds/cloud3.png");
@@ -114,6 +113,7 @@ export default class Dohjo extends React.Component {
     queue.loadFile("/static/clouds/bubble.mp3");
     queue.loadFile("/static/money.mp3");
     queue.load();
+    queue.on("complete", this.handleComplete, this);
   }
   
   handleKey = (event) => {
