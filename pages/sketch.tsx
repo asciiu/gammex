@@ -15,8 +15,8 @@ export default class Sketch extends React.Component<any, any> {
 
   static async getInitialProps (context: any) {
     const { summary } = await gql.CheckLoggedIn(context.apolloClient)
-    if (!summary) {
-      // Not signed in.
+    if (!summary.userSummary) {
+      // Already signed in? No need to continue.
       // Throw them back to the main page
       redirect(context, '/')
     }

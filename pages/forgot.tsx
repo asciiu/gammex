@@ -8,8 +8,8 @@ import { any } from 'prop-types';
 
 export default class ForgotPass extends React.Component<any, any> {
   static async getInitialProps (context) {
-    const { loggedInUser } = await gql.CheckLoggedIn(context.apolloClient)
-    if (loggedInUser.getUser) {
+    const { summary } = await gql.CheckLoggedIn(context.apolloClient)
+    if (summary.userSummary) {
       // Already signed in? No need to continue.
       // Throw them back to the main page
       redirect(context, '/')
