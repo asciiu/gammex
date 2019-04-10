@@ -5,6 +5,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Row, Col } from 'antd';
 import 'script-loader!../scripts/ndgmr.Collision.js';
+import { TileMap } from '../sketches/defender/tileMap';
 
 export default class Dohjo extends React.Component {
 
@@ -56,18 +57,27 @@ export default class Dohjo extends React.Component {
     let width = 64 * 0.3;
     let height = 64 * 0.3;
     //let offset = (this.width - this.height) / 2;
+    let unit = 31;
+    let center = Math.floor(unit/2);
     let offset = 0;
-    let tileWidth = this.width / 30;
+    let tileWidth = this.width / unit;
 
-    for (let i = 0; i < 30; i++) {
-      for (let j = 0; j < 30; j++) {
+    const tileMap = new TileMap(unit, unit, tileWidth);
+    console.log(tileMap.numCols);
+    console.log(tileMap.numRows);
+
+    for (let i = 0; i < unit; i++) {
+      for (let j = 0; j < unit; j++) {
         const x = i * tileWidth + offset;
         const y = j * tileWidth;
         const rect = new createjs.Shape();
-        rect.alpha = 0.7;
+        rect.alpha = 0.3;
         rect.graphics.setStrokeStyle(1);
         rect.graphics.beginStroke("white");
-        //rect.graphics.beginFill('white');
+
+        if (i == center && j == center) {
+          rect.graphics.beginFill('white');
+        }
         rect.graphics.drawRect(x, y, tileWidth, tileWidth);
         rect.graphics.endFill();
         this.stage.addChild(rect);
