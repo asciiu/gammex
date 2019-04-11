@@ -59,29 +59,26 @@ export default class Dohjo extends React.Component {
     //let offset = (this.width - this.height) / 2;
     let unit = 31;
     let center = Math.floor(unit/2);
-    let offset = 0;
     let tileWidth = this.width / unit;
 
     const tileMap = new TileMap(unit, unit, tileWidth);
-    console.log(tileMap.numCols);
-    console.log(tileMap.numRows);
+    for (let i = 0; i < tileMap.tiles.length; ++i) {
+      const tile = tileMap.tiles[i];
+      const x = tile.col * tileWidth;
+      const y = tile.row * tileWidth;
 
-    for (let i = 0; i < unit; i++) {
-      for (let j = 0; j < unit; j++) {
-        const x = i * tileWidth + offset;
-        const y = j * tileWidth;
-        const rect = new createjs.Shape();
-        rect.alpha = 0.3;
-        rect.graphics.setStrokeStyle(1);
-        rect.graphics.beginStroke("white");
+      const rect = new createjs.Shape();
+      rect.alpha = 0.3;
+      rect.graphics.setStrokeStyle(1);
+      rect.graphics.beginStroke("white");
 
-        if (i == center && j == center) {
-          rect.graphics.beginFill('white');
-        }
-        rect.graphics.drawRect(x, y, tileWidth, tileWidth);
-        rect.graphics.endFill();
-        this.stage.addChild(rect);
+      if (tile.col == center && tile.row == center) {
+        rect.graphics.beginFill('white');
       }
+
+      rect.graphics.drawRect(x, y, tileWidth, tileWidth);
+      rect.graphics.endFill();
+      this.stage.addChild(rect);
     }
 
     for (let i = 0; i < 3; i++) {
