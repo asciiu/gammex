@@ -1,16 +1,15 @@
-class Astar {
-    init = (sourceGrid, cols, rows) => {
-        var row;
-        var x, z;
-        
+
+export class Astar {
+    constructor(sourceGrid) {
         this._sourceGrid = sourceGrid;
         this._width = sourceGrid.length;
         this._height = sourceGrid[0].length;
         this._limit = this._width * this._height;
+        this._wrap = false;
         
         this._grid = [];
-        for (z = 0; z < this._height; z++) {
-            for (x = 0; x < this._width; x++) {
+        for (let z = 0; z < this._height; z++) {
+            for (let x = 0; x < this._width; x++) {
                 this._grid.push({
                     parent: null,
                     value: z * this._width + x,
@@ -21,19 +20,16 @@ class Astar {
             }
         }
 
-        this._neighbourList = [];
-        for (x = 0; x < 8; x++) {
-            this._neighbourList.push({x: 0, z: 0});
+        this._neighborList = [];
+        for (let n = 0; n < 8; n++) {
+            this._neighborList.push({x: 0, z: 0});
         }
 
         this._t = 1;
-    };
+    }
 
-    _valid = (x, z, ignoreOccupied) => {
-        if(ignoreOccupied)
-        	return !this._sourceGrid[x][z].isBlocked();
-        else 
-        	return !this._sourceGrid[x][z].isOccupied() && !this._sourceGrid[x][z].isBlocked();
+    _valid = (x, z) => {
+        return !this._sourceGrid[x][z].isOccupied;
     };
 
     _tile = (index) => {
@@ -47,26 +43,24 @@ class Astar {
         }
 
         return tile;
-    };
+    }
     
-    _findPath = (startX, startZ, endX, endZ, adjacentOnly, ignoreOccupied) => {
-        var result = [],
-            grid = this._grid,
-            path = [],
-            width = this._width,
-            end = this._tile(endZ * width + endX),
-            open = [startZ * width + startX],
-            neighbourList = this._neighbourList,
-            neighbour,
-            node,
-            currentNode,
-            length,
-            max, min,
-            i;
+    _findPath = (startX, startZ, endX, endZ, adjacentOnly) => {
+        let result = [];
+        let grid = this._grid;
+        let path = [];
+        let width = this._width;
+        let end = this._tile(endZ * width + endX);
+        let open = [startZ * width + startX];
+        let node;
+        let currentNode;
+        let length;
+        let max, min, i;
 
         this._t++;
 
-        while (length = open.length) {
+        while (open.length > 0) {
+            length = open.length
             max = this._limit;
             min = -1;
             for (i = 0; i < length; i++) {
@@ -77,63 +71,52 @@ class Astar {
             };
 
             node = this._tile(open.splice(min, 1)[0]);
-            if (node.value === end.value) {
+            if (node.value == end.value) {
                 currentNode = node;
-                while (!((currentNode.x === startX) && (currentNode.z === startZ))) {
+                while (!((currentNode.x == startX) && (currentNode.z == startZ))) {
                     result.push([currentNode.x, currentNode.z]);
                     currentNode = currentNode.parent;
                 };
             } else {
-                i = this._neighbours(node.x, node.z, adjacentOnly, ignoreOccupied);
-                while (i) {
-                    neighbour = neighbourList[--i];
-                    currentNode = this._tile(neighbour.z * width + neighbour.x);
+                let neighbors = this._neighbors(node.x, node.z, adjacentOnly);
+                for (let neighbor of neighbors) {
+                    currentNode = this._tile(neighbor.z * width + neighbor.x);
                     if (!path[currentNode.value]) {
                         path[currentNode.value] = true;
                         currentNode.parent = node;
-                        currentNode.g = this._manhattan(neighbour, node) + node.g;
-                        currentNode.f = this._manhattan(neighbour, end) + currentNode.g;
+                        currentNode.g = this._manhattan(neighbor, node) + node.g;
+                        currentNode.f = this._manhattan(neighbor, end) + currentNode.g;
                         open.push(currentNode.value);
-                    };
-                };
+                    }
+                }
             };
         };
 
         return result;
-    };
+    }
 
-    findPath = (tile1, tile2, adjacentOnly, canOccupyStartAndEnd, ignoreOccupied) => { 
-	    var tilePosA = tile1.getIndex();
-	    var tilePosB = tile2.getIndex();
-	    var startX = tilePosA.xPos;
-	    var startZ = tilePosA.yPos;
-	    var endX = tilePosB.xPos;
-	    var endZ = tilePosB.yPos;
+    findPath = (tile1, tile2, adjacentOnly, canOccupyStartAndEnd) => { 
+	    var startX = tile1.col;
+	    var startZ = tile1.row;
+	    var endX = tile2.col;
+        var endZ = tile2.row;
 
-        var canOccupyStart = this._sourceGrid[startX][startZ].isOccupied();
-	    var canOccupyEnd = this._sourceGrid[endX][endZ].isOccupied();	
+        var o1 = this._sourceGrid[startX][startZ].isOccupied;
+        var o2 = this._sourceGrid[startX][startZ].isOccupied;
 
 	    if(canOccupyStartAndEnd) {
-          	//this._sourceGrid[startX][startZ].setOccupied(false);
-	    	this._sourceGrid[endX][endZ].setOccupied(false);	
+            this._sourceGrid[startX][startZ].setOccupied(false);
+	        this._sourceGrid[endX][endZ].setOccupied(false);	
+        }
 
-           	//this._sourceGrid[startX][startZ].setBlocked(false);
-	    	this._sourceGrid[endX][endZ].setBlocked(false);	
-	    }
-        var path = this._findPath(startX, startZ, endX, endZ, adjacentOnly, ignoreOccupied);
+        var path = this._findPath(startX, startZ, endX, endZ, adjacentOnly);
             
-        this._sourceGrid[startX][startZ].setOccupied(canOccupyStart);
-	    this._sourceGrid[endX][endZ].setOccupied(canOccupyEnd);	
+	    if(canOccupyStartAndEnd) {
+            this._sourceGrid[startX][startZ].setOccupied(o1);
+	        this._sourceGrid[endX][endZ].setOccupied(o2);	
+        }
 
 	    return path;
-        //var path1, path2;
-
-        //this._wrap = false;
-        //path1 = this._findPath(startX, startZ, endX, endZ);
-        //this._wrap = true;
-        //path2 = this._findPath(startX, startZ, endX, endZ);
-
-        //return (path1.length < path2.length) ? path1 : path2;
     }
 
     //this.findRandomPath = function(tile1, tile2) {
@@ -169,96 +152,105 @@ class Astar {
     //    return path;
     //};
 
-    _neighbours = (x, z, adjacentOnly, ignoreOccupied) => {
-        var neighbourList = this._neighbourList,
-            neighbourCount = 0,
-            neighbour,
+    _neighbors = (x, z, adjacentOnly) => {
+        let neighborList = this._neighborList,
+            neighborCount = 0,
+            neighbor,
             width = this._width,
             height = this._height,
             x1Valid, x2Valid, z1Valid, z2Valid,
             z1, z2, x1, x2;
+
+        let neighbors = [];
 
         if (this._wrap) {
             x1 = (x + width - 1) % width;
             x2 = (x + width + 1) % width;
             z1 = (z + height - 1) % height;
             z2 = (z + height + 1) % height;
-            x1Valid = this._valid(x1, z, ignoreOccupied),
-            x2Valid = this._valid(x2, z, ignoreOccupied);
-            z1Valid = this._valid(x, z1, ignoreOccupied);
-            z2Valid = this._valid(x, z2, ignoreOccupied);
+            x1Valid = this._valid(x1, z),
+            x2Valid = this._valid(x2, z);
+            z1Valid = this._valid(x, z1);
+            z2Valid = this._valid(x, z2);
         } else {
             x1 = x - 1;
             x2 = x + 1;
             z1 = z - 1;
             z2 = z + 1;
-	        x1Valid = (x1 > -1) && this._valid(x1, z, ignoreOccupied);
-	        x2Valid = (x2 < width) && this._valid(x2, z, ignoreOccupied);
-	        z1Valid = (z1 > -1) && this._valid(x, z1, ignoreOccupied);
-	        z2Valid = (z2 < height) && this._valid(x, z2, ignoreOccupied);
+            x1Valid = (x1 > -1) && this._valid(x1, z),
+            x2Valid = (x2 < width) && this._valid(x2, z);
+            z1Valid = (z1 > -1) && this._valid(x, z1);
+            z2Valid = (z2 < height) && this._valid(x, z2);
         }
             
         if (x1Valid) {
-            neighbour = neighbourList[neighbourCount];
-            neighbour.x = x1;
-            neighbour.z = z;
-            neighbourCount++;
+            neighbor = neighborList[neighborCount];
+            neighbor.x = x1;
+            neighbor.z = z;
+            neighborCount++;
+            neighbors.push(neighbor)
         }
         if (x2Valid) {
-            neighbour = neighbourList[neighbourCount];
-            neighbour.x = x2;
-            neighbour.z = z;
-            neighbourCount++;
+            neighbor = neighborList[neighborCount];
+            neighbor.x = x2;
+            neighbor.z = z;
+            neighborCount++;
+            neighbors.push(neighbor)
         }
 
         if (z1Valid) {
-            neighbour = neighbourList[neighbourCount];
-            neighbour.x = x;
-            neighbour.z = z1;
-            neighbourCount++;
+            neighbor = neighborList[neighborCount];
+            neighbor.x = x;
+            neighbor.z = z1;
+            neighborCount++;
+            neighbors.push(neighbor)
 
 	        if(!adjacentOnly) {
-		        if (x2Valid && this._valid(x2, z1, ignoreOccupied)) {
-			        neighbour = neighbourList[neighbourCount];
-			        neighbour.x = x2;
-			        neighbour.z = z1;
-			        neighbourCount++;
-		        }
-		        if (x1Valid && this._valid(x1, z1, ignoreOccupied)) {
-			        neighbour = neighbourList[neighbourCount];
-			        neighbour.x = x1;
-			        neighbour.z = z1;
-			        neighbourCount++;
-		        }
-	        }
+                if (x2Valid && this._valid(x2, z1)) {
+            	    neighbor = neighborList[neighborCount];
+            	    neighbor.x = x2;
+            	    neighbor.z = z1;
+                    neighborCount++;
+                    neighbors.push(neighbor)
+                }
+                if (x1Valid && this._valid(x1, z1)) {
+            	    neighbor = neighborList[neighborCount];
+            	    neighbor.x = x1;
+            	    neighbor.z = z1;
+                    neighborCount++;
+                    neighbors.push(neighbor)
+                }
+           }
         }
-
         if (z2Valid) {
-            neighbour = neighbourList[neighbourCount];
-            neighbour.x = x;
-            neighbour.z = z2;
-            neighbourCount++;
+            neighbor = neighborList[neighborCount];
+            neighbor.x = x;
+            neighbor.z = z2;
+            neighborCount++;
+            neighbors.push(neighbor)
 
 	        if(!adjacentOnly) {
-		        if (x2Valid && this._valid(x2, z2, ignoreOccupied)) {
-			        neighbour = neighbourList[neighbourCount];
-			        neighbour.x = x2;
-			        neighbour.z = z2;
-			        neighbourCount++;
+		        if (x2Valid && this._valid(x2, z2)) {
+			        neighbor = neighborList[neighborCount];
+			        neighbor.x = x2;
+			        neighbor.z = z2;
+                    neighborCount++;
+                    neighbors.push(neighbor)
 		        }
-		        if (x1Valid && this._valid(x1, z2, ignoreOccupied)) {
-			        neighbour = neighbourList[neighbourCount];
-			        neighbour.x = x1;
-			        neighbour.z = z2;
-			        neighbourCount++;
+		        if (x1Valid && this._valid(x1, z2)) {
+			        neighbor = neighborList[neighborCount];
+			        neighbor.x = x1;
+			        neighbor.z = z2;
+                    neighborCount++;
+                    neighbors.push(neighbor)
 		        }
 	        }
         }
-
-        return neighbourCount;
+        //return neighborCount;
+        return neighbors
     }
 
     _manhattan = (point, end) => {
         return Math.abs(point.x - end.x) + Math.abs(point.z - end.z);
-    }
+    };
 }
