@@ -9,6 +9,7 @@ import { TileMap } from '../sketches/defender/tileMap';
 import { Astar } from '../sketches/defender/astar';
 
 export default class Dohjo extends React.Component {
+  rects = [];
 
   static async getInitialProps (context) {
     const { summary } = await gql.CheckLoggedIn(context.apolloClient);
@@ -72,26 +73,41 @@ export default class Dohjo extends React.Component {
         const rect = new createjs.Shape();
         rect.alpha = 0.3;
         rect.graphics.setStrokeStyle(1);
-        rect.graphics.beginStroke("white");
+        //rect.graphics.beginStroke("white");
 
         //if (tile.col == center && tile.row == center) {
         //  rect.graphics.beginFill('white');
         //}
-        if (tile.isOccupied) {
-          rect.graphics.beginFill('white');
-        }
+        //if (tile.isOccupied) {
+        rect.graphics.beginFill('white');
+        //}
 
         rect.graphics.drawRect(x, y, tileWidth, tileWidth);
         rect.graphics.endFill();
+        this.rects.push(rect);
+        // rect.on("rollover", function(evt) {
+        //   alert("type: "+evt.type+" target: "+evt.target+" stageX: "+evt.stageX);
+        // });
         this.stage.addChild(rect);
       }
     }
+    //console.log(rects.length);
+    //let ts = this.rects;
+    //this.stage.on("stagemousemove", function(evt) {
+    //  for (const tile of ts) {
+    //    let pt = tile.globalToLocal(this.stage.mouseX, this.stage.mouseY);
+    //    tile.alpha = 0.2;
+    //    if (tile.hitTest(pt.x, pt.y)) {
+    //      tile.alpha = 1;
+    //    } 
+    //  }
+    //})
     const astar = new Astar(tileMap.tiles)
-    const tile1 = tileMap.tiles[0][0];
-    const tile2 = tileMap.tiles[0][10];
+    const tile1 = tileMap.tiles[0][10];
+    const tile2 = tileMap.tiles[5][10];
 
-    const path = astar.findPath(tile1, tile2, true, true);
-    console.log(path);
+    const path = astar.findPath(tile1, tile2, true, false);
+    //console.log(path);
 
     for (let i = 0; i < 3; i++) {
       const btc = new createjs.Bitmap("/static/clouds/btc.png");
@@ -112,6 +128,15 @@ export default class Dohjo extends React.Component {
   }
 
   handleTick = (event) => {
+    let over = false;
+    for (const tile of this.rects) {
+      tile.alpha = 0.0;
+      if (!over && tile.hitTest(this.stage.mouseX, this.stage.mouseY)) {
+        tile.alpha = 0.2;
+        over = true;
+      } 
+    }
+
     // Actions carried out each tick (aka frame)
     //if (!event.paused) {
     //    // Actions carried out when the Ticker is not paused.
