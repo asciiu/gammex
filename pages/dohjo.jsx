@@ -52,7 +52,7 @@ export default class Dohjo extends React.Component {
     //}
 
     this.stage = new createjs.Stage(this.canvas);
-
+    this.stage.addEventListener("stagemousedown", this.handleMouseClick);
     createjs.Ticker.addEventListener("tick", this.handleTick);
     document.onkeydown = this.handleKey;
 
@@ -71,37 +71,15 @@ export default class Dohjo extends React.Component {
         const y = tile.row * tileWidth;
 
         const rect = new createjs.Shape();
-        rect.alpha = 0.3;
+        rect.alpha = 0.1;
         rect.graphics.setStrokeStyle(1);
-        //rect.graphics.beginStroke("white");
-
-        //if (tile.col == center && tile.row == center) {
-        //  rect.graphics.beginFill('white');
-        //}
-        //if (tile.isOccupied) {
         rect.graphics.beginFill('white');
-        //}
-
         rect.graphics.drawRect(x, y, tileWidth, tileWidth);
         rect.graphics.endFill();
         this.rects.push(rect);
-        // rect.on("rollover", function(evt) {
-        //   alert("type: "+evt.type+" target: "+evt.target+" stageX: "+evt.stageX);
-        // });
         this.stage.addChild(rect);
       }
     }
-    //console.log(rects.length);
-    //let ts = this.rects;
-    //this.stage.on("stagemousemove", function(evt) {
-    //  for (const tile of ts) {
-    //    let pt = tile.globalToLocal(this.stage.mouseX, this.stage.mouseY);
-    //    tile.alpha = 0.2;
-    //    if (tile.hitTest(pt.x, pt.y)) {
-    //      tile.alpha = 1;
-    //    } 
-    //  }
-    //})
     const astar = new Astar(tileMap.tiles)
     const tile1 = tileMap.tiles[0][10];
     const tile2 = tileMap.tiles[5][10];
@@ -127,14 +105,20 @@ export default class Dohjo extends React.Component {
     event.preventDefault();
   }
 
+  handleMouseClick = (event) => {
+    this.activeTile.alpha = 1.0;
+  }
+
   handleTick = (event) => {
-    let over = false;
     for (const tile of this.rects) {
-      tile.alpha = 0.0;
-      if (!over && tile.hitTest(this.stage.mouseX, this.stage.mouseY)) {
-        tile.alpha = 0.2;
-        over = true;
-      } 
+      if (tile != this.activeTile) {
+        if (tile.alpha < 0.7) 
+          tile.alpha = 0.1;
+        if (tile.hitTest(this.stage.mouseX, this.stage.mouseY)) {
+          this.activeTile = tile;
+          tile.alpha = 0.6;
+        } 
+      }
     }
 
     // Actions carried out each tick (aka frame)
