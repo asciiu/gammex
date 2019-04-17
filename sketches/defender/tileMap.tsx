@@ -4,6 +4,7 @@ export class Tile {
     isOccupied: boolean
     col: number 
     row: number
+    shape: any
 
     constructor(col: number, row: number) {
         this.isBlocked = false;
@@ -17,7 +18,8 @@ export class Tile {
     }
 
     setBlocked = () => { this.isBlocked = true }
-	setOccupied = (occupied) => { this.isOccupied = occupied }
+    setOccupied = (occupied: boolean) => { this.isOccupied = occupied }
+    setShape = (shape: any) => { this.shape = shape }
 
 	// CHECKERS 
 	// isBlocked = () => { return this.isBlocked; };

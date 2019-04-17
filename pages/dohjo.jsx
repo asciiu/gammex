@@ -80,7 +80,8 @@ export default class Dohjo extends React.Component {
         }
         rect.graphics.drawRect(x, y, tileWidth, tileWidth);
         rect.graphics.endFill();
-        this.rects.push(rect);
+        tile.setShape(rect);
+        //this.rects.push(rect);
         this.stage.addChild(rect);
       }
     }
@@ -143,18 +144,21 @@ export default class Dohjo extends React.Component {
   }
 
   handleMouseClick = (event) => {
-    this.activeTile.alpha = 1.0;
+    this.activeTile.shape.alpha = 1.0;
+    this.activeTile.setOccupied(true);
   }
 
   handleTick = (event) => {
-    for (const tile of this.rects) {
-      if (tile != this.activeTile) {
-        if (tile.alpha < 0.7) 
-          tile.alpha = 0.1;
-        if (tile.hitTest(this.stage.mouseX, this.stage.mouseY)) {
-          this.activeTile = tile;
-          tile.alpha = 0.6;
-        } 
+    for (const col of this.tileMap.tiles) {
+      for (const tile of col) {
+        if (tile != this.activeTile) {
+          if (tile.shape.alpha < 0.7) 
+            tile.shape.alpha = 0.1;
+          if (tile.shape.hitTest(this.stage.mouseX, this.stage.mouseY)) {
+            this.activeTile = tile;
+            tile.shape.alpha = 0.6;
+          } 
+        }
       }
     }
 
