@@ -56,11 +56,11 @@ export default class Dohjo extends React.Component {
     createjs.Ticker.addEventListener("tick", this.handleTick);
     document.onkeydown = this.handleKey;
 
-    let width = 64 * 0.3;
-    let height = 64 * 0.3;
+    // let width = 64 * 0.3;
+    // let height = 64 * 0.3;
     //let offset = (this.width - this.height) / 2;
+    //let center = Math.floor(unit/2);
     let unit = 31;
-    let center = Math.floor(unit/2);
     let tileWidth = this.width / unit;
 
     const tileMap = new TileMap(unit, unit, tileWidth);
@@ -73,31 +73,68 @@ export default class Dohjo extends React.Component {
         const rect = new createjs.Shape();
         rect.alpha = 0.1;
         rect.graphics.setStrokeStyle(1);
-        rect.graphics.beginFill('white');
+        if (i == 15 && j == 15) {
+          rect.graphics.beginFill('red');
+        } else {
+          rect.graphics.beginFill('white');
+        }
         rect.graphics.drawRect(x, y, tileWidth, tileWidth);
         rect.graphics.endFill();
         this.rects.push(rect);
         this.stage.addChild(rect);
       }
     }
-    const astar = new Astar(tileMap.tiles)
-    const tile1 = tileMap.tiles[0][10];
-    const tile2 = tileMap.tiles[5][10];
+    this.tileMap = tileMap;
 
-    const path = astar.findPath(tile1, tile2, true, false);
-    //console.log(path);
-
-    for (let i = 0; i < 3; i++) {
+    let coins = []
+    for (let i = 0; i < 1; i++) {
       const btc = new createjs.Bitmap("/static/clouds/btc.png");
-      btc.scaleX = 0.3;
-      btc.scaleY = 0.3;
+      btc.scaleX = 0.5;
+      btc.scaleY = 0.5;
       //btc.x = Math.floor(Math.random() * this.width);
       //btc.y = Math.floor(Math.random() * this.height);  
-      btc.x = width * i;
-      btc.y = height * i;
-
+      const offset = tileMap.tileSize;
+      btc.x = i + offset/2;
+      btc.y = i + offset/2;
+      btc.regX = tileMap.tileSize;
+      btc.regY = tileMap.tileSize;
       btc.name = "btc";
+      coins.push(btc);
       this.stage.addChild(btc);
+    }
+
+    this.astar = new Astar(tileMap.tiles)
+    for (const coin of coins) {
+      const tile1 = tileMap.tiles[0][0];
+      const target = tileMap.tiles[15][15];
+      const path = this.astar.findPath(tile1, target, true, false);
+      const tile = path[path.length-1];
+      coin.tile = tile;
+      const offset = this.tileMap.tileSize;
+      
+      const x = (tile[0] * offset) + offset/2;
+      const y = (tile[1] * offset) + offset/2;
+      createjs.Tween.get(coin)
+        .to({x: x, y: y}, 700)
+        .call(this.handleComplete, [coin], this);
+    }
+  }
+
+  handleComplete = (coin) => {
+    const target = this.tileMap.tiles[15][15];
+    const tile = this.tileMap.tiles[coin.tile[0]][coin.tile[1]];
+    const path = this.astar.findPath(tile, target, true, false);
+
+    if (path.length > 0) {
+      const t = path[path.length-1];
+      coin.tile = t;
+      const t1 = this.tileMap.tiles[t[0]][t[1]];
+      const offset = this.tileMap.tileSize;
+      const x = (t1.col * offset) + offset/2;
+      const y = (t1.row * offset) + offset/2;
+      createjs.Tween.get(coin)
+        .to({x: x, y: y}, 300)
+        .call(this.handleComplete, [coin], this);
     }
   }
   
