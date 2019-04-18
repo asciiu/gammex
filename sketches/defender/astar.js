@@ -29,7 +29,7 @@ export class Astar {
     }
 
     _valid = (x, z) => {
-        return !this._sourceGrid[x][z].isOccupied;
+        return !this._sourceGrid[x][z].isOccupied && !this._sourceGrid[x][z].isBlocked;
     };
 
     _tile = (index) => {

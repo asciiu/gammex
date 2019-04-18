@@ -17,13 +17,9 @@ export class Tile {
         return {xPos: this.col, yPos: this.row};
     }
 
-    setBlocked = () => { this.isBlocked = true }
+    setBlocked = (blocked: boolean) => { this.isBlocked = blocked }
     setOccupied = (occupied: boolean) => { this.isOccupied = occupied }
     setShape = (shape: any) => { this.shape = shape }
-
-	// CHECKERS 
-	// isBlocked = () => { return this.isBlocked; };
-    // isOccupied = () => { return this.isOccupied; };
 
 	// SETTERS 
 	reset = () => {

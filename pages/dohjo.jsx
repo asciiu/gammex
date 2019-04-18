@@ -42,24 +42,14 @@ export default class Dohjo extends React.Component {
     this.height = window.innerHeight;
     this.canvas = ReactDOM.findDOMNode(this.refs.canvas);
     this.canvas.style.backgroundColor = "#001529";
-
-    //if (this.width > this.height) {
-      this.canvas.width = this.width;
-      this.canvas.height = this.width;
-    //} else {
-    //  this.canvas.width = this.height;
-    //  this.canvas.height = this.height;
-    //}
+    this.canvas.width = this.width;
+    this.canvas.height = this.width;
 
     this.stage = new createjs.Stage(this.canvas);
     this.stage.addEventListener("stagemousedown", this.handleMouseClick);
     createjs.Ticker.addEventListener("tick", this.handleTick);
     document.onkeydown = this.handleKey;
 
-    // let width = 64 * 0.3;
-    // let height = 64 * 0.3;
-    //let offset = (this.width - this.height) / 2;
-    //let center = Math.floor(unit/2);
     let unit = 31;
     let tileWidth = this.width / unit;
 
@@ -73,15 +63,9 @@ export default class Dohjo extends React.Component {
         const rect = new createjs.Shape();
         rect.alpha = 0.1;
         rect.graphics.setStrokeStyle(1);
-        if (i == 15 && j == 15) {
-          rect.graphics.beginFill('red');
-        } else {
-          rect.graphics.beginFill('white');
-        }
+        rect.graphics.beginFill('white');
         rect.graphics.drawRect(x, y, tileWidth, tileWidth);
-        rect.graphics.endFill();
         tile.setShape(rect);
-        //this.rects.push(rect);
         this.stage.addChild(rect);
       }
     }
@@ -92,8 +76,6 @@ export default class Dohjo extends React.Component {
       const btc = new createjs.Bitmap("/static/clouds/btc.png");
       btc.scaleX = 0.5;
       btc.scaleY = 0.5;
-      //btc.x = Math.floor(Math.random() * this.width);
-      //btc.y = Math.floor(Math.random() * this.height);  
       const offset = tileMap.tileSize;
       btc.x = i + offset/2;
       btc.y = i + offset/2;
@@ -145,13 +127,13 @@ export default class Dohjo extends React.Component {
 
   handleMouseClick = (event) => {
     this.activeTile.shape.alpha = 1.0;
-    this.activeTile.setOccupied(true);
+    this.activeTile.setBlocked(true);
   }
 
   handleTick = (event) => {
     for (const col of this.tileMap.tiles) {
       for (const tile of col) {
-        if (tile != this.activeTile) {
+        if (tile != this.activeTile && tile.shape.alpha < 1.0) {
           if (tile.shape.alpha < 0.7) 
             tile.shape.alpha = 0.1;
           if (tile.shape.hitTest(this.stage.mouseX, this.stage.mouseY)) {
