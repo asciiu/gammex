@@ -54,6 +54,8 @@ export default class Dohjo extends React.Component {
     let unit = 31;
     let tileWidth = this.width / unit;
 
+    this.targetTile = [15, 15];
+
     const tileMap = new TileMap(unit, unit, tileWidth);
     for (let i = 0; i < tileMap.numCols; ++i) {
       for (let j = 0; j < tileMap.numRows; ++j) {
@@ -62,9 +64,15 @@ export default class Dohjo extends React.Component {
         const y = tile.row * tileWidth;
 
         const rect = new createjs.Shape();
-        rect.alpha = 0.1;
         rect.graphics.setStrokeStyle(1);
-        rect.graphics.beginFill('white');
+        if (i == this.targetTile[0] && j == this.targetTile[1]) {
+          rect.graphics.beginFill('red');
+          rect.alpha = 0.7;
+        } else {
+          rect.graphics.beginFill('white');
+          rect.alpha = 0.1;
+        }
+        
         rect.graphics.drawRect(x, y, tileWidth, tileWidth);
         tile.setShape(rect);
         this.stage.addChild(rect);
@@ -126,7 +134,7 @@ export default class Dohjo extends React.Component {
   }
 
   handleComplete = (coin) => {
-    const target = this.tileMap.tiles[15][15];
+    const target = this.tileMap.tiles[this.targetTile[0]][this.targetTile[1]];
     const tile = this.tileMap.tiles[coin.tile[0]][coin.tile[1]];
     const path = this.astar.findPath(tile, target, true, false);
 
@@ -141,7 +149,7 @@ export default class Dohjo extends React.Component {
         .to({x: x, y: y}, 300)
         .call(this.handleComplete, [coin], this);
     } else {
-      this.beginCoin(coin);
+      this.startCoin(coin);
     }
   }
   
