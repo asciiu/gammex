@@ -77,8 +77,6 @@ export default class Dohjo extends React.Component {
       const btc = new createjs.Bitmap("/static/clouds/btc.png");
       btc.scaleX = 0.5;
       btc.scaleY = 0.5;
-      //btc.x = i + offset/2;
-      //btc.y = i + offset/2;
       btc.regX = this.tileMap.tileSize;
       btc.regY = this.tileMap.tileSize;
       btc.name = "btc";
@@ -89,24 +87,41 @@ export default class Dohjo extends React.Component {
 
     this.astar = new Astar(tileMap.tiles)
     for (const coin of this.coins) {
-      this.beginCoin(coin);
+      this.startCoin(coin);
     }
   }
 
-  beginCoin = (coin) => {
-    const tile1 = this.tileMap.tiles[0][0];
-    const target = this.tileMap.tiles[15][15];
-    const path = this.astar.findPath(tile1, target, true, false);
+  randomTile = () => {
+    const sides = ["top", "bottom", "right", "left"];
+    const side = sides[Math.floor(Math.random() * sides.length)];
+    if (side == "top") {
+      const xs = Math.floor(Math.random() * this.tileMap.numCols);
+      return {x1: xs, y1: -1, x2: xs, y2: 0}; 
+    } else if (side == "bottom") {
+      const xs = Math.floor(Math.random() * this.tileMap.numCols);
+      const ys = this.tileMap.numCols;
+      return {x1: xs, y1: ys, x2: xs, y2: ys-1}; 
+    } else if (side == "right") {
+      const xs = this.tileMap.numCols;
+      const ys = Math.floor(Math.random() * this.tileMap.numRows);
+      return {x1: xs, y1: ys, x2: xs-1, y2: ys}; 
+    } else if (side == "left") {
+      const ys = Math.floor(Math.random() * this.tileMap.numRows);
+      return {x1: -1, y1: ys, x2: 0, y2: ys}; 
+    }
+  }
+
+  startCoin = (coin) => {
+    const coords = this.randomTile();
     const offset = this.tileMap.tileSize;
-    const tile = path[path.length-1];
-    coin.tile = tile;
-    coin.x =  offset/2;
-    coin.y =  offset/2;
-    
-    const x = (tile[0] * offset) + offset/2;
-    const y = (tile[1] * offset) + offset/2;
+    const x2 = (coords.x2 * offset) + offset/2;
+    const y2= (coords.y2 * offset) + offset/2;
+
+    coin.tile = [coords.x2, coords.y2];
+    coin.x = (coords.x1 * offset) + offset/2;
+    coin.y = (coords.y1 * offset) + offset/2;
     createjs.Tween.get(coin)
-      .to({x: x, y: y}, 700)
+      .to({x: x2, y: y2}, 700)
       .call(this.handleComplete, [coin], this);
   }
 
