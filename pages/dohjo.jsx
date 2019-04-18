@@ -82,6 +82,7 @@ export default class Dohjo extends React.Component {
       btc.regX = tileMap.tileSize;
       btc.regY = tileMap.tileSize;
       btc.name = "btc";
+
       coins.push(btc);
       this.stage.addChild(btc);
     }
@@ -117,6 +118,21 @@ export default class Dohjo extends React.Component {
       const y = (t1.row * offset) + offset/2;
       createjs.Tween.get(coin)
         .to({x: x, y: y}, 300)
+        .call(this.handleComplete, [coin], this);
+    } else {
+      const offset = this.tileMap.tileSize;
+      coin.x =  offset/2;
+      coin.y =  offset/2;
+      const tile1 = this.tileMap.tiles[0][0];
+      const target = this.tileMap.tiles[15][15];
+      const path = this.astar.findPath(tile1, target, true, false);
+      const tile = path[path.length-1];
+      coin.tile = tile;
+      
+      const x = (tile[0] * offset) + offset/2;
+      const y = (tile[1] * offset) + offset/2;
+      createjs.Tween.get(coin)
+        .to({x: x, y: y}, 700)
         .call(this.handleComplete, [coin], this);
     }
   }

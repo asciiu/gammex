@@ -45,12 +45,6 @@ export class TileMap {
             let col: Tile[] = [];
             for (let y = 0; y < rows; ++y) {
                 let tile = new Tile(x, y);
-                if (x == 3 && y > 0 ) {
-                    tile.isOccupied = true;
-                } else {
-                    tile.isOccupied = false;
-                }
-
                 col.push(tile);
             }
             this.tiles.push(col);
