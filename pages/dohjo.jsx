@@ -9,7 +9,8 @@ import { TileMap } from '../sketches/defender/tileMap';
 import { Astar } from '../sketches/defender/astar';
 
 export default class Dohjo extends React.Component {
-  rects = [];
+  tileMap;
+  coins = [];
 
   static async getInitialProps (context) {
     const { summary } = await gql.CheckLoggedIn(context.apolloClient);
@@ -71,37 +72,42 @@ export default class Dohjo extends React.Component {
     }
     this.tileMap = tileMap;
 
-    let coins = []
     for (let i = 0; i < 1; i++) {
+      const offset = this.tileMap.tileSize;
       const btc = new createjs.Bitmap("/static/clouds/btc.png");
       btc.scaleX = 0.5;
       btc.scaleY = 0.5;
-      const offset = tileMap.tileSize;
-      btc.x = i + offset/2;
-      btc.y = i + offset/2;
-      btc.regX = tileMap.tileSize;
-      btc.regY = tileMap.tileSize;
+      //btc.x = i + offset/2;
+      //btc.y = i + offset/2;
+      btc.regX = this.tileMap.tileSize;
+      btc.regY = this.tileMap.tileSize;
       btc.name = "btc";
 
-      coins.push(btc);
+      this.coins.push(btc);
       this.stage.addChild(btc);
     }
 
     this.astar = new Astar(tileMap.tiles)
-    for (const coin of coins) {
-      const tile1 = tileMap.tiles[0][0];
-      const target = tileMap.tiles[15][15];
-      const path = this.astar.findPath(tile1, target, true, false);
-      const tile = path[path.length-1];
-      coin.tile = tile;
-      const offset = this.tileMap.tileSize;
-      
-      const x = (tile[0] * offset) + offset/2;
-      const y = (tile[1] * offset) + offset/2;
-      createjs.Tween.get(coin)
-        .to({x: x, y: y}, 700)
-        .call(this.handleComplete, [coin], this);
+    for (const coin of this.coins) {
+      this.beginCoin(coin);
     }
+  }
+
+  beginCoin = (coin) => {
+    const tile1 = this.tileMap.tiles[0][0];
+    const target = this.tileMap.tiles[15][15];
+    const path = this.astar.findPath(tile1, target, true, false);
+    const offset = this.tileMap.tileSize;
+    const tile = path[path.length-1];
+    coin.tile = tile;
+    coin.x =  offset/2;
+    coin.y =  offset/2;
+    
+    const x = (tile[0] * offset) + offset/2;
+    const y = (tile[1] * offset) + offset/2;
+    createjs.Tween.get(coin)
+      .to({x: x, y: y}, 700)
+      .call(this.handleComplete, [coin], this);
   }
 
   handleComplete = (coin) => {
@@ -120,20 +126,7 @@ export default class Dohjo extends React.Component {
         .to({x: x, y: y}, 300)
         .call(this.handleComplete, [coin], this);
     } else {
-      const offset = this.tileMap.tileSize;
-      coin.x =  offset/2;
-      coin.y =  offset/2;
-      const tile1 = this.tileMap.tiles[0][0];
-      const target = this.tileMap.tiles[15][15];
-      const path = this.astar.findPath(tile1, target, true, false);
-      const tile = path[path.length-1];
-      coin.tile = tile;
-      
-      const x = (tile[0] * offset) + offset/2;
-      const y = (tile[1] * offset) + offset/2;
-      createjs.Tween.get(coin)
-        .to({x: x, y: y}, 700)
-        .call(this.handleComplete, [coin], this);
+      this.beginCoin(coin);
     }
   }
   
