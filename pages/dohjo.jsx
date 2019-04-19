@@ -54,7 +54,8 @@ export default class Dohjo extends React.Component {
     let unit = 31;
     let tileWidth = this.width / unit;
 
-    this.targetTile = [15, 15];
+    const targetX = 15;
+    const targetY = 15;
 
     const tileMap = new TileMap(unit, unit, tileWidth);
     for (let i = 0; i < tileMap.numCols; ++i) {
@@ -65,7 +66,8 @@ export default class Dohjo extends React.Component {
 
         const rect = new createjs.Shape();
         rect.graphics.setStrokeStyle(1);
-        if (i == this.targetTile[0] && j == this.targetTile[1]) {
+        if (i == targetX && j == targetY) {
+          this.targetTile = tile;
           rect.graphics.beginFill('red');
           rect.alpha = 0.7;
         } else {
@@ -134,9 +136,9 @@ export default class Dohjo extends React.Component {
   }
 
   handleComplete = (coin) => {
-    const target = this.tileMap.tiles[this.targetTile[0]][this.targetTile[1]];
+    //const target = this.tileMap.tiles[this.targetTile[0]][this.targetTile[1]];
     const tile = this.tileMap.tiles[coin.tile[0]][coin.tile[1]];
-    const path = this.astar.findPath(tile, target, true, false);
+    const path = this.astar.findPath(tile, this.targetTile, true, false);
 
     if (path.length > 0) {
       const t = path[path.length-1];
@@ -166,13 +168,15 @@ export default class Dohjo extends React.Component {
     for (const col of this.tileMap.tiles) {
       for (const tile of col) {
         if (tile != this.activeTile && tile.shape.alpha < 1.0) {
-          if (tile.shape.alpha < 0.7) 
+          if (tile.shape.alpha < 0.7) {
             tile.shape.alpha = 0.1;
-          if (tile.shape.hitTest(this.stage.mouseX, this.stage.mouseY)) {
+          }
+          if (tile.shape.hitTest(this.stage.mouseX, this.stage.mouseY) &&
+              tile != this.targetTile) {
             this.activeTile = tile;
-            tile.shape.alpha = 0.6;
+            tile.shape.alpha = 0.3;
           } 
-        }
+        } 
       }
     }
 
