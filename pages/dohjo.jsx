@@ -136,7 +136,6 @@ export default class Dohjo extends React.Component {
   }
 
   handleComplete = (coin) => {
-    //const target = this.tileMap.tiles[this.targetTile[0]][this.targetTile[1]];
     const tile = this.tileMap.tiles[coin.tile[0]][coin.tile[1]];
     const path = this.astar.findPath(tile, this.targetTile, true, false);
 
@@ -158,22 +157,33 @@ export default class Dohjo extends React.Component {
   handleKey = (event) => {
     event.preventDefault();
   }
-
+  
   handleMouseClick = (event) => {
-    this.activeTile.shape.alpha = 1.0;
-    this.activeTile.setBlocked(true);
+    for (const col of this.tileMap.tiles) {
+      for (const tile of col) {
+        if (tile.shape.hitTest(this.stage.mouseX, this.stage.mouseY)) {
+          if (tile.isBlocked) {
+            tile.shape.alpha = 0.1;
+            tile.setBlocked(false);
+          } else {
+            tile.shape.alpha = 1.0;
+            tile.setBlocked(true);
+          } 
+        } 
+      }
+    }
   }
 
   handleTick = (event) => {
     for (const col of this.tileMap.tiles) {
       for (const tile of col) {
-        if (tile != this.activeTile && tile.shape.alpha < 1.0) {
-          if (tile.shape.alpha < 0.7) {
+        if (!tile.isBlocked) {
+          if (tile.shape.alpha > 0.1) {
+            // reset alpha
             tile.shape.alpha = 0.1;
           }
-          if (tile.shape.hitTest(this.stage.mouseX, this.stage.mouseY) &&
-              tile != this.targetTile) {
-            this.activeTile = tile;
+          if (tile.shape.hitTest(this.stage.mouseX, this.stage.mouseY)) {
+            // highlight tile if mouse pointer is on tile
             tile.shape.alpha = 0.3;
           } 
         } 
