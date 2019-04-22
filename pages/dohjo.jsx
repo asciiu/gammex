@@ -201,7 +201,7 @@ export default class Dohjo extends React.Component {
           if (tile.isBlocked) {
             tile.shape.alpha = 0.1;
             tile.setBlocked(false);
-          } else {
+          } else if (tile != this.targetTile) {
             tile.shape.alpha = 1.0;
             tile.setBlocked(true);
           } 
