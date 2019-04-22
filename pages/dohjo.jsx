@@ -11,6 +11,8 @@ import { Astar } from '../sketches/defender/astar';
 export default class Dohjo extends React.Component {
   tileMap;
   coins = [];
+  shit = [];
+  forks = [];
 
   static async getInitialProps (context) {
     const { summary } = await gql.CheckLoggedIn(context.apolloClient);
@@ -82,7 +84,7 @@ export default class Dohjo extends React.Component {
     }
     this.tileMap = tileMap;
 
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 9; i++) {
       const offset = this.tileMap.tileSize;
       const btc = new createjs.Bitmap("/static/clouds/btc.png");
       btc.scaleX = 0.5;
@@ -95,9 +97,43 @@ export default class Dohjo extends React.Component {
       this.stage.addChild(btc);
     }
 
+    for (let i = 0; i < 9; i++) {
+      const offset = this.tileMap.tileSize;
+      const shit = new createjs.Bitmap("/static/clouds/shit.png");
+      shit.scaleX = 0.5;
+      shit.scaleY = 0.5;
+      shit.regX = this.tileMap.tileSize;
+      shit.regY = this.tileMap.tileSize;
+      shit.name = "shit";
+
+      this.shit.push(shit);
+      this.stage.addChild(shit);
+    }
+
+    for (let i = 0; i < 3; i++) {
+      const offset = this.tileMap.tileSize;
+      const fork = new createjs.Bitmap("/static/clouds/fork.png");
+      fork.scaleX = 0.5;
+      fork.scaleY = 0.5;
+      fork.regX = this.tileMap.tileSize;
+      fork.regY = this.tileMap.tileSize;
+      fork.name = "fork";
+
+      this.forks.push(fork);
+      this.stage.addChild(fork);
+    }
+
     this.astar = new Astar(tileMap.tiles)
     for (const coin of this.coins) {
       this.startCoin(coin);
+    }
+
+    for (const shit of this.shit) {
+      this.startCoin(shit);
+    }
+
+    for (const fork of this.forks) {
+      this.startCoin(fork);
     }
   }
 
