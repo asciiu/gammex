@@ -119,11 +119,11 @@ export class Astar {
 	    return path;
     }
 
-    //this.findRandomPath = function(tile1, tile2) {
+    // findRandomPath = (tile1, tile2) => {
     //    var path = [];
     //    var random = ~~(Math.random() * 5) + 1;
-    //    var startX = tile1.xPos;
-    //    var startZ = tile1.yPos;
+    //    var startX = tile1.col;
+    //    var startZ = tile1.row;
     //    var t, endX, endZ;
     //    //console.log(random);
     //    //while(random) {
@@ -148,9 +148,9 @@ export class Astar {
     //    //}
 
     //    path = path.concat(this.findPath(startX, startZ, tile2.xPos, tile2.yPos, true, true));
-    //    
+       
     //    return path;
-    //};
+    // };
 
     _neighbors = (x, z, adjacentOnly) => {
         let neighborList = this._neighborList,

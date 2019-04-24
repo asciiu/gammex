@@ -125,15 +125,15 @@ export default class Dohjo extends React.Component {
 
     this.astar = new Astar(tileMap.tiles)
     for (const coin of this.coins) {
-      this.startCoin(coin);
+      this.startCoin(coin, 1500);
     }
 
     for (const shit of this.shit) {
-      this.startCoin(shit);
+      this.startCoin(shit, 300);
     }
 
     for (const fork of this.forks) {
-      this.startCoin(fork);
+      this.startCoin(fork, 700);
     }
   }
 
@@ -157,7 +157,7 @@ export default class Dohjo extends React.Component {
     }
   }
 
-  startCoin = (coin) => {
+  startCoin = (coin, speed) => {
     const coords = this.randomTile();
     const offset = this.tileMap.tileSize;
     const x2 = (coords.x2 * offset) + offset/2;
@@ -167,11 +167,11 @@ export default class Dohjo extends React.Component {
     coin.x = (coords.x1 * offset) + offset/2;
     coin.y = (coords.y1 * offset) + offset/2;
     createjs.Tween.get(coin)
-      .to({x: x2, y: y2}, 700)
-      .call(this.handleComplete, [coin], this);
+      .to({x: x2, y: y2}, 300)
+      .call(this.handleComplete, [coin, speed], this);
   }
 
-  handleComplete = (coin) => {
+  handleComplete = (coin, speed) => {
     const tile = this.tileMap.tiles[coin.tile[0]][coin.tile[1]];
     const path = this.astar.findPath(tile, this.targetTile, true, false);
 
@@ -183,10 +183,10 @@ export default class Dohjo extends React.Component {
       const x = (t1.col * offset) + offset/2;
       const y = (t1.row * offset) + offset/2;
       createjs.Tween.get(coin)
-        .to({x: x, y: y}, 300)
-        .call(this.handleComplete, [coin], this);
+        .to({x: x, y: y}, speed) 
+        .call(this.handleComplete, [coin, speed], this);
     } else {
-      this.startCoin(coin);
+      this.startCoin(coin, speed);
     }
   }
   
