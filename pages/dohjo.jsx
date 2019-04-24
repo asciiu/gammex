@@ -84,7 +84,7 @@ export default class Dohjo extends React.Component {
     }
     this.tileMap = tileMap;
 
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 1; i++) {
       const offset = this.tileMap.tileSize;
       const btc = new createjs.Bitmap("/static/clouds/btc.png");
       btc.scaleX = 0.5;
@@ -97,16 +97,16 @@ export default class Dohjo extends React.Component {
       this.stage.addChild(btc);
     }
 
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 2; i++) {
       const offset = this.tileMap.tileSize;
       const shit = new createjs.Bitmap("/static/clouds/shit.png");
-      shit.scaleX = 0.5;
-      shit.scaleY = 0.5;
+      shit.scaleX = 0.4;
+      shit.scaleY = 0.4;
       shit.regX = this.tileMap.tileSize;
       shit.regY = this.tileMap.tileSize;
       shit.name = "shit";
 
-      this.shit.push(shit);
+      this.coins.push(shit);
       this.stage.addChild(shit);
     }
 
@@ -119,21 +119,20 @@ export default class Dohjo extends React.Component {
       fork.regY = this.tileMap.tileSize;
       fork.name = "fork";
 
-      this.forks.push(fork);
+      this.coins.push(fork);
       this.stage.addChild(fork);
     }
 
     this.astar = new Astar(tileMap.tiles)
     for (const coin of this.coins) {
-      this.startCoin(coin, 1500);
-    }
+      const pause = Math.floor(Math.random() * 5000) + 1000
 
-    for (const shit of this.shit) {
-      this.startCoin(shit, 300);
-    }
-
-    for (const fork of this.forks) {
-      this.startCoin(fork, 700);
+      if (coin.name == "btc") 
+        setTimeout(this.startCoin(coin, 1500), pause);
+      if (coin.name == "shit")
+        setTimeout(this.startCoin(coin, 300), pause);
+      //else if (coin.name == "fork")
+      //  setTimeout(this.startCoin(coin, 700), pause);
     }
   }
 
