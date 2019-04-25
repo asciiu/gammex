@@ -44,10 +44,12 @@ export default class Dohjo extends React.Component {
 
   onblur = () => {
     createjs.Ticker.paused = true;
+    console.log('blur');
   }
 
   onfocus = () => {
     createjs.Ticker.paused = false;
+    console.log('focus');
   }
 
   componentDidMount = () => {
@@ -206,7 +208,10 @@ export default class Dohjo extends React.Component {
   handleMouseClick = (event) => {
     for (const col of this.tileMap.tiles) {
       for (const tile of col) {
-        if (tile.shape.hitTest(this.stage.mouseX, this.stage.mouseY)) {
+        if (tile.shape.hitTest(this.stage.mouseX, this.stage.mouseY) && 
+            tile.col > 0 && tile.row > 0 && 
+            tile.col < this.tileMap.numCols - 1 &&
+            tile.row < this.tileMap.numRows - 1 ) {
           if (tile.isBlocked) {
             tile.shape.alpha = 0.1;
             tile.setBlocked(false);
@@ -227,7 +232,10 @@ export default class Dohjo extends React.Component {
             // reset alpha
             tile.shape.alpha = 0.1;
           }
-          if (tile.shape.hitTest(this.stage.mouseX, this.stage.mouseY)) {
+          if (tile.shape.hitTest(this.stage.mouseX, this.stage.mouseY) &&
+              tile.col > 0 && tile.row > 0 && 
+              tile.col < this.tileMap.numCols - 1 &&
+              tile.row < this.tileMap.numRows - 1) {
             // highlight tile if mouse pointer is on tile
             tile.shape.alpha = 0.3;
           } 
