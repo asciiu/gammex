@@ -109,27 +109,27 @@ export default class Dohjo extends React.Component {
       this.stage.addChild(btc);
     }
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 5; i++) {
       const offset = this.tileMap.tileSize;
-      const shit = new createjs.Bitmap("/static/clouds/shit.png");
-      shit.scaleX = 0.4;
-      shit.scaleY = 0.4;
+      const shit = new createjs.Bitmap("/static/clouds/fork.png");
+      shit.scaleX = 0.5;
+      shit.scaleY = 0.5;
       shit.regX = this.tileMap.tileSize;
       shit.regY = this.tileMap.tileSize;
-      shit.name = "shit";
+      shit.name = "fork";
 
       this.coins.push(shit);
       this.stage.addChild(shit);
     }
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 10; i++) {
       const offset = this.tileMap.tileSize;
-      const fork = new createjs.Bitmap("/static/clouds/fork.png");
-      fork.scaleX = 0.5;
-      fork.scaleY = 0.5;
+      const fork = new createjs.Bitmap("/static/clouds/shit.png");
+      fork.scaleX = 0.4;
+      fork.scaleY = 0.4;
       fork.regX = this.tileMap.tileSize;
       fork.regY = this.tileMap.tileSize;
-      fork.name = "fork";
+      fork.name = "shit";
 
       this.coins.push(fork);
       this.stage.addChild(fork);
