@@ -28,6 +28,8 @@ export default class Dohjo extends React.Component {
   constructor(props) {
     super(props);
     this.canvas = null;
+    window.onblur = this.onblur;
+    window.onfocus = this.onfocus;
   }
 
   componentWillUnmount() {
@@ -38,6 +40,14 @@ export default class Dohjo extends React.Component {
     this.canvas.remove();
     createjs.Ticker.removeEventListener("tick", this.handleTick);
     document.onkeydown = null;
+  }
+
+  onblur = () => {
+    createjs.Ticker.paused = true;
+  }
+
+  onfocus = () => {
+    createjs.Ticker.paused = false;
   }
 
   componentDidMount = () => {
@@ -131,8 +141,8 @@ export default class Dohjo extends React.Component {
         setTimeout(this.startCoin(coin, 1500), pause);
       if (coin.name == "shit")
         setTimeout(this.startCoin(coin, 300), pause);
-      //else if (coin.name == "fork")
-      //  setTimeout(this.startCoin(coin, 700), pause);
+      if (coin.name == "fork")
+        setTimeout(this.startCoin(coin, 700), pause);
     }
   }
 
