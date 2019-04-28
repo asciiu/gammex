@@ -1,7 +1,7 @@
 import Layout from '../components/layout'
 import fetch from 'isomorphic-unfetch'
 import { Row, Col } from 'antd'
-import * as CSS from 'csstype';
+import gql from '../lib/gql'
 
 const contentStyle = { 
   color: "#001529",
@@ -32,10 +32,14 @@ Post.getInitialProps = async function(context) {
   const { id } = context.query
   const res = await fetch(`https://api.tvmaze.com/shows/${id}`)
   const show = await res.json()
+  const { summary } = await gql.CheckLoggedIn(context.apolloClient)
 
   console.log(`Fetched show: ${show.name}`)
 
-  return { show }
+  return { 
+    show: show,
+    summary: summary
+  }
 }
 
 export default Post
