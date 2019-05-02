@@ -3,8 +3,10 @@ import Layout, { LayoutProps } from '../components/layout'
 import gql from '../lib/gql'
 import * as React from "react";
 import redirect from '../lib/redirect'
+import {Editor, EditorState} from 'draft-js';
+import 'draft-js/dist/Draft.css';
 
-export default class Write extends React.Component<any, any> {
+export default class Write extends React.Component {
   static async getInitialProps (context) {
     const { summary } = await gql.CheckLoggedIn(context.apolloClient)
     if (!summary.userSummary) {
@@ -17,8 +19,15 @@ export default class Write extends React.Component<any, any> {
     }
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {editorState: EditorState.createEmpty()};
+  }
+
+  onChange = (editorState) => this.setState({editorState}); 
+
   render = () => {
-    const props: LayoutProps = {
+    const props = {
       apolloClient: this.props.apolloClient, 
       pageProps: this.props.pageProps,
       title: "profile"
@@ -27,7 +36,10 @@ export default class Write extends React.Component<any, any> {
     return (
       <Layout {...props}>
         <Row>
-          Write Page. 
+          <Editor 
+            editorState={this.state.editorState} 
+            onChange={this.onChange}
+            placeholder="This is some text." />
         </Row>
       </Layout>
     )
