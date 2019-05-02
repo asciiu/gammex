@@ -115,7 +115,7 @@ i {
 }
 a,
 a:hover {
-    color: #3b3738;
+    /* color: #3b3738; */
     text-decoration: none;
 }
 a:active,
@@ -1841,9 +1841,9 @@ input::placeholder {
 .nav-footer .social {
     padding: 5px 0;
 }
-a {
+/* a {
     color: #843131;
-}
+} */
 .hero {
     background: #843131;
     padding: 50px 0;
