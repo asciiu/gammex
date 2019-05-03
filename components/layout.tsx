@@ -167,11 +167,7 @@ export default class JuiceLayout extends React.Component<LayoutProps, any> {
             </Menu.Item>
             <Menu.Item key="story" >
               <Icon type="read" />
-              <span><HeaderLink href="/story">story</HeaderLink></span>
-            </Menu.Item>
-            <Menu.Item key="write" >
-              <Icon type="form" />
-              <span><HeaderLink href="/write">write</HeaderLink></span>
+              <span><HeaderLink href="/story">stories</HeaderLink></span>
             </Menu.Item>
             <Menu.Item key="support" >
               <Icon type="customer-service" />

@@ -1,4 +1,4 @@
-import { Row, Col } from 'antd';
+import { Row } from 'antd';
 import Layout, { LayoutProps } from '../components/layout'
 import gql from '../lib/gql'
 import * as React from "react";
@@ -6,7 +6,6 @@ import redirect from '../lib/redirect'
 import {Editor, EditorState, RichUtils, getDefaultKeyBinding} from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import './write.css';
-
 
 // Custom overrides for "code" style.
 const styleMap = {
@@ -81,6 +80,7 @@ var INLINE_STYLES = [
   {label: 'Italic', style: 'ITALIC'},
   {label: 'Underline', style: 'UNDERLINE'},
   {label: 'Monospace', style: 'CODE'},
+  {label: 'Save', style: ''},
 ];
 const InlineStyleControls = (props) => {
   const currentStyle = props.editorState.getCurrentInlineStyle();
@@ -167,7 +167,7 @@ export default class Write extends React.Component {
     const props = {
       apolloClient: this.props.apolloClient, 
       pageProps: this.props.pageProps,
-      title: "profile"
+      title: "write"
     }
 
     const {editorState} = this.state;
