@@ -16,11 +16,11 @@ const PostLink = props => (
 
 export default class Story extends React.Component<any, any> {
   static async getInitialProps (context: any) {
-    const res = await fetch('https://api.tvmaze.com/search/shows?q=batman')
-    const data = await res.json()
+    //const res = await fetch('https://api.tvmaze.com/search/shows?q=batman')
+    //const data = await res.json()
     const { summary } = await gql.CheckLoggedIn(context.apolloClient)
     return {
-      shows: data,
+      //shows: [],
       summary: summary
     }
   }
@@ -66,13 +66,13 @@ export default class Story extends React.Component<any, any> {
                       <a>New Story</a>
                     </Link>
                   </li>
-                  {props.pageProps.shows.map(({show}) => (
+                  {/* {props.pageProps.shows.map(({show}) => (
                     <li key={show.id}>
                       <Link as={`/story/${show.id}`} href={`/post?id=${show.id}`}>
                         <a>{show.name}</a>
                       </Link>
                     </li>
-                  ))}
+                  ))} */}
                 </ul>
               </div>
           </Col>
