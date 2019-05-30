@@ -243,8 +243,17 @@ export default class Dohjo extends React.Component {
               tile.col > 0 && tile.row > 0 && 
               tile.col < this.tileMap.numCols - 1 &&
               tile.row < this.tileMap.numRows - 1) {
+
+            // can't block path
+            tile.setBlocked(true);
+            const path = this.astar.findPath(this.tileMap.tiles[0][0], this.targetTile, true, false);
+            if (path.length > 0) {
+              tile.shape.alpha = 0.3;
+            } 
+            tile.setBlocked(false);
+
             // highlight tile if mouse pointer is on tile
-            tile.shape.alpha = 0.3;
+            //tile.shape.alpha = 0.3;
           } 
         } 
       }
