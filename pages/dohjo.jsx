@@ -218,6 +218,13 @@ export default class Dohjo extends React.Component {
           } else if (tile != this.targetTile) {
             tile.shape.alpha = 1.0;
             tile.setBlocked(true);
+
+            // can't block path
+            const path = this.astar.findPath(this.tileMap.tiles[0][0], this.targetTile, true, false);
+            if (path.length == 0) {
+              tile.shape.alpha = 0.1;
+              tile.setBlocked(false);
+            }
           } 
         } 
       }
