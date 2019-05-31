@@ -72,6 +72,14 @@ export default class Dohjo extends React.Component {
     const targetY = 15;
 
     const tileMap = new TileMap(unit, unit, tileWidth);
+
+    const redtile = new createjs.Shape();
+    redtile.graphics.beginFill('red');
+    redtile.alpha = 0.0;
+    redtile.graphics.drawRect(0, 0, tileWidth, tileWidth);
+    this.redtile = redtile;
+    this.stage.addChild(redtile);
+
     for (let i = 0; i < tileMap.numCols; ++i) {
       for (let j = 0; j < tileMap.numRows; ++j) {
         const tile = tileMap.tiles[i][j];
@@ -232,6 +240,7 @@ export default class Dohjo extends React.Component {
   }
 
   handleTick = (event) => {
+    this.redtile.alpha = 0.0;
     for (const col of this.tileMap.tiles) {
       for (const tile of col) {
         if (!tile.isBlocked) {
@@ -247,10 +256,18 @@ export default class Dohjo extends React.Component {
             // can't block path
             tile.setBlocked(true);
             const path = this.astar.findPath(this.tileMap.tiles[0][0], this.targetTile, true, false);
+            tile.setBlocked(false);
             if (path.length > 0) {
               tile.shape.alpha = 0.3;
-            } 
-            tile.setBlocked(false);
+            } else {
+              const tileWidth = this.tileMap.tileSize;
+              const x = tile.col * tileWidth;
+              const y = tile.row * tileWidth;
+              this.redtile.x = x;
+              this.redtile.y = y;
+              //this.redtile.setBounds(x, y, tileWidth, tileWidth);
+              this.redtile.alpha = 0.6;
+            }
 
             // highlight tile if mouse pointer is on tile
             //tile.shape.alpha = 0.3;
