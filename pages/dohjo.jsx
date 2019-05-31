@@ -73,12 +73,11 @@ export default class Dohjo extends React.Component {
 
     const tileMap = new TileMap(unit, unit, tileWidth);
 
-    const redtile = new createjs.Shape();
-    redtile.graphics.beginFill('red');
-    redtile.alpha = 0.0;
-    redtile.graphics.drawRect(0, 0, tileWidth, tileWidth);
-    this.redtile = redtile;
-    this.stage.addChild(redtile);
+    this.redTile = new createjs.Shape();
+    this.redTile.graphics.beginFill('red');
+    this.redTile.alpha = 0.0;
+    this.redTile.graphics.drawRect(0, 0, tileWidth, tileWidth);
+    this.stage.addChild(this.redTile);
 
     for (let i = 0; i < tileMap.numCols; ++i) {
       for (let j = 0; j < tileMap.numRows; ++j) {
@@ -240,7 +239,9 @@ export default class Dohjo extends React.Component {
   }
 
   handleTick = (event) => {
-    this.redtile.alpha = 0.0;
+    // reset red tile
+    this.redTile.alpha = 0.0;
+
     for (const col of this.tileMap.tiles) {
       for (const tile of col) {
         if (!tile.isBlocked) {
@@ -253,24 +254,21 @@ export default class Dohjo extends React.Component {
               tile.col < this.tileMap.numCols - 1 &&
               tile.row < this.tileMap.numRows - 1) {
 
-            // can't block path
+            // what if this tile was blocked, would it block the path to target 
             tile.setBlocked(true);
             const path = this.astar.findPath(this.tileMap.tiles[0][0], this.targetTile, true, false);
             tile.setBlocked(false);
+
+            // only highlight tile if it does not block astar path
             if (path.length > 0) {
               tile.shape.alpha = 0.3;
             } else {
+              // diplay red tile on blocked paths
               const tileWidth = this.tileMap.tileSize;
-              const x = tile.col * tileWidth;
-              const y = tile.row * tileWidth;
-              this.redtile.x = x;
-              this.redtile.y = y;
-              //this.redtile.setBounds(x, y, tileWidth, tileWidth);
-              this.redtile.alpha = 0.6;
+              this.redTile.x = tile.col * tileWidth;
+              this.redTile.y = tile.row * tileWidth;
+              this.redTile.alpha = 0.6;
             }
-
-            // highlight tile if mouse pointer is on tile
-            //tile.shape.alpha = 0.3;
           } 
         } 
       }
