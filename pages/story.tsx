@@ -25,6 +25,23 @@ export default class Story extends React.Component<any, any> {
     }
   }
 
+  renderNewStory = () => {
+    console.log(this.props)
+    if (this.props.pageProps.summary.userSummary) {
+      return (
+        <li key="new">
+          <Link href={`/write`}>
+            <a>New Story</a>
+          </Link>
+        </li>
+      )
+    } else {
+      return (
+        <span></span>
+      )
+    }
+  }
+
   render = () => {
     const props: LayoutProps = {
       apolloClient: this.props.apolloClient, 
@@ -61,11 +78,7 @@ export default class Story extends React.Component<any, any> {
                 <p>A programmer's tale.
                 </p>
                 <ul style={tocStyle}>
-                  <li key="new">
-                    <Link href={`/write`}>
-                      <a>New Story</a>
-                    </Link>
-                  </li>
+                  { this.renderNewStory() }
                   {/* {props.pageProps.shows.map(({show}) => (
                     <li key={show.id}>
                       <Link as={`/story/${show.id}`} href={`/post?id=${show.id}`}>
