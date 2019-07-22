@@ -80,7 +80,6 @@ var INLINE_STYLES = [
   {label: 'Italic', style: 'ITALIC'},
   {label: 'Underline', style: 'UNDERLINE'},
   {label: 'Monospace', style: 'CODE'},
-  {label: 'Save', style: ''},
 ];
 const InlineStyleControls = (props) => {
   const currentStyle = props.editorState.getCurrentInlineStyle();
@@ -115,10 +114,12 @@ export default class Write extends React.Component {
 
   constructor(props) {
     super(props);
+    // editorState is a draft.js instance
     this.state = {editorState: EditorState.createEmpty()};
   }
 
-  onChange = (editorState) => this.setState({editorState}); 
+  onEditorChange = (editorState) => this.setState({editorState}); 
+
   focus = () => this.refs.editor.focus();
 
   handleKeyCommand = (command, editorState) => {
@@ -138,7 +139,7 @@ export default class Write extends React.Component {
         4, /* maxDepth */
       );
       if (newEditorState !== this.state.editorState) {
-        this.onChange(newEditorState);
+        this.onEditorChange(newEditorState);
       }
       return;
     }
@@ -146,7 +147,7 @@ export default class Write extends React.Component {
   }
 
   toggleBlockType = (blockType) => {
-    this.onChange(
+    this.onEditorChange(
       RichUtils.toggleBlockType(
         this.state.editorState,
         blockType
@@ -155,7 +156,7 @@ export default class Write extends React.Component {
   }
 
   toggleInlineStyle = (inlineStyle) => {
-    this.onChange(
+    this.onEditorChange(
       RichUtils.toggleInlineStyle(
         this.state.editorState,
         inlineStyle
@@ -202,7 +203,7 @@ export default class Write extends React.Component {
                 editorState={editorState}
                 handleKeyCommand={this.handleKeyCommand}
                 keyBindingFn={this.mapKeyToEditorCommand}
-                onChange={this.onChange}
+                onChange={this.onEditorChange}
                 placeholder="Tell a story..."
                 ref="editor"
                 spellCheck={true}
