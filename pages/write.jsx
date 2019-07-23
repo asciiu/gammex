@@ -3,9 +3,10 @@ import Layout, { LayoutProps } from '../components/layout'
 import gql from '../lib/gql'
 import * as React from "react";
 import redirect from '../lib/redirect'
-import {Editor, EditorState, RichUtils, getDefaultKeyBinding} from 'draft-js';
+import {Editor, EditorState, RichUtils, convertToRaw, getDefaultKeyBinding} from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import './write.css';
+import debounce from 'lodash/debounce';
 
 // Custom overrides for "code" style.
 const styleMap = {
@@ -118,14 +119,30 @@ export default class Write extends React.Component {
     this.state = {editorState: EditorState.createEmpty()};
   }
 
-  onEditorChange = (editorState) => this.setState({editorState}); 
+  // https://lodash.com/docs/4.17.14#debounce
+  saveContent = debounce((content) => {
+    const jsonContent = JSON.stringify({
+      content: convertToRaw(content),
+    });
+
+    console.log(jsonContent);
+  }, 1000);
+
+  // Triggered on draft.js editor change
+  // params:
+  //   editorState - draft.js instance (https://draftjs.org/docs/api-reference-editor-state)
+  onEditorChange = (editorState) => {
+    const contentState = editorState.getCurrentContent();
+    this.saveContent(contentState);
+    this.setState({editorState});
+  } 
 
   focus = () => this.refs.editor.focus();
 
   handleKeyCommand = (command, editorState) => {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
-      this.onChange(newState);
+      this.onEditorChange(newState);
       return true;
     }
     return false;
