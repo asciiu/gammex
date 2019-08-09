@@ -23,7 +23,7 @@ export default function sketch (p5) {
   let clientID = undefined; 
   let close = false;
   let canvas;
-  const socket = new GameSocket('ws://192.168.99.101:32000/ws');
+  const socket = new GameSocket('ws://192.168.99.100:32000/ws');
   const TopicAsteroid = "new-asteroid";
   const TopicPlayerRegister = "player-register";
   const TopicPlayerUnregister = "player-unregister";
@@ -260,6 +260,8 @@ export default function sketch (p5) {
       const coin = coins[c];
       if ( player != undefined && player.hits(coin) && !player.destroyed() ) {
         coinSound.play();
+        coins.splice(c, 1);
+      } else if (coins.length > 10 && coin.offscreen()){
         coins.splice(c, 1);
       } else {
         coin.render();

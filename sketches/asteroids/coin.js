@@ -31,6 +31,16 @@ export class Coin {
     this.edges();
   }
   
+  offscreen = () => {
+    if (this.pos.x > this.p5.width || this.pos.x < 0) {
+      return true;
+    }
+    if (this.pos.y > this.p5.height || this.pos.y < 0) {
+      return true;
+    }
+    return false;
+  }
+
   edges = () => {
     if (this.pos.x > this.p5.width + this.r) {
       this.pos.x = -this.r;
