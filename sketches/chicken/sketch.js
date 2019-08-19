@@ -1,15 +1,17 @@
 import 'p5/lib/addons/p5.sound'
 import 'p5/lib/addons/p5.dom'
+import {Chicken} from './chicken.js'
 
 export default function sketch (p5) {
   let canvas;
+  let chickenImage;
+  let player;
   
   p5.preload = () => {
-    //rocketImage = p5.loadImage('static/rocket.png');
+    chickenImage = p5.loadImage('static/chicken/chicken.png');
   }
 
   p5.cleanUp = () => {
-    //close = true;
     p5.remove();
   }
 
@@ -18,32 +20,32 @@ export default function sketch (p5) {
     var width = canvasDiv.offsetWidth;
     var height = canvasDiv.offsetHeight;
     var sketchCanvas = p5.createCanvas(width,height);
-    console.log(sketchCanvas);
     sketchCanvas.parent("sketch");
-    //canvas.style.height='100%';
-    //// ...then set the internal size to match
-    //canvas.width  = canvas.offsetWidth;
-    //canvas.height = canvas.offsetHeight;
-    //const width = Math.floor(p5.windowWidth);
-    //const height = Math.floor(p5.windowHeight); 
-    //canvas = p5.createCanvas(width, height);
-    //const x = (p5.windowWidth - p5.width) / 2;
-    //const y = (p5.windowHeight - p5.height) / 2;
-    //canvas.position(x, y);
+
+    const opts = {
+      image: chickenImage,
+      width: 30,
+      height: 30,
+      x: 100,
+      y: 15,
+      p5ptr: p5,
+    }
+    player = new Chicken(opts); 
   }
 
   p5.windowResized = () => {
-    const width = Math.floor(2*p5.windowWidth/3);
-    const height = Math.floor(2*p5.windowHeight/3); 
+    var canvasDiv = document.getElementById('sketch');
+    var width = canvasDiv.offsetWidth;
+    var height = canvasDiv.offsetHeight;
     p5.resizeCanvas(width, height);
-
-    const x = (p5.windowWidth - p5.width) / 2;
-    const y = (p5.windowHeight - p5.height) / 2;
-    canvas.position(x, y);
   }
 
   p5.draw = () => {
-    p5.background(0);
+    p5.background("#001529");
+    player.render();
+    player.turn();
+    player.update();
+    player.edges();
   }
   
   p5.keyReleased = (event) => {
@@ -51,6 +53,13 @@ export default function sketch (p5) {
   }
   
   p5.keyPressed = (event) => {
+    if (event.keyCode == p5.RIGHT_ARROW) {
+      console.log("right");
+      //socket.send([{topic: TopicShipRotation, clientID: clientID, radian: 0.1}]);
+    } else if (event.keyCode == p5.LEFT_ARROW) {
+      console.log("left");
+      //socket.send([{topic: TopicShipRotation, clientID: clientID, radian: -0.1}]);
+    } 
     return false; 
   }
 }
