@@ -21,7 +21,7 @@ if (!isBrowser) {
 
 function create (initialState: any, { getToken, getRefresh }: Options) {
   const httpLink = createHttpLink({
-    uri: 'http://192.168.99.101:30000/graphql',
+    uri: 'http://192.168.99.100:30000/graphql',
     credentials: 'same-origin'
   })
 
