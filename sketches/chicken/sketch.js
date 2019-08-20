@@ -3,6 +3,7 @@ import 'p5/lib/addons/p5.dom'
 import {Chicken} from './chicken.js'
 import {Symbol} from './symbol.js'
 import {Stream} from './stream.js'
+import { Egg } from './egg.js';
 
 export default function sketch (p5) {
   let canvas;
@@ -13,7 +14,7 @@ export default function sketch (p5) {
   let canvasWidth;
   let canvasHeight;
   let margin = 20;
-  let streams = [];
+  let eggs = [];
   
   p5.preload = () => {
     chickenImage = p5.loadImage('static/chicken/chickenWhite.png');
@@ -32,40 +33,28 @@ export default function sketch (p5) {
     sketchCanvas.parent("sketch");
 
     // player will be represented by a chicken
+    let size = 30;
     const opts = {
       image: chickenImage,
-      width: 30,
-      height: 30,
+      width: size,
+      height: size,
       x: margin,
       y: 20,
       p5ptr: p5,
+      size: size,
     }
     player = new Chicken(opts); 
 
-    let y = 50;
-    const symbolSize = 20;
-    //let colums = canvasWidth / symbolSize;
-    for (let x = 2; x <= canvasWidth; x += symbolSize) {
-      let stream = new Stream({
-        p5, p5,
-        symbolSize: symbolSize,
-        canvasHeight: canvasHeight,
-        x: x,
-        y: p5.random(-1000, 0),
-      });
-      stream.generateSymbols();
-      streams.push(stream);
+    for (let i = 0; i < 5; ++i) {
+      let egg = new Egg({
+        x: margin, 
+        y: 50, 
+        speed: 10, 
+        size: 10, 
+        canvasHeight: canvasHeight, p5: p5});
+      eggs.push(egg);
     }
-    //symbol = new Symbol({
-    //  p5: p5, 
-    //  x: canvasWidth/2, 
-    //  y: 0, 
-    //  speed: p5.random(5, 10),
-    //  size: symbolSize
-    //});
-    //symbol.setToRandomSymbol();
-
-    p5.textSize(symbolSize);
+    //p5.textSize(symbolSize);
   }
 
   p5.windowResized = () => {
@@ -77,20 +66,11 @@ export default function sketch (p5) {
 
   p5.draw = () => {
     p5.background("#001529");
-    //p5.background(0, 150);
     player.render();
-    player.turn();
-    player.update();
-    player.edges();
+    eggs.forEach(egg => {
+      egg.render();
+    })
 
-    streams.forEach(element => {
-      element.render();
-    });
-    //stream.render();
-    //symbol.render();
-    //if (symbol.y >= canvasHeight + symbol.size) {
-    //  symbol.y = 0;
-    //}
     if (p5.keyIsDown(p5.RIGHT_ARROW)) {
       const pos = player.getPosition();
       if (pos.x <= canvasWidth - margin) {
@@ -110,8 +90,21 @@ export default function sketch (p5) {
     return false;
   }
   
-  //p5.keyPressed = (event) => {
-  //  if (event.keyCode == p5.RIGHT_ARROW) {
+  p5.keyPressed = (event) => {
+    if (event.keyCode == 32) {
+      for(let i = 0; i < eggs.length; ++i) {
+        let egg = eggs[i];
+        if (egg.isReady) {
+          const pos = player.getPosition();
+          if (player.scale.x < 0) {
+            egg.drop({x: pos.x, y: pos.y + player.size, color: {r: 0, g: 255, b: 70, a: 100}});
+          } else {
+            egg.drop({x: pos.x, y: pos.y + player.size, color: {r: 255, g: 0, b: 70, a: 100}});
+          }
+          //console.log("egg");
+          break;
+        }
+      }
   //    const pos = player.getPosition();
   //    if (pos.x <= canvasWidth - margin) {
   //      player.setPosition(pos.x+10, pos.y);
@@ -126,10 +119,8 @@ export default function sketch (p5) {
   //    if (pos.x > margin) {
   //      player.setPosition(pos.x-10, pos.y);
   //    }
-
-  //    //console.log("left");
   //    //socket.send([{topic: TopicShipRotation, clientID: clientID, radian: -0.1}]);
-  //  } 
-  //  return false; 
-  //}
+    } 
+    return false; 
+  }
 }

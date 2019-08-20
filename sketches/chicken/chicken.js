@@ -13,7 +13,8 @@ export class Chicken {
     radius: rad = 6,
     rotation: radian = 0,
     heading: heading = 0,
-    active = false
+    active = false,
+    size: size,
   }) {
     this.p5 = p5instance;
     this.pos = p5instance.createVector(x, y);
@@ -39,6 +40,7 @@ export class Chicken {
     };
     this.scale = {x: 1.0, y: 1.0};
     this.particles = [];
+    this.size = size;
   }
   
   destroy = () => {
