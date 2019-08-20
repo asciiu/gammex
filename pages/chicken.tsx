@@ -32,8 +32,8 @@ export default class Chicken extends React.Component<any, any> {
       title: "chicken"
     };
     const canvasStyle = {
-      width: '80%',
-      height: '200px',
+      width: '85%',
+      height: '400px',
     };
 
     return (
