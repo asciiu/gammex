@@ -8,14 +8,17 @@ export class Symbol {
     speed: sp,
     size: size,
     canvasHeight: canvasHeight,
+    first: isFirst = false,
   }) {
     this.p5 = p5instance;
     this.x = x;
     this.y = y;
+    this.originY = y;
     this.size = size;
     this.speed = sp;
-    this.switchInterval = this.p5.round(this.p5.random(2, 20));
+    this.switchInterval = this.p5.round(this.p5.random(15, 30));
     this.canvasHeight = canvasHeight;
+    this.isFirst = isFirst;
   }
   
   setToRandomSymbol = () => {
@@ -32,7 +35,11 @@ export class Symbol {
 
   render = () => {
     if (this.y <= this.canvasHeight) {
-      this.p5.fill(0, 255, 70);
+      if (this.isFirst) {
+        this.p5.fill(180, 255, 180, 255);
+      } else {
+        this.p5.fill(0, 255, 70, 50);
+      }
       this.p5.text(this.value, this.x, this.y);
       this.rain();
       this.setToRandomSymbol();

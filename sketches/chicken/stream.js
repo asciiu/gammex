@@ -6,19 +6,23 @@ export class Stream {
     p5: p5instance, 
     symbolSize: size,
     canvasHeight: canvasHeight,
+    x: x, 
+    y: y,
   }) {
+    this.pos = {x: x, y: y};
     this.p5 = p5instance;
     this.symbols = [];
-    this.totalSymbols = this.p5.round(this.p5.random(2, 7));
-    this.speed = this.p5.random(5, 10);
+    this.totalSymbols = this.p5.round(this.p5.random(5, 20));
+    this.speed = this.p5.random(2, 4);
     this.symbolSize = size;
     this.canvasHeight = canvasHeight;
   }
 
   generateSymbols = () => {
-    let y = 0; 
-    let x = 200;
+    let y = this.pos.y; 
+    let x = this.pos.x;
 
+    let first = this.p5.round(this.p5.random(0,4)) == 1;
     for (let i = 0; i < this.totalSymbols; ++i) {
       let symbol = new Symbol({
         p5: this.p5, 
@@ -27,7 +31,9 @@ export class Stream {
         speed: this.speed,
         size: this.symbolSize,
         canvasHeight: this.canvasHeight,
+        first: first,
       });
+      first = false;
       symbol.setToRandomSymbol();
       this.symbols.push(symbol);
       y -= this.symbolSize;

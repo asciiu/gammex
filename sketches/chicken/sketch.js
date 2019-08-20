@@ -13,6 +13,7 @@ export default function sketch (p5) {
   let canvasWidth;
   let canvasHeight;
   let margin = 20;
+  let streams = [];
   
   p5.preload = () => {
     chickenImage = p5.loadImage('static/chicken/chickenWhite.png');
@@ -41,13 +42,20 @@ export default function sketch (p5) {
     }
     player = new Chicken(opts); 
 
-    const symbolSize = 30;
-    stream = new Stream({
-      p5, p5,
-      symbolSize: symbolSize,
-      canvasHeight: canvasHeight,
-    });
-    stream.generateSymbols();
+    let y = 50;
+    const symbolSize = 20;
+    //let colums = canvasWidth / symbolSize;
+    for (let x = 2; x <= canvasWidth; x += symbolSize) {
+      let stream = new Stream({
+        p5, p5,
+        symbolSize: symbolSize,
+        canvasHeight: canvasHeight,
+        x: x,
+        y: p5.random(-1000, 0),
+      });
+      stream.generateSymbols();
+      streams.push(stream);
+    }
     //symbol = new Symbol({
     //  p5: p5, 
     //  x: canvasWidth/2, 
@@ -69,12 +77,16 @@ export default function sketch (p5) {
 
   p5.draw = () => {
     p5.background("#001529");
+    //p5.background(0, 150);
     player.render();
     player.turn();
     player.update();
     player.edges();
 
-    stream.render();
+    streams.forEach(element => {
+      element.render();
+    });
+    //stream.render();
     //symbol.render();
     //if (symbol.y >= canvasHeight + symbol.size) {
     //  symbol.y = 0;
