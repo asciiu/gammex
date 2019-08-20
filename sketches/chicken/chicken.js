@@ -30,13 +30,14 @@ export class Chicken {
       width: w,
       height: h,
       image: img
-    }
+    };
     this.color = {
       red: 0,
       green: 200,
       blue: 0,
-      alpha: 200,
-    }
+      alpha: 200
+    };
+    this.scale = {x: 1.0, y: 1.0};
     this.particles = [];
   }
   
@@ -87,6 +88,7 @@ export class Chicken {
     if (!this.isDestroyed) {
       this.p5.push();
       this.p5.translate(this.pos.x, this.pos.y);
+      this.p5.scale(this.scale.x, this.scale.y);
       //this.p5.rotate(this.heading + this.p5.PI / 2);
 
       this.p5.image(this.player.image, 
@@ -97,6 +99,11 @@ export class Chicken {
 
       this.p5.pop();
     } 
+  }
+
+  setScale = (x, y) => {
+    this.scale = {x: x, y: y};
+    //this.p5.scale(y,1.0);
   }
   
   edges = () => {
@@ -112,6 +119,10 @@ export class Chicken {
     }
   }
   
+  getPosition = () => {
+    return {x: this.pos.x, y: this.pos.y};
+  }
+
   setPosition = (x, y) => {
     this.pos.x = x;
     this.pos.y = y;

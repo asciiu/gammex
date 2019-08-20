@@ -12,9 +12,10 @@ export default function sketch (p5) {
   let symbol;
   let canvasWidth;
   let canvasHeight;
+  let margin = 20;
   
   p5.preload = () => {
-    chickenImage = p5.loadImage('static/chicken/chicken.png');
+    chickenImage = p5.loadImage('static/chicken/chickenWhite.png');
   }
 
   p5.cleanUp = () => {
@@ -34,8 +35,8 @@ export default function sketch (p5) {
       image: chickenImage,
       width: 30,
       height: 30,
-      x: 100,
-      y: 15,
+      x: margin,
+      y: 20,
       p5ptr: p5,
     }
     player = new Chicken(opts); 
@@ -78,20 +79,45 @@ export default function sketch (p5) {
     //if (symbol.y >= canvasHeight + symbol.size) {
     //  symbol.y = 0;
     //}
+    if (p5.keyIsDown(p5.RIGHT_ARROW)) {
+      const pos = player.getPosition();
+      if (pos.x <= canvasWidth - margin) {
+        player.setPosition(pos.x+10, pos.y);
+        player.setScale(-1.0, 1.0);
+      }
+    } else if (p5.keyIsDown(p5.LEFT_ARROW)) {
+      const pos = player.getPosition();
+      if (pos.x > margin) {
+        player.setPosition(pos.x-10, pos.y);
+        player.setScale(1.0, 1.0);
+      }
+    }
   }
   
   p5.keyReleased = (event) => {
     return false;
   }
   
-  p5.keyPressed = (event) => {
-    if (event.keyCode == p5.RIGHT_ARROW) {
-      console.log("right");
-      //socket.send([{topic: TopicShipRotation, clientID: clientID, radian: 0.1}]);
-    } else if (event.keyCode == p5.LEFT_ARROW) {
-      console.log("left");
-      //socket.send([{topic: TopicShipRotation, clientID: clientID, radian: -0.1}]);
-    } 
-    return false; 
-  }
+  //p5.keyPressed = (event) => {
+  //  if (event.keyCode == p5.RIGHT_ARROW) {
+  //    const pos = player.getPosition();
+  //    if (pos.x <= canvasWidth - margin) {
+  //      player.setPosition(pos.x+10, pos.y);
+  //    }
+
+  //    //player.x += 10;
+  //    //console.log("right");
+
+  //    //socket.send([{topic: TopicShipRotation, clientID: clientID, radian: 0.1}]);
+  //  } else if (event.keyCode == p5.LEFT_ARROW) {
+  //    const pos = player.getPosition();
+  //    if (pos.x > margin) {
+  //      player.setPosition(pos.x-10, pos.y);
+  //    }
+
+  //    //console.log("left");
+  //    //socket.send([{topic: TopicShipRotation, clientID: clientID, radian: -0.1}]);
+  //  } 
+  //  return false; 
+  //}
 }
