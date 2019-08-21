@@ -17,14 +17,14 @@ export class Symbol {
     this.size = size;
     this.speed = sp;
     this.switchInterval = this.p5.round(this.p5.random(15, 30));
-    this.canvasHeight = canvasHeight;
+    //this.canvasHeight = canvasHeight;
     this.isFirst = isFirst;
   }
   
   setToRandomSymbol = () => {
     if (this.p5.frameCount % this.switchInterval == 0) {
       this.value = String.fromCharCode(
-        0x30A0 + this.p5.round(this.p5.random(0, 96))
+        48 + this.p5.round(this.p5.random(0, 9))
       );
     }
   }
@@ -34,17 +34,17 @@ export class Symbol {
   }
 
   render = () => {
-    if (this.y <= this.canvasHeight) {
-      if (this.isFirst) {
-        this.p5.fill(180, 255, 180, 255);
-      } else {
-        this.p5.fill(0, 255, 70, 50);
-      }
+    //if (this.y <= this.canvasHeight) {
+      //if (this.isFirst) {
+        //this.p5.fill(180, 255, 180, 255);
+      //} else {
+        this.p5.fill(0, 255, 70);
+      //}
       this.p5.text(this.value, this.x, this.y);
-      this.rain();
+      //this.rain();
       this.setToRandomSymbol();
-    } else {
-      this.y = 0;
-    }
+    //} else {
+    //  this.y = 0;
+    //}
   }
 }

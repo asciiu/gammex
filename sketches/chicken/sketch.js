@@ -1,8 +1,8 @@
 import 'p5/lib/addons/p5.sound'
 import 'p5/lib/addons/p5.dom'
 import {Chicken} from './chicken.js'
-import {Symbol} from './symbol.js'
-import {Stream} from './stream.js'
+//import {Symbol} from './symbol.js'
+import {Text} from './text.js'
 import { Egg } from './egg.js';
 
 export default function sketch (p5) {
@@ -15,6 +15,7 @@ export default function sketch (p5) {
   let canvasHeight;
   let margin = 20;
   let eggs = [];
+  let price, amount;
   
   p5.preload = () => {
     chickenImage = p5.loadImage('static/chicken/chickenWhite.png');
@@ -45,6 +46,23 @@ export default function sketch (p5) {
     }
     player = new Chicken(opts); 
 
+    price = new Text({
+      p5: p5,
+      x: 10,
+      y: 200,
+      symbolSize: 30,
+      text: "2000.0000",
+    });
+    price.generateSymbols();
+    amount = new Text({
+      p5: p5,
+      x: 200,
+      y: 200,
+      symbolSize: 30,
+      text: "0.1000",
+    });
+    amount.generateSymbols();
+
     for (let i = 0; i < 5; ++i) {
       let egg = new Egg({
         x: margin, 
@@ -70,6 +88,8 @@ export default function sketch (p5) {
     eggs.forEach(egg => {
       egg.render();
     })
+    price.render();
+    amount.render();
 
     if (p5.keyIsDown(p5.UP_ARROW)) {
       const pos = player.getPosition();
