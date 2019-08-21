@@ -38,8 +38,8 @@ export default function sketch (p5) {
       image: chickenImage,
       width: size,
       height: size,
-      x: margin,
-      y: 20,
+      x: canvasWidth - size,
+      y: canvasHeight/2,
       p5ptr: p5,
       size: size,
     }
@@ -71,17 +71,17 @@ export default function sketch (p5) {
       egg.render();
     })
 
-    if (p5.keyIsDown(p5.RIGHT_ARROW)) {
+    if (p5.keyIsDown(p5.UP_ARROW)) {
       const pos = player.getPosition();
-      if (pos.x <= canvasWidth - margin) {
-        player.setPosition(pos.x+10, pos.y);
-        player.setScale(-1.0, 1.0);
+      if (pos.y >= player.size) {
+        player.setPosition(pos.x, pos.y-10);
+        //player.setScale(-1.0, 1.0);
       }
-    } else if (p5.keyIsDown(p5.LEFT_ARROW)) {
+    } else if (p5.keyIsDown(p5.DOWN_ARROW)) {
       const pos = player.getPosition();
-      if (pos.x > margin) {
-        player.setPosition(pos.x-10, pos.y);
-        player.setScale(1.0, 1.0);
+      if (pos.y < canvasHeight - player.size) {
+        player.setPosition(pos.x, pos.y+10);
+        //player.setScale(1.0, 1.0);
       }
     }
   }
