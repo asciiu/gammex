@@ -16,6 +16,41 @@ export default function sketch (p5) {
   let margin = 20;
   let projectiles = [];
   let price, amount;
+  let text = [];
+
+  let orderBook = [
+    {price: "0.00110000", amount: "0.000000001"},
+    {price: "0.00100000", amount: "0.000000001"},
+    {price: "0.00090000", amount: "0.000000001"},
+    {price: "0.00080000", amount: "0.000000001"},
+    {price: "0.00070000", amount: "0.000000001"},
+    {price: "0.00060000", amount: "0.000000001"},
+    {price: "0.00050000", amount: "0.000000001"},
+    {price: "0.00040000", amount: "0.000000001"},
+    {price: "0.00020000", amount: "0.000000001"},
+    {price: "0.00019999", amount: "0.000000001"},
+    {price: "0.00019998", amount: "0.000000001"},
+    {price: "0.00019997", amount: "0.000000001"},
+    {price: "0.00019996", amount: "0.000000001"},
+    {price: "0.00019995", amount: "0.000000001"},
+    {price: "0.00019994", amount: "0.000000001"},
+    {price: "0.00019993", amount: "0.000000001"},
+    {price: "0.00019992", amount: "0.000000001"},
+    {price: "0.00019991", amount: "0.000000001"},
+    {price: "0.00019990", amount: "0.000000001"},
+    {price: "0.00010000", amount: "0.000000001"},
+    {price: "0.00009980", amount: "0.000000001"},
+    {price: "0.00009970", amount: "0.000000001"},
+    {price: "0.00009960", amount: "0.000000001"},
+    {price: "0.00009950", amount: "0.000000001"},
+    {price: "0.00009940", amount: "0.000000001"},
+    {price: "0.00009930", amount: "0.000000001"},
+    {price: "0.00009920", amount: "0.000000001"},
+    {price: "0.00009910", amount: "0.000000001"},
+    {price: "0.00009900", amount: "0.000000001"},
+    {price: "0.00009880", amount: "0.000000001"},
+    {price: "0.00009780", amount: "0.000000001"},
+  ];
   
   p5.preload = () => {
     chickenImage = p5.loadImage('static/chicken/chickenWhite.png');
@@ -46,19 +81,24 @@ export default function sketch (p5) {
     }
     player = new Chicken(opts); 
 
-    price = new Text({
-      p5: p5,
-      x: 10,
-      y: 200,
-      symbolSize: 30,
-      text: "2000.00000000",
-    });
-    amount = new Text({
-      p5: p5,
-      x: 150,
-      y: 200,
-      symbolSize: 30,
-      text: "0.10000000",
+    let y = 0;
+    orderBook.forEach(l => {
+       text.push(new Text({
+        p5: p5,
+        x: 50,
+        y: y,
+        symbolSize: 30,
+        text: l.price,
+      }));
+
+      text.push(new Text({
+        p5: p5,
+        x: 200,
+        y: y,
+        symbolSize: 30,
+        text: l.amount,
+      }));
+      y += 15;
     });
 
     for (let i = 0; i < 5; ++i) {
@@ -86,8 +126,7 @@ export default function sketch (p5) {
     projectiles.forEach(projectile => {
       projectile.render();
     })
-    price.render();
-    amount.render();
+    text.forEach(t => t.render());
 
     if (p5.keyIsDown(p5.UP_ARROW)) {
       const pos = player.getPosition();
