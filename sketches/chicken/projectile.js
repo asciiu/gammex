@@ -1,7 +1,4 @@
-import p5 from 'p5'
-import { red, green, blue } from 'ansi-colors';
-
-export class Egg {
+export class Projectile {
   constructor({
     p5: p5instance, 
     x: x, 
@@ -21,14 +18,14 @@ export class Egg {
     this.color = {r: 0, g: 255, b: 70, a: 100};
   }
 
-  rain = () => {
-    this.y += this.speed;
-    if (this.y > this.canvasHeight) {
+  move = () => {
+    this.x -= this.speed;
+    if (this.x < - this.size) {
       this.isReady = true;
     }
   }
 
-  drop = ({x: xPos, y: yPos, color: color}) => {
+  fire = ({x: xPos, y: yPos, color: color}) => {
     this.isReady = false;
     this.x = xPos;
     this.y = yPos;
@@ -40,7 +37,7 @@ export class Egg {
       this.p5.fill(this.color.r, this.color.g, this.color.b, this.color.a);
       // An ellipse
       this.p5.ellipse(this.x, this.y, 30, 30);
-      this.rain();
+      this.move();
     } 
   }
 

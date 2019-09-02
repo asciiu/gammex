@@ -3,7 +3,7 @@ import 'p5/lib/addons/p5.dom'
 import {Chicken} from './chicken.js'
 //import {Symbol} from './symbol.js'
 import {Text} from './text.js'
-import { Egg } from './egg.js';
+import { Projectile } from './projectile.js';
 
 export default function sketch (p5) {
   let canvas;
@@ -14,7 +14,7 @@ export default function sketch (p5) {
   let canvasWidth;
   let canvasHeight;
   let margin = 20;
-  let eggs = [];
+  let projectiles = [];
   let price, amount;
   
   p5.preload = () => {
@@ -53,7 +53,6 @@ export default function sketch (p5) {
       symbolSize: 30,
       text: "2000.00000000",
     });
-    //price.generateSymbols();
     amount = new Text({
       p5: p5,
       x: 150,
@@ -61,16 +60,15 @@ export default function sketch (p5) {
       symbolSize: 30,
       text: "0.10000000",
     });
-    //amount.generateSymbols();
 
     for (let i = 0; i < 5; ++i) {
-      let egg = new Egg({
+      let projectile = new Projectile({
         x: margin, 
         y: 50, 
-        speed: 10, 
+        speed: 20, 
         size: 10, 
         canvasHeight: canvasHeight, p5: p5});
-      eggs.push(egg);
+      projectiles.push(projectile);
     }
     //p5.textSize(symbolSize);
   }
@@ -85,8 +83,8 @@ export default function sketch (p5) {
   p5.draw = () => {
     p5.background("#001529");
     player.render();
-    eggs.forEach(egg => {
-      egg.render();
+    projectiles.forEach(projectile => {
+      projectile.render();
     })
     price.render();
     amount.render();
@@ -112,34 +110,18 @@ export default function sketch (p5) {
   
   p5.keyPressed = (event) => {
     if (event.keyCode == 32) {
-      for(let i = 0; i < eggs.length; ++i) {
-        let egg = eggs[i];
-        if (egg.isReady) {
+      for(let i = 0; i < projectiles.length; ++i) {
+        let projectile = projectiles[i];
+        if (projectile.isReady) {
           const pos = player.getPosition();
           if (player.scale.x < 0) {
-            egg.drop({x: pos.x, y: pos.y + player.size, color: {r: 0, g: 255, b: 70, a: 100}});
+            projectile.fire({x: pos.x - player.size, y: pos.y, color: {r: 0, g: 255, b: 70, a: 100}});
           } else {
-            egg.drop({x: pos.x, y: pos.y + player.size, color: {r: 255, g: 0, b: 70, a: 100}});
+            projectile.fire({x: pos.x - player.size, y: pos.y, color: {r: 255, g: 0, b: 70, a: 100}});
           }
-          //console.log("egg");
           break;
         }
       }
-  //    const pos = player.getPosition();
-  //    if (pos.x <= canvasWidth - margin) {
-  //      player.setPosition(pos.x+10, pos.y);
-  //    }
-
-  //    //player.x += 10;
-  //    //console.log("right");
-
-  //    //socket.send([{topic: TopicShipRotation, clientID: clientID, radian: 0.1}]);
-  //  } else if (event.keyCode == p5.LEFT_ARROW) {
-  //    const pos = player.getPosition();
-  //    if (pos.x > margin) {
-  //      player.setPosition(pos.x-10, pos.y);
-  //    }
-  //    //socket.send([{topic: TopicShipRotation, clientID: clientID, radian: -0.1}]);
     } 
     return false; 
   }
