@@ -51,17 +51,17 @@ export default function sketch (p5) {
       x: 10,
       y: 200,
       symbolSize: 30,
-      text: "2000.0000",
+      text: "2000.00000000",
     });
-    price.generateSymbols();
+    //price.generateSymbols();
     amount = new Text({
       p5: p5,
-      x: 200,
+      x: 150,
       y: 200,
       symbolSize: 30,
-      text: "0.1000",
+      text: "0.10000000",
     });
-    amount.generateSymbols();
+    //amount.generateSymbols();
 
     for (let i = 0; i < 5; ++i) {
       let egg = new Egg({

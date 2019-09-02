@@ -14,27 +14,29 @@ export class Text {
     this.symbols = [];
     this.symbolSize = size;
     this.text = txt; 
+    this.generateSymbols();
   }
 
   generateSymbols = () => {
     let y = this.pos.y; 
     let x = this.pos.x;
     const count = this.text.length;
-    console.log(count);
 
     for (let i = 0; i < count; ++i) {
+      //console.log(this.text[i]);
       let symbol = new Symbol({
         p5: this.p5, 
         x: x, 
         y: y, 
         speed: this.speed,
         size: this.symbolSize,
+        value: this.text[i],
         //canvasHeight: this.canvasHeight,
         first: false,
       });
-      symbol.setToRandomSymbol();
+      //symbol.setToRandomSymbol();
       this.symbols.push(symbol);
-      x += this.symbolSize/2;
+      x += this.symbolSize/4;
     }
   }
 

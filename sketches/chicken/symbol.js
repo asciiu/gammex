@@ -5,11 +5,13 @@ export class Symbol {
     p5: p5instance, 
     x: x, 
     y: y, 
+    value: value,
     speed: sp,
     size: size,
     canvasHeight: canvasHeight,
     first: isFirst = false,
   }) {
+    this.value = value;
     this.p5 = p5instance;
     this.x = x;
     this.y = y;
@@ -42,7 +44,7 @@ export class Symbol {
       //}
       this.p5.text(this.value, this.x, this.y);
       //this.rain();
-      this.setToRandomSymbol();
+      //this.setToRandomSymbol();
     //} else {
     //  this.y = 0;
     //}
